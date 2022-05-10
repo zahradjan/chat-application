@@ -1,5 +1,5 @@
+import 'package:Decentio/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_app/screens/welcome_screen.dart';
 
 void main() {
   runApp(MyApp());
