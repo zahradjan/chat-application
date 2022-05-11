@@ -1,5 +1,6 @@
 import 'package:Decentio/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 ThemeData lightThemeData(BuildContext context) {
   return ThemeData.light().copyWith(
@@ -7,6 +8,10 @@ ThemeData lightThemeData(BuildContext context) {
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: appBarTheme,
     iconTheme: IconThemeData(color: ContentColorLightTheme),
+    textTheme: TextTheme(
+        headline1: GoogleFonts.getFont("Lato",
+            textStyle:
+                TextStyle(fontSize: 24, color: TextLightThemePrimaryColor))),
     colorScheme: ColorScheme.light(
         primary: PrimaryColor, secondary: SecondaryColor, error: ErrorColor),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
