@@ -1,6 +1,7 @@
 import 'package:Decentio/components/primary_button.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/screens/sign_in_screen.dart';
+import 'package:Decentio/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -34,9 +35,15 @@ class WelcomeScreen extends StatelessWidget {
             ),
             SizedBox(height: DefaultPadding * 1.5),
             PrimaryButton(
-                text: "Sign up",
-                color: Theme.of(context).colorScheme.secondary,
-                press: () {}),
+              text: "Sign up",
+              color: Theme.of(context).colorScheme.secondary,
+              press: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SignUpScreen(),
+                ),
+              ),
+            ),
             Spacer(flex: 2)
           ],
         ),
