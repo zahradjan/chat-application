@@ -1,4 +1,5 @@
 import 'package:Decentio/screens/welcome_screen.dart';
+import 'package:Decentio/theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,9 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Decentio',
       debugShowCheckedModeBanner: false,
-     
+      theme: lightThemeData(context),
       home: WelcomeScreen(),
     );
   }
