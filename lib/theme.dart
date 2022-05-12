@@ -18,9 +18,9 @@ ThemeData lightThemeData(BuildContext context) {
     colorScheme: ColorScheme.light(
         primary: PrimaryColor, secondary: SecondaryColor, error: ErrorColor),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: Colors.white,
+      backgroundColor: ContentColorLightTheme,
       selectedItemColor: ContentColorLightTheme.withOpacity(0.8),
-      unselectedItemColor: ContentColorLightTheme.withOpacity(0.33),
+      unselectedItemColor: Colors.white,
       selectedIconTheme: IconThemeData(color: PrimaryColor),
       showUnselectedLabels: true,
     ),

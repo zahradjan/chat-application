@@ -1,5 +1,6 @@
 import 'package:Decentio/components/primary_button.dart';
 import 'package:Decentio/constants.dart';
+import 'package:Decentio/screens/chats_screen.dart';
 import 'package:Decentio/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -43,9 +44,15 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 SizedBox(height: DefaultPadding * 3),
                 PrimaryButton(
-                    text: "Sign in",
-                    color: Theme.of(context).colorScheme.primary,
-                    press: () {}),
+                  text: "Sign in",
+                  color: Theme.of(context).colorScheme.primary,
+                  press: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ChatsScreen(),
+                    ),
+                  ),
+                ),
                 SizedBox(height: DefaultPadding * 1.5),
                 PrimaryButton(
                   text: "Back",
