@@ -19,11 +19,13 @@ class WelcomeScreen extends StatelessWidget {
             ),
             Text(
               "Welcome to Decentio",
-              style: GoogleFonts.getFont("Lato",
+              style: GoogleFonts.getFont("Atkinson Hyperlegible",
                   textStyle: TextStyle(
                       fontSize: 24, color: TextLightThemePrimaryColor)),
             ),
-            SizedBox(height: DefaultPadding * 6),
+            SizedBox(height: DefaultPadding * 2),
+            Image.asset("assets/icons/icon.png"),
+            SizedBox(height: DefaultPadding * 2),
             PrimaryButton(
               text: "Sign in",
               press: () => Navigator.push(

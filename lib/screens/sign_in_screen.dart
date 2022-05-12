@@ -28,6 +28,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 SizedBox(height: DefaultPadding * 1.5),
                 TextFormField(
+                  style: TextStyle(color: TextLightThemePrimaryColor),
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     labelText: 'Enter your username',

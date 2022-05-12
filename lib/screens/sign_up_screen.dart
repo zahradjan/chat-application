@@ -31,6 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   decoration: const InputDecoration(
                     border: UnderlineInputBorder(),
                     labelText: 'Enter your email',
+                    labelStyle: TextStyle(),
                   ),
                 ),
                 SizedBox(height: DefaultPadding * 1.5),

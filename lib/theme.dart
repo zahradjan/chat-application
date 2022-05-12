@@ -9,9 +9,12 @@ ThemeData lightThemeData(BuildContext context) {
     appBarTheme: appBarTheme,
     iconTheme: IconThemeData(color: ContentColorLightTheme),
     textTheme: TextTheme(
-        headline1: GoogleFonts.getFont("Lato",
-            textStyle:
-                TextStyle(fontSize: 24, color: TextLightThemePrimaryColor))),
+      headline1: GoogleFonts.getFont("Atkinson Hyperlegible",
+          textStyle:
+              TextStyle(fontSize: 24, color: TextLightThemePrimaryColor)),
+      bodyText1: GoogleFonts.getFont("Atkinson Hyperlegible",
+          textStyle: TextStyle(color: TextLightThemePrimaryColor)),
+    ),
     colorScheme: ColorScheme.light(
         primary: PrimaryColor, secondary: SecondaryColor, error: ErrorColor),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
