@@ -1,5 +1,6 @@
 import 'package:Decentio/components/chats_screen_body.dart';
 import 'package:Decentio/constants.dart';
+import 'package:Decentio/messages/components/message_screen_body.dart';
 import 'package:flutter/material.dart';
 
 class MessagesScreen extends StatelessWidget {
@@ -7,7 +8,7 @@ class MessagesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      body: ChatsScreenBody(),
+      body: MessageScreenBody(),
     );
   }
 
