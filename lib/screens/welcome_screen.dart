@@ -24,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
                       fontSize: 24, color: TextLightThemePrimaryColor)),
             ),
             SizedBox(height: DefaultPadding * 2),
-            Image.asset("assets/icons/icon.png"),
+            Image.asset("assets/icons/decentioLogoLight.png"),
             SizedBox(height: DefaultPadding * 2),
             PrimaryButton(
               text: "Sign in",
