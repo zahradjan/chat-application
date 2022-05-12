@@ -1,36 +1,45 @@
 import 'package:Decentio/components/chats_screen_body.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/message_screen_body.dart';
+import 'package:Decentio/models/chat.dart';
 import 'package:flutter/material.dart';
 
-class MessagesScreen extends StatelessWidget {
+class MessagesScreen extends StatefulWidget {
+  Chat chatData;
+  MessagesScreen({required this.chatData});
+
+  @override
+  State<MessagesScreen> createState() => _MessagesScreenState();
+}
+
+class _MessagesScreenState extends State<MessagesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
+      appBar: buildAppBar(widget.chatData),
       body: MessageScreenBody(),
     );
   }
 
-  AppBar buildAppBar() {
+  AppBar buildAppBar(Chat chatData) {
     return AppBar(
       automaticallyImplyLeading: false,
       title: Row(
         children: [
           BackButton(),
           CircleAvatar(
-            backgroundImage: AssetImage("assets/images/user_2.png"),
+            backgroundImage: AssetImage(chatData.image),
           ),
           SizedBox(width: DefaultPadding * 0.75),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Kristin Watson",
+                chatData.name,
                 style: TextStyle(fontSize: 16),
               ),
               Text(
-                "Active 3m ago",
+                chatData.time,
                 style: TextStyle(fontSize: 12),
               )
             ],

@@ -42,7 +42,8 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
               press: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MessagesScreen(),
+                  builder: (context) =>
+                      MessagesScreen(chatData: chatsData[index]),
                 ),
               ),
             ),
