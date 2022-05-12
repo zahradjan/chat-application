@@ -1,3 +1,4 @@
+import 'package:Decentio/models/ChatMessage.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -9,6 +10,7 @@ class ChatInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _textController = TextEditingController();
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: DefaultPadding,
@@ -28,11 +30,11 @@ class ChatInputField extends StatelessWidget {
         child: Row(
           children: [
             Icon(Icons.mic, color: PrimaryColor),
-            SizedBox(width: DefaultPadding),
+            SizedBox(width: DefaultPadding / 30),
             Expanded(
               child: Container(
                 padding: EdgeInsets.symmetric(
-                  horizontal: DefaultPadding * 0.75,
+                  horizontal: DefaultPadding * 0.5,
                 ),
                 decoration: BoxDecoration(
                   color: Theme.of(context).scaffoldBackgroundColor,
@@ -51,6 +53,7 @@ class ChatInputField extends StatelessWidget {
                     SizedBox(width: DefaultPadding / 4),
                     Expanded(
                       child: TextField(
+                          textCapitalization: TextCapitalization.sentences,
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.primary),
                           decoration: InputDecoration(
@@ -79,6 +82,18 @@ class ChatInputField extends StatelessWidget {
                 ),
               ),
             ),
+            SizedBox(width: DefaultPadding / 3),
+            IconButton(
+              onPressed: () {
+                demeChatMessages.add(ChatMessage(
+                    text: _textController.text,
+                    isSender: true,
+                    messageType: ChatMessageType.text,
+                    messageStatus: MessageStatus.not_view));
+              },
+              icon: Icon(Icons.send),
+              color: Theme.of(context).colorScheme.primary,
+            )
           ],
         ),
       ),

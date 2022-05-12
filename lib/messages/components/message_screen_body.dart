@@ -7,20 +7,23 @@ import 'package:flutter/material.dart';
 class MessageScreenBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
-            child: ListView.builder(
-              itemCount: demeChatMessages.length,
-              itemBuilder: (context, index) =>
-                  Message(message: demeChatMessages[index]),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
+              child: ListView.builder(
+                itemCount: demeChatMessages.length,
+                itemBuilder: (context, index) =>
+                    Message(message: demeChatMessages[index]),
+              ),
             ),
           ),
-        ),
-        ChatInputField(),
-      ],
+          ChatInputField(),
+        ],
+      ),
     );
   }
 }

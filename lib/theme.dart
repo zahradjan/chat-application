@@ -16,7 +16,10 @@ ThemeData lightThemeData(BuildContext context) {
           textStyle: TextStyle(color: TextLightThemePrimaryColor)),
     ),
     colorScheme: ColorScheme.light(
-        primary: PrimaryColor, secondary: SecondaryColor, error: ErrorColor),
+      primary: PrimaryColor,
+      secondary: SecondaryColor,
+      error: ErrorColor,
+    ),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: ContentColorLightTheme,
       selectedItemColor: ContentColorLightTheme.withOpacity(0.8),
