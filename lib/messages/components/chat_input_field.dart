@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:Decentio/models/ChatMessage.dart';
 import 'package:flutter/material.dart';
-
+import 'package:loggy/loggy.dart';
 import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
@@ -104,8 +104,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                         widget.scrollController.position.maxScrollExtent,
                         duration: Duration(milliseconds: 500),
                         curve: Curves.ease);
-                    stderr.write("test");
-
+                    logDebug(widget.scrollController.position.maxScrollExtent);
                     _textController.clear();
                   }
                   //JEste nefunguje dodelat
