@@ -1,16 +1,23 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:Decentio/models/ChatMessage.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
-class ChatInputField extends StatelessWidget {
-  const ChatInputField({
-    Key? key,
-  }) : super(key: key);
+class ChatInputField extends StatefulWidget {
+  final ScrollController scrollController;
+  ChatInputField(this.scrollController) {}
 
   @override
+  State<ChatInputField> createState() => _ChatInputFieldState();
+}
+
+class _ChatInputFieldState extends State<ChatInputField> {
+  @override
   Widget build(BuildContext context) {
-    final _textController = TextEditingController();
+    TextEditingController _textController = TextEditingController();
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: DefaultPadding,
@@ -53,6 +60,7 @@ class ChatInputField extends StatelessWidget {
                     SizedBox(width: DefaultPadding / 4),
                     Expanded(
                       child: TextField(
+                          controller: _textController,
                           textCapitalization: TextCapitalization.sentences,
                           style: TextStyle(
                               color: Theme.of(context).colorScheme.primary),
@@ -85,11 +93,23 @@ class ChatInputField extends StatelessWidget {
             SizedBox(width: DefaultPadding / 3),
             IconButton(
               onPressed: () {
-                demeChatMessages.add(ChatMessage(
-                    text: _textController.text,
-                    isSender: true,
-                    messageType: ChatMessageType.text,
-                    messageStatus: MessageStatus.not_view));
+                setState(() {
+                  if (_textController.text.isNotEmpty) {
+                    demeChatMessages.add(ChatMessage(
+                        text: _textController.text,
+                        isSender: true,
+                        messageType: ChatMessageType.text,
+                        messageStatus: MessageStatus.not_view));
+                    widget.scrollController.animateTo(
+                        widget.scrollController.position.maxScrollExtent,
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.ease);
+                    stderr.write("test");
+
+                    _textController.clear();
+                  }
+                  //JEste nefunguje dodelat
+                });
               },
               icon: Icon(Icons.send),
               color: Theme.of(context).colorScheme.primary,
