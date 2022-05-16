@@ -14,7 +14,6 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
   ScrollController _scrollController = ScrollController();
 
   void _scrollToBottom() {
-    logDebug(_scrollController.position.maxScrollExtent);
     _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
   }
 
@@ -22,6 +21,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
   Widget build(BuildContext context) {
     WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToBottom());
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: Column(
@@ -31,7 +31,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
                 padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
                 child: ListView.builder(
                     controller: _scrollController,
-                    shrinkWrap: true,
+                    // shrinkWrap: true,
                     // reverse: true,
                     itemCount: demeChatMessages.length,
                     itemBuilder: (context, index) {
