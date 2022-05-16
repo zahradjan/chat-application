@@ -53,7 +53,37 @@ List demeChatMessages = [
     isSender: false,
   ),
   ChatMessage(
-    text: "Glad you like it",
+    text: "Glad yasd it",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "Glad youasd it",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "Glad yasike it",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "Glad yoasdike it",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "Glad you lidsdt",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "Glad yasdlike it",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     isSender: true,

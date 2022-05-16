@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -8,16 +9,16 @@ import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
   final ScrollController scrollController;
-  ChatInputField(this.scrollController) {}
+  ChatInputField(this.scrollController);
 
   @override
   State<ChatInputField> createState() => _ChatInputFieldState();
 }
 
 class _ChatInputFieldState extends State<ChatInputField> {
+  TextEditingController _textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    TextEditingController _textController = TextEditingController();
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: DefaultPadding,
@@ -33,7 +34,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
           ),
         ],
       ),
-      child: SafeArea(
+      child: Container(
         child: Row(
           children: [
             Icon(Icons.mic, color: PrimaryColor),
@@ -93,22 +94,29 @@ class _ChatInputFieldState extends State<ChatInputField> {
             SizedBox(width: DefaultPadding / 3),
             IconButton(
               onPressed: () {
-                setState(() {
-                  if (_textController.text.isNotEmpty) {
-                    demeChatMessages.add(ChatMessage(
-                        text: _textController.text,
-                        isSender: true,
-                        messageType: ChatMessageType.text,
-                        messageStatus: MessageStatus.not_view));
-                    widget.scrollController.animateTo(
-                        widget.scrollController.position.maxScrollExtent,
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.ease);
-                    logDebug(widget.scrollController.position.maxScrollExtent);
-                    _textController.clear();
-                  }
-                  //JEste nefunguje dodelat
-                });
+                // setState(() {
+                if (_textController.text.isNotEmpty) {
+                  demeChatMessages.add(ChatMessage(
+                      text: _textController.text,
+                      isSender: true,
+                      messageType: ChatMessageType.text,
+                      messageStatus: MessageStatus.not_view));
+                  logDebug(this.widget.scrollController.offset);
+                  logDebug(this.widget.scrollController.position);
+                  logDebug(
+                      this.widget.scrollController.position.maxScrollExtent +
+                          30);
+
+                  this.widget.scrollController.animateTo(
+                        this.widget.scrollController.position.maxScrollExtent -
+                            this.widget.scrollController.offset,
+                        curve: Curves.easeOut,
+                        duration: const Duration(milliseconds: 300),
+                      );
+
+                  _textController.clear();
+                }
+                // });
               },
               icon: Icon(Icons.send),
               color: Theme.of(context).colorScheme.primary,
