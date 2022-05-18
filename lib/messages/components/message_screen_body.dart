@@ -11,15 +11,18 @@ class MessageScreenBody extends StatefulWidget {
 }
 
 class _MessageScreenBodyState extends State<MessageScreenBody> {
-  ScrollController _scrollController = ScrollController();
-
-  void _scrollToBottom() {
-    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+  void refreshMessages() {
+    setState(() {
+      // _scrollController.animateTo(
+      //   _scrollController.position.maxScrollExtent,
+      //   curve: Curves.easeOut,
+      //   duration: const Duration(milliseconds: 300),
+      // );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToBottom());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
@@ -30,7 +33,6 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
                 child: ListView.builder(
-                    controller: _scrollController,
                     reverse: true,
                     itemCount: demeChatMessages.length,
                     itemBuilder: (context, index) {
@@ -39,7 +41,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
                     }),
               ),
             ),
-            ChatInputField(_scrollController),
+            ChatInputField(refreshMessages),
           ],
         ),
       ),

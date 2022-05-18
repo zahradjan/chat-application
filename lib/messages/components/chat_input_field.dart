@@ -8,8 +8,8 @@ import 'package:loggy/loggy.dart';
 import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
-  final ScrollController scrollController;
-  ChatInputField(this.scrollController);
+  final Function() notifyParent;
+  ChatInputField(this.notifyParent);
 
   @override
   State<ChatInputField> createState() => _ChatInputFieldState();
@@ -94,29 +94,18 @@ class _ChatInputFieldState extends State<ChatInputField> {
             SizedBox(width: DefaultPadding / 3),
             IconButton(
               onPressed: () {
-                // setState(() {
-                if (_textController.text.isNotEmpty) {
-                  demeChatMessages.add(ChatMessage(
-                      text: _textController.text,
-                      isSender: true,
-                      messageType: ChatMessageType.text,
-                      messageStatus: MessageStatus.not_view));
-                  logDebug(this.widget.scrollController.offset);
-                  logDebug(this.widget.scrollController.position);
-                  logDebug(
-                      this.widget.scrollController.position.maxScrollExtent +
-                          30);
+                setState(() {
+                  if (_textController.text.isNotEmpty) {
+                    demeChatMessages.add(ChatMessage(
+                        text: _textController.text,
+                        isSender: true,
+                        messageType: ChatMessageType.text,
+                        messageStatus: MessageStatus.not_view));
 
-                  this.widget.scrollController.animateTo(
-                        this.widget.scrollController.position.maxScrollExtent -
-                            this.widget.scrollController.offset,
-                        curve: Curves.easeOut,
-                        duration: const Duration(milliseconds: 300),
-                      );
-
-                  _textController.clear();
-                }
-                // });
+                    widget.notifyParent();
+                    _textController.clear();
+                  }
+                });
               },
               icon: Icon(Icons.send),
               color: Theme.of(context).colorScheme.primary,
