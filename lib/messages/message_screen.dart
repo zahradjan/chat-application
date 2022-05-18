@@ -41,7 +41,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
               Text(
                 chatData.time,
                 style: TextStyle(fontSize: 12),
-              )
+              ),
             ],
           )
         ],
@@ -53,6 +53,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
         ),
         IconButton(
           icon: Icon(Icons.videocam),
+          onPressed: () {},
+        ),
+        IconButton(
+          icon: Icon(Icons.add),
           onPressed: () {},
         ),
         SizedBox(width: DefaultPadding / 2),
