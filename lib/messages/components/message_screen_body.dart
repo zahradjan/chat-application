@@ -19,7 +19,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToBottom());
+    // WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToBottom());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: GestureDetector(
@@ -31,11 +31,11 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
                 padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
                 child: ListView.builder(
                     controller: _scrollController,
-                    // shrinkWrap: true,
-                    // reverse: true,
+                    reverse: true,
                     itemCount: demeChatMessages.length,
                     itemBuilder: (context, index) {
-                      return Message(message: demeChatMessages[index]);
+                      final reversedIndex = demeChatMessages.length - 1 - index;
+                      return Message(message: demeChatMessages[reversedIndex]);
                     }),
               ),
             ),
