@@ -75,7 +75,7 @@ class ChatCard extends StatelessWidget {
             Opacity(
               opacity: 0.64,
               child: Text(
-                chat.time,
+                chat.lastSeen,
                 style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
             ),

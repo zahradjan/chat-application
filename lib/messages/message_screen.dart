@@ -41,7 +41,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                 style: TextStyle(fontSize: 16),
               ),
               Text(
-                chatData.time,
+                chatData.lastSeen,
                 style: TextStyle(fontSize: 12),
               ),
             ],
