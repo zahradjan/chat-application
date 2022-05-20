@@ -9,7 +9,8 @@ import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
   final Function() notifyParent;
-  ChatInputField(this.notifyParent);
+  List chatMessages = [];
+  ChatInputField(this.notifyParent, this.chatMessages);
 
   @override
   State<ChatInputField> createState() => _ChatInputFieldState();
@@ -96,7 +97,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
               onPressed: () {
                 setState(() {
                   if (_textController.text.isNotEmpty) {
-                    demeChatMessages.add(ChatMessage(
+                    widget.chatMessages.add(ChatMessage(
                         text: _textController.text,
                         isSender: true,
                         messageType: ChatMessageType.text,

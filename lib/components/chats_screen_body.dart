@@ -36,14 +36,14 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: chatsData.length,
+            itemCount: chatsMessages.length,
             itemBuilder: (context, index) => ChatCard(
-              chat: chatsData[index],
+              chat: chatsMessages[index],
               press: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      MessagesScreen(chatData: chatsData[index]),
+                      MessagesScreen(chatData: chatsMessages[index]),
                 ),
               ),
             ),

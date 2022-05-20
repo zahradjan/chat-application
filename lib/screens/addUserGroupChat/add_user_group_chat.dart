@@ -13,7 +13,7 @@ class AddUser extends StatefulWidget {
 }
 
 class _AddUserState extends State<AddUser> {
-  //const AddUser({Key? key}) : super(key: key);
+  List<Chat> groupChatUsers = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,10 +36,16 @@ class _AddUserState extends State<AddUser> {
         IconButton(
           icon: Icon(Icons.check),
           onPressed: () {
+            groupChatUsers.clear();
+            chatsMessages.forEach((chatUser) {
+              if (chatUser.isSelected) groupChatUsers.add(chatUser);
+            });
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => GroupChat(chatData: chatData),
+                  builder: (context) => GroupChat(
+                    groupChatUsers: groupChatUsers,
+                  ),
                 ));
           },
         ),

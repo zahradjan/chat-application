@@ -21,14 +21,14 @@ class _AddUserBodyState extends State<AddUserBody> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: chatsData.length,
+            itemCount: chatsMessages.length,
             itemBuilder: (context, index) => AddUserCard(
-                chat: chatsData[index],
+                chat: chatsMessages[index],
                 press: () => {
                       setState(() {
-                        chatsData[index].isSelected =
-                            !chatsData[index].isSelected;
-                        logDebug(chatsData[index].isSelected);
+                        chatsMessages[index].isSelected =
+                            !chatsMessages[index].isSelected;
+                        logDebug(chatsMessages[index].isSelected);
                       })
                     }),
           ),

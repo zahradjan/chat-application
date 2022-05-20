@@ -41,7 +41,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
                     }),
               ),
             ),
-            ChatInputField(refreshMessages),
+            ChatInputField(refreshMessages, demeChatMessages),
           ],
         ),
       ),
