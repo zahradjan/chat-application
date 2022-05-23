@@ -1,5 +1,5 @@
 import 'package:Decentio/constants.dart';
-import 'package:Decentio/models/chat.dart';
+import 'package:Decentio/models/chat/chat.dart';
 import 'package:Decentio/screens/groupChat/components/group_chat_body.dart';
 import 'package:flutter/material.dart';
 

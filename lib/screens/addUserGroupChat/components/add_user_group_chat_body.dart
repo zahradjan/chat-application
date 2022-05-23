@@ -2,7 +2,8 @@ import 'package:Decentio/components/chat_card.dart';
 import 'package:Decentio/components/filled_outline_button.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/message_screen.dart';
-import 'package:Decentio/models/chat.dart';
+import 'package:Decentio/models/chat/chat.dart';
+import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:Decentio/screens/addUserGroupChat/components/add_user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
@@ -21,14 +22,13 @@ class _AddUserBodyState extends State<AddUserBody> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: chatsMessages.length,
+            itemCount: chats.length,
             itemBuilder: (context, index) => AddUserCard(
-                chat: chatsMessages[index],
+                chat: chats[index],
                 press: () => {
                       setState(() {
-                        chatsMessages[index].isSelected =
-                            !chatsMessages[index].isSelected;
-                        logDebug(chatsMessages[index].isSelected);
+                        chats[index].isSelected = !chats[index].isSelected;
+                        logDebug(chats[index].isSelected);
                       })
                     }),
           ),

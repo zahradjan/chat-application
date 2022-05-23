@@ -1,7 +1,7 @@
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
-import 'package:Decentio/models/chat.dart';
+import 'package:Decentio/models/chat/chat.dart';
 import 'package:Decentio/screens/groupChat/components/group_chat_added_user.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +29,17 @@ class _GroupChatBodyState extends State<GroupChatBody> {
         child: Column(
           children: [
             Expanded(
+                child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
+              child: ListView.builder(
+                  reverse: true,
+                  itemCount: widget.groupChatUsers.length,
+                  itemBuilder: (context, index) {
+                    return GroupChatUser(
+                        chatUser: widget.groupChatUsers[index]);
+                  }),
+            )),
+            Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
                 child: ListView.builder(
@@ -41,17 +52,6 @@ class _GroupChatBodyState extends State<GroupChatBody> {
                     }),
               ),
             ),
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
-              child: ListView.builder(
-                  reverse: true,
-                  itemCount: widget.groupChatUsers.length,
-                  itemBuilder: (context, index) {
-                    return GroupChatUser(
-                        chatUser: widget.groupChatUsers[index]);
-                  }),
-            )),
             ChatInputField(refreshMessages, groupChatMessages),
           ],
         ),

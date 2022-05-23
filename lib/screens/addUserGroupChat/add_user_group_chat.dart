@@ -1,5 +1,6 @@
 import 'package:Decentio/constants.dart';
-import 'package:Decentio/models/chat.dart';
+import 'package:Decentio/models/chat/chat.dart';
+import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:Decentio/screens/addUserGroupChat/components/add_user_group_chat_body.dart';
 import 'package:Decentio/screens/groupChat/group_chat_screen.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,7 @@ class _AddUserState extends State<AddUser> {
           icon: Icon(Icons.check),
           onPressed: () {
             groupChatUsers.clear();
-            chatsMessages.forEach((chatUser) {
+            chats.forEach((chatUser) {
               if (chatUser.isSelected) groupChatUsers.add(chatUser);
             });
             Navigator.push(

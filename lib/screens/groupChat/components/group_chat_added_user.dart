@@ -1,5 +1,5 @@
 import 'package:Decentio/constants.dart';
-import 'package:Decentio/models/chat.dart';
+import 'package:Decentio/models/chat/chat.dart';
 import 'package:flutter/material.dart';
 
 class GroupChatUser extends StatefulWidget {
@@ -25,7 +25,7 @@ class _GroupChatUserState extends State<GroupChatUser> {
               style: TextStyle(color: Theme.of(context).colorScheme.primary),
             ),
             Text(
-              widget.chatUser.name,
+              widget.chatUser.user.name,
               style: TextStyle(color: Theme.of(context).colorScheme.primary),
             )
           ],

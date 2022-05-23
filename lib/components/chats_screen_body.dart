@@ -3,7 +3,8 @@ import 'package:Decentio/components/filled_outline_button.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/message_screen_body.dart';
 import 'package:Decentio/messages/message_screen.dart';
-import 'package:Decentio/models/chat.dart';
+import 'package:Decentio/models/chat/chat.dart';
+import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:flutter/material.dart';
 
 class ChatsScreenBody extends StatefulWidget {
@@ -36,14 +37,13 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: chatsMessages.length,
+            itemCount: chats.length,
             itemBuilder: (context, index) => ChatCard(
-              chat: chatsMessages[index],
+              chat: chats[index],
               press: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      MessagesScreen(chatData: chatsMessages[index]),
+                  builder: (context) => MessagesScreen(chatData: chats[index]),
                 ),
               ),
             ),
