@@ -1,4 +1,4 @@
-import 'package:Decentio/models/chat/chat.dart';
+import 'package:Decentio/models/chat/Chat.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';

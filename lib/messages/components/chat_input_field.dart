@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:Decentio/models/ChatMessage.dart';
+import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
 import '../../../constants.dart';

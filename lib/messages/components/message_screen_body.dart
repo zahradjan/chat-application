@@ -1,7 +1,8 @@
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
-import 'package:Decentio/models/ChatMessage.dart';
+import 'package:Decentio/models/chatMessage/ChatMessage.dart';
+import 'package:Decentio/models/chatMessage/chatMessageStore.dart';
 import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
 
@@ -34,14 +35,14 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
                 padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
                 child: ListView.builder(
                     reverse: true,
-                    itemCount: demeChatMessages.length,
+                    itemCount: demoChatMessages.length,
                     itemBuilder: (context, index) {
-                      final reversedIndex = demeChatMessages.length - 1 - index;
-                      return Message(message: demeChatMessages[reversedIndex]);
+                      final reversedIndex = demoChatMessages.length - 1 - index;
+                      return Message(message: demoChatMessages[reversedIndex]);
                     }),
               ),
             ),
-            ChatInputField(refreshMessages, demeChatMessages),
+            ChatInputField(refreshMessages, demoChatMessages),
           ],
         ),
       ),

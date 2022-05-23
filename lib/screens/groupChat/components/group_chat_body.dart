@@ -1,7 +1,7 @@
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
-import 'package:Decentio/models/chat/chat.dart';
+import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/screens/groupChat/components/group_chat_added_user.dart';
 import 'package:flutter/material.dart';
 

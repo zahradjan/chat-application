@@ -1,4 +1,4 @@
-import 'package:Decentio/models/chat/chat.dart';
+import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chatUser/chatUserStore.dart';
 
 List<Chat> chats = [

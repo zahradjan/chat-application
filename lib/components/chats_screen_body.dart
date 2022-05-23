@@ -3,7 +3,7 @@ import 'package:Decentio/components/filled_outline_button.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/message_screen_body.dart';
 import 'package:Decentio/messages/message_screen.dart';
-import 'package:Decentio/models/chat/chat.dart';
+import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:flutter/material.dart';
 
