@@ -41,19 +41,19 @@ class _GroupChatBodyState extends State<GroupChatBody> {
                         chatUser: widget.groupChatUsers[index]);
                   }),
             )),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
-                child: ListView.builder(
-                    reverse: true,
-                    itemCount: groupChatMessages.length,
-                    itemBuilder: (context, index) {
-                      final reversedIndex =
-                          groupChatMessages.length - 1 - index;
-                      return Message(message: groupChatMessages[reversedIndex]);
-                    }),
-              ),
-            ),
+            // Expanded(
+            //   child: Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
+            //     child: ListView.builder(
+            //         reverse: true,
+            //         itemCount: groupChatMessages.length,
+            //         itemBuilder: (context, index) {
+            //           final reversedIndex =
+            //               groupChatMessages.length - 1 - index;
+            //           return Message(message: groupChatMessages[reversedIndex], chatUser: ,);
+            //         }),
+            //   ),
+            // ),
             ChatInputField(refreshMessages, groupChatMessages),
           ],
         ),

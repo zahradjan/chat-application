@@ -3,10 +3,13 @@ import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatMessage/chatMessageStore.dart';
+import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
 
 class MessageScreenBody extends StatefulWidget {
+  ChatUser currentChatUser;
+  MessageScreenBody({required this.currentChatUser});
   @override
   State<MessageScreenBody> createState() => _MessageScreenBodyState();
 }
@@ -22,6 +25,9 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
     });
   }
 
+  //TODO:jeste bude potreba upravit az bude BE
+  List<ChatMessage> currentMessages = demoChatMessages;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,14 +41,17 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
                 padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
                 child: ListView.builder(
                     reverse: true,
-                    itemCount: demoChatMessages.length,
+                    itemCount: currentMessages.length,
                     itemBuilder: (context, index) {
-                      final reversedIndex = demoChatMessages.length - 1 - index;
-                      return Message(message: demoChatMessages[reversedIndex]);
+                      final reversedIndex = currentMessages.length - 1 - index;
+                      return Message(
+                        message: currentMessages[reversedIndex],
+                        chatUser: widget.currentChatUser,
+                      );
                     }),
               ),
             ),
-            ChatInputField(refreshMessages, demoChatMessages),
+            ChatInputField(refreshMessages, currentMessages),
           ],
         ),
       ),

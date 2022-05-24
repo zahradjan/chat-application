@@ -19,7 +19,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(widget.chatData),
-      body: MessageScreenBody(),
+      body: MessageScreenBody(currentChatUser: widget.chatData.user),
     );
   }
 
