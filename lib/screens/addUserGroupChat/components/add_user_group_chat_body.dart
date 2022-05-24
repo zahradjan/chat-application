@@ -1,4 +1,5 @@
-import 'package:Decentio/components/chat_card.dart';
+import 'package:Decentio/models/chatUser/ChatUser.dart';
+import 'package:Decentio/screens/chats/components/chat_card.dart';
 import 'package:Decentio/components/filled_outline_button.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/message_screen.dart';
@@ -9,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
 
 class AddUserBody extends StatefulWidget {
-  const AddUserBody({Key? key}) : super(key: key);
+  List<ChatUser> chatUsers;
+  AddUserBody({Key? key, required this.chatUsers}) : super(key: key);
 
   @override
   State<AddUserBody> createState() => _AddUserBodyState();
@@ -22,13 +24,14 @@ class _AddUserBodyState extends State<AddUserBody> {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: chats.length,
+            itemCount: widget.chatUsers.length,
             itemBuilder: (context, index) => AddUserCard(
-                chat: chats[index],
+                chatUser: widget.chatUsers[index],
                 press: () => {
                       setState(() {
-                        chats[index].isSelected = !chats[index].isSelected;
-                        logDebug(chats[index].isSelected);
+                        widget.chatUsers[index].isSelected =
+                            !widget.chatUsers[index].isSelected;
+                        logDebug(widget.chatUsers[index].isSelected);
                       })
                     }),
           ),

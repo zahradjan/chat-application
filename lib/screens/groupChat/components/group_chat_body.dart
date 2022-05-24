@@ -2,11 +2,13 @@ import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
 import 'package:Decentio/models/chat/Chat.dart';
+import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:Decentio/screens/groupChat/components/group_chat_added_user.dart';
 import 'package:flutter/material.dart';
 
 class GroupChatBody extends StatefulWidget {
-  List<Chat> groupChatUsers;
+  //Posilat usery ne Chat
+  List<ChatUser> groupChatUsers;
   GroupChatBody({Key? key, required this.groupChatUsers}) : super(key: key);
 
   @override

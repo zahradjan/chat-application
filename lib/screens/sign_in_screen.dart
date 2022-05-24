@@ -1,6 +1,6 @@
 import 'package:Decentio/components/primary_button.dart';
 import 'package:Decentio/constants.dart';
-import 'package:Decentio/screens/chats_screen.dart';
+import 'package:Decentio/screens/chats/chats_screen.dart';
 import 'package:Decentio/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 

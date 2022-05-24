@@ -1,4 +1,4 @@
-import 'package:Decentio/components/chat_card.dart';
+import 'package:Decentio/screens/chats/components/chat_card.dart';
 import 'package:Decentio/components/filled_outline_button.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/message_screen_body.dart';

@@ -1,10 +1,11 @@
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/models/chat/Chat.dart';
+import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:Decentio/screens/groupChat/components/group_chat_body.dart';
 import 'package:flutter/material.dart';
 
 class GroupChat extends StatefulWidget {
-  List<Chat> groupChatUsers;
+  List<ChatUser> groupChatUsers;
   GroupChat({required this.groupChatUsers});
   // const GroupChat({ Key? key }) : super(key: key);
 

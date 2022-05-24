@@ -3,6 +3,7 @@ class ChatUser {
   String name;
   String avatarImage;
   bool isActive;
+  bool isSelected;
   String lastSeen;
 
   ChatUser(
@@ -10,5 +11,6 @@ class ChatUser {
       this.avatarImage = '',
       this.lastSeen = '',
       this.isActive = false,
+      this.isSelected = false,
       this.name = ''});
 }

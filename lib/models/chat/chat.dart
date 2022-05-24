@@ -1,13 +1,13 @@
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 
 class Chat {
+  String id;
   ChatUser user;
   String lastMessage;
-  bool isSelected;
 
   Chat({
+    this.id = '',
     required this.user,
     this.lastMessage = '',
-    this.isSelected = false,
   });
 }

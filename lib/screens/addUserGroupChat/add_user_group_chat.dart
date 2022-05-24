@@ -1,29 +1,36 @@
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chat/chatStore.dart';
+import 'package:Decentio/models/chatUser/ChatUser.dart';
+import 'package:Decentio/models/chatUser/chatUserStore.dart';
 import 'package:Decentio/screens/addUserGroupChat/components/add_user_group_chat_body.dart';
 import 'package:Decentio/screens/groupChat/group_chat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:loggy/loggy.dart';
 
 class AddUser extends StatefulWidget {
-  Chat chatData;
-
-  AddUser({required this.chatData});
+  ChatUser originalChatUser;
+  AddUser({Key? key, required this.originalChatUser}) : super(key: key);
   @override
   State<AddUser> createState() => _AddUserState();
 }
 
 class _AddUserState extends State<AddUser> {
-  List<Chat> groupChatUsers = [];
+  //for now, in future it will be pulled from Backend
+  List<ChatUser> availableChatUsers = chatUsers;
+  List<ChatUser> selectedGroupChatUsers = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(widget.chatData),
-      body: AddUserBody(),
+      appBar: buildAppBar(),
+      body: AddUserBody(
+        chatUsers: availableChatUsers,
+      ),
     );
   }
 
-  AppBar buildAppBar(Chat chatData) {
+  AppBar buildAppBar() {
     return AppBar(
       automaticallyImplyLeading: false,
       title: Row(
@@ -37,17 +44,22 @@ class _AddUserState extends State<AddUser> {
         IconButton(
           icon: Icon(Icons.check),
           onPressed: () {
-            groupChatUsers.clear();
-            chats.forEach((chatUser) {
-              if (chatUser.isSelected) groupChatUsers.add(chatUser);
+            setState(() {
+              selectedGroupChatUsers.clear();
+              //TODO: this is just temporary solution, when BE is ready this will need to change
+              availableChatUsers.forEach((chatUser) {
+                if (chatUser.isSelected &&
+                    !selectedGroupChatUsers.contains(chatUser))
+                  selectedGroupChatUsers.add(chatUser);
+              });
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GroupChat(
+                      groupChatUsers: selectedGroupChatUsers,
+                    ),
+                  ));
             });
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GroupChat(
-                    groupChatUsers: groupChatUsers,
-                  ),
-                ));
           },
         ),
         // IconButton(

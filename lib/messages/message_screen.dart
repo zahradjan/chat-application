@@ -1,4 +1,4 @@
-import 'package:Decentio/components/chats_screen_body.dart';
+import 'package:Decentio/screens/chats/components/chats_screen_body.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/message_screen_body.dart';
 import 'package:Decentio/models/chat/Chat.dart';
@@ -63,9 +63,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddUser(
-                    chatData: chatData,
-                  ),
+                  builder: (context) =>
+                      AddUser(originalChatUser: chatData.user),
                 ));
           },
         ),
