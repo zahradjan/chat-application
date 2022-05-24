@@ -1,22 +1,43 @@
 import 'package:Decentio/models/chat/Chat.dart';
+import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/chatUserStore.dart';
 
 List<Chat> chats = [
   Chat(
     user: chatUsers[0],
-    lastMessage: "Hope you are doing well...",
+    lastMessage: ChatMessage(
+      text: "Hope you are doing well...",
+      messageType: ChatMessageType.text,
+      messageStatus: MessageStatus.viewed,
+      isSender: false,
+    ),
   ),
   Chat(
     user: chatUsers[1],
-    lastMessage: "Hello Abdullah! I am...",
+    lastMessage: ChatMessage(
+      text: "Hello Abdullah! I am...",
+      messageType: ChatMessageType.text,
+      messageStatus: MessageStatus.viewed,
+      isSender: false,
+    ),
   ),
   Chat(
     user: chatUsers[2],
-    lastMessage: "Do you have update...",
+    lastMessage: ChatMessage(
+      text: "Do you have update...",
+      messageType: ChatMessageType.text,
+      messageStatus: MessageStatus.viewed,
+      isSender: false,
+    ),
   ),
   Chat(
     user: chatUsers[3],
-    lastMessage: "You’re welcome :)",
+    lastMessage: ChatMessage(
+      text: "You’re welcome :)",
+      messageType: ChatMessageType.text,
+      messageStatus: MessageStatus.viewed,
+      isSender: false,
+    ),
   ),
   // Chat(
   //   user: chatUsers[4],

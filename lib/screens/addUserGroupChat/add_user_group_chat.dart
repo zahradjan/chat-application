@@ -20,6 +20,16 @@ class _AddUserState extends State<AddUser> {
   List<ChatUser> availableChatUsers = chatUsers;
   List<ChatUser> selectedGroupChatUsers = [];
 
+  void selectOriginalChatUser() {
+    widget.originalChatUser.isSelected = true;
+  }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   selectOriginalChatUser();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

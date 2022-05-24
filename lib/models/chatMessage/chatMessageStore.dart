@@ -1,6 +1,6 @@
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 
-List demoChatMessages = [
+List<ChatMessage> demoChatMessages = [
   ChatMessage(
     text: "Hi Sajol,",
     messageType: ChatMessageType.text,
