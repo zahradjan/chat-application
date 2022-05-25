@@ -12,7 +12,7 @@ List<Chat> chats = [
         messageStatus: MessageStatus.viewed,
         isSender: false,
       ),
-      chatMessages: demoChatMessages),
+      chatMessages: demoChatMessagesJenny),
   Chat(
       user: chatUsers[1],
       lastMessage: ChatMessage(
@@ -21,7 +21,7 @@ List<Chat> chats = [
         messageStatus: MessageStatus.viewed,
         isSender: false,
       ),
-      chatMessages: demoChatMessages),
+      chatMessages: demoChatMessagesJacob),
   Chat(
       user: chatUsers[2],
       lastMessage: ChatMessage(
@@ -30,7 +30,7 @@ List<Chat> chats = [
         messageStatus: MessageStatus.viewed,
         isSender: false,
       ),
-      chatMessages: demoChatMessages),
+      chatMessages: demoChatMessagesAlbert),
   Chat(
       user: chatUsers[3],
       lastMessage: ChatMessage(
@@ -39,7 +39,7 @@ List<Chat> chats = [
         messageStatus: MessageStatus.viewed,
         isSender: false,
       ),
-      chatMessages: demoChatMessages),
+      chatMessages: demoChatMessagesEsther),
   // Chat(
   //   user: chatUsers[4],
   //   lastMessage: "Thanks",

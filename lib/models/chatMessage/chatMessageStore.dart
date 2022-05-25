@@ -1,6 +1,6 @@
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 
-List<ChatMessage> demoChatMessages = [
+List<ChatMessage> demoChatMessagesAlbert = [
   ChatMessage(
     text: "Hi Sajol,",
     messageType: ChatMessageType.text,
@@ -8,7 +8,7 @@ List<ChatMessage> demoChatMessages = [
     isSender: false,
   ),
   ChatMessage(
-    text: "Hello, How are you?",
+    text: "Hello Albert, How are you?",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     isSender: true,
@@ -38,37 +38,141 @@ List<ChatMessage> demoChatMessages = [
     isSender: false,
   ),
   ChatMessage(
-    text: "Glad yasd it",
+    text: "Glad you like it",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     isSender: true,
   ),
+];
+
+List<ChatMessage> demoChatMessagesJacob = [
   ChatMessage(
-    text: "Glad youasd it",
+    text: "Hi Sajol,",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "Hello Jacob, How are you?",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "",
+    messageType: ChatMessageType.audio,
+    messageStatus: MessageStatus.viewed,
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "",
+    messageType: ChatMessageType.video,
+    messageStatus: MessageStatus.viewed,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "Error happend",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_sent,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "This looks great man!!",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "Glad you like it",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     isSender: true,
   ),
+];
+
+List<ChatMessage> demoChatMessagesJenny = [
   ChatMessage(
-    text: "Glad yasike it",
+    text: "Hi Sajol,",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "Hello Jenny, How are you?",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "",
+    messageType: ChatMessageType.audio,
+    messageStatus: MessageStatus.viewed,
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "",
+    messageType: ChatMessageType.video,
+    messageStatus: MessageStatus.viewed,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "Error happend",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_sent,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "This looks great man!!",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "Glad you like it",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     isSender: true,
   ),
+];
+List<ChatMessage> demoChatMessagesEsther = [
   ChatMessage(
-    text: "Glad yoasdike it",
+    text: "Hi Sajol,",
     messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.not_view,
+    messageStatus: MessageStatus.viewed,
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "Hello Esther, How are you?",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
     isSender: true,
   ),
   ChatMessage(
-    text: "Glad you lidsdt",
-    messageType: ChatMessageType.text,
-    messageStatus: MessageStatus.not_view,
+    text: "",
+    messageType: ChatMessageType.audio,
+    messageStatus: MessageStatus.viewed,
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "",
+    messageType: ChatMessageType.video,
+    messageStatus: MessageStatus.viewed,
     isSender: true,
   ),
   ChatMessage(
-    text: "Glad yasdlike it",
+    text: "Error happend",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_sent,
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "This looks great man!!",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "Glad you like it",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     isSender: true,
