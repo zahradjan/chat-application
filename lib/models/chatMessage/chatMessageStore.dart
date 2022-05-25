@@ -43,6 +43,12 @@ List<ChatMessage> demoChatMessagesAlbert = [
     messageStatus: MessageStatus.not_view,
     isSender: true,
   ),
+  ChatMessage(
+    text: "Hope you are doing well...",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    isSender: false,
+  ),
 ];
 
 List<ChatMessage> demoChatMessagesJacob = [
@@ -87,6 +93,12 @@ List<ChatMessage> demoChatMessagesJacob = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     isSender: true,
+  ),
+  ChatMessage(
+    text: "Hello Abdullah! I am...",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    isSender: false,
   ),
 ];
 
@@ -133,6 +145,12 @@ List<ChatMessage> demoChatMessagesJenny = [
     messageStatus: MessageStatus.not_view,
     isSender: true,
   ),
+  ChatMessage(
+    text: "Do you have update...",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    isSender: false,
+  ),
 ];
 List<ChatMessage> demoChatMessagesEsther = [
   ChatMessage(
@@ -176,5 +194,11 @@ List<ChatMessage> demoChatMessagesEsther = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     isSender: true,
+  ),
+  ChatMessage(
+    text: "You’re welcome :)",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    isSender: false,
   ),
 ];

@@ -12,9 +12,9 @@ List<ChatUser> chatUsers = [
       id: "",
       name: "Jacob Jones",
       avatarImage: "assets/images/user_4.png",
-      isActive: false,
+      isActive: true,
       isSelected: false,
-      lastSeen: "4m ago"),
+      lastSeen: "Active"),
   ChatUser(
       id: "",
       name: "Albert Flores",
