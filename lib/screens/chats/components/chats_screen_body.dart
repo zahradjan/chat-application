@@ -13,6 +13,7 @@ class ChatsScreenBody extends StatefulWidget {
   @override
   State<ChatsScreenBody> createState() => _ChatsScreenBodyState();
 }
+//TODO: tady se pak budou muset tahat jednotlive chaty ktere se zde budou listovat a posilat dal
 
 class _ChatsScreenBodyState extends State<ChatsScreenBody> {
   @override

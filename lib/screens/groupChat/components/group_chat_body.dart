@@ -16,6 +16,8 @@ class GroupChatBody extends StatefulWidget {
 }
 
 class _GroupChatBodyState extends State<GroupChatBody> {
+  //TODO: Domyslet jak se budou posilat ti spravni useri se svyma messages, nejakej subscriptor kterej bude hlidat kdyz prijde zprava jeste z BE
+  // prozatim zkusit vymyslet jak propojit spravnyho usera s messagema ktere posila
   List<ChatMessage> groupChatMessages = [];
   // Chat groupChat
   void refreshMessages() {

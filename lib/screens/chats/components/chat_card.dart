@@ -25,6 +25,10 @@ class ChatCard extends StatelessWidget {
             Stack(
               children: [
                 CircleAvatar(
+                  //TODO:tohle je potom pro group chaty icona
+                  // backgroundColor: Theme.of(context).colorScheme.secondary,
+                  // radius: 24,
+                  // child: Icon(Icons.people_alt),
                   radius: 24,
                   backgroundImage: AssetImage(chat.user.avatarImage),
                 ),
