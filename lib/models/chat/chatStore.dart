@@ -5,15 +5,15 @@ import 'package:Decentio/models/chatUser/chatUserStore.dart';
 
 List<Chat> chats = [
   Chat(
-      user: chatUsers[0],
+      user: chatUsers[2],
       // lastMessage: ChatMessage(
       //   text: "Hope you are doing well...",
       //   messageType: ChatMessageType.text,
       //   messageStatus: MessageStatus.viewed,
       //   isSender: false,
       // ),
-      lastMessage: demoChatMessagesJenny.last,
-      chatMessages: demoChatMessagesJenny),
+      lastMessage: demoChatMessagesJoe.last,
+      chatMessages: demoChatMessagesJoe),
   Chat(
       user: chatUsers[1],
       lastMessage: demoChatMessagesJacob.last,
@@ -25,7 +25,7 @@ List<Chat> chats = [
       // ),
       chatMessages: demoChatMessagesJacob),
   Chat(
-      user: chatUsers[2],
+      user: chatUsers[0],
       // lastMessage: ChatMessage(
       //   text: "Do you have update...",
       //   messageType: ChatMessageType.text,

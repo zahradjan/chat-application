@@ -48,7 +48,6 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
                           widget.currentChat.chatMessages.length - 1 - index;
                       return Message(
                         message: widget.currentChat.chatMessages[reversedIndex],
-                        chatUser: widget.currentChat.user,
                       );
                     }),
               ),

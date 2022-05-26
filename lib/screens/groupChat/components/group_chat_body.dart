@@ -39,23 +39,23 @@ class _GroupChatBodyState extends State<GroupChatBody> {
                   reverse: true,
                   itemCount: widget.groupChatUsers.length,
                   itemBuilder: (context, index) {
-                    return GroupChatUser(
+                    return GroupChatUserAdded(
                         chatUser: widget.groupChatUsers[index]);
                   }),
             )),
-            // Expanded(
-            //   child: Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
-            //     child: ListView.builder(
-            //         reverse: true,
-            //         itemCount: groupChatMessages.length,
-            //         itemBuilder: (context, index) {
-            //           final reversedIndex =
-            //               groupChatMessages.length - 1 - index;
-            //           return Message(message: groupChatMessages[reversedIndex], chatUser: ,);
-            //         }),
-            //   ),
-            // ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
+                child: ListView.builder(
+                    reverse: true,
+                    itemCount: groupChatMessages.length,
+                    itemBuilder: (context, index) {
+                      final reversedIndex =
+                          groupChatMessages.length - 1 - index;
+                      return Message(message: groupChatMessages[reversedIndex]);
+                    }),
+              ),
+            ),
             ChatInputField(refreshMessages, groupChatMessages),
           ],
         ),

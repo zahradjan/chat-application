@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
+import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
 import '../../../constants.dart';
@@ -99,6 +100,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                   if (_textController.text.isNotEmpty) {
                     widget.chatMessages.add(ChatMessage(
                         text: _textController.text,
+                        sender: ChatUser(),
                         isSender: true,
                         messageType: ChatMessageType.text,
                         messageStatus: MessageStatus.not_view));

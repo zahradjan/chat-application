@@ -3,11 +3,11 @@ import 'package:Decentio/models/chatUser/ChatUser.dart';
 List<ChatUser> chatUsers = [
   ChatUser(
       id: "",
-      name: "Jenny Wilson",
-      avatarImage: "assets/images/user.png",
+      name: "Albert Flores",
+      avatarImage: "assets/images/user_2.png",
       isActive: false,
       isSelected: false,
-      lastSeen: "2m ago"),
+      lastSeen: "3m ago"),
   ChatUser(
       id: "",
       name: "Jacob Jones",
@@ -17,11 +17,11 @@ List<ChatUser> chatUsers = [
       lastSeen: "Active"),
   ChatUser(
       id: "",
-      name: "Albert Flores",
-      avatarImage: "assets/images/user_2.png",
+      name: "Joe Wilson",
+      avatarImage: "assets/images/user.png",
       isActive: false,
       isSelected: false,
-      lastSeen: "3m ago"),
+      lastSeen: "2m ago"),
   ChatUser(
       id: "",
       name: "Esther Howard",

@@ -11,11 +11,9 @@ class Message extends StatelessWidget {
   const Message({
     Key? key,
     required this.message,
-    required this.chatUser,
   }) : super(key: key);
 
   final ChatMessage message;
-  final ChatUser chatUser;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +40,7 @@ class Message extends StatelessWidget {
           if (!message.isSender) ...[
             CircleAvatar(
               radius: 12,
-              backgroundImage: AssetImage(chatUser.avatarImage),
+              backgroundImage: AssetImage(message.sender.avatarImage),
             ),
             SizedBox(width: DefaultPadding / 2),
           ],

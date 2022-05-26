@@ -3,15 +3,15 @@ import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
 
-class GroupChatUser extends StatefulWidget {
+class GroupChatUserAdded extends StatefulWidget {
   ChatUser chatUser;
-  GroupChatUser({Key? key, required this.chatUser}) : super(key: key);
+  GroupChatUserAdded({Key? key, required this.chatUser}) : super(key: key);
 
   @override
-  State<GroupChatUser> createState() => _GroupChatUserState();
+  State<GroupChatUserAdded> createState() => _GroupChatUserAddedState();
 }
 
-class _GroupChatUserState extends State<GroupChatUser> {
+class _GroupChatUserAddedState extends State<GroupChatUserAdded> {
   @override
   Widget build(BuildContext context) {
     return Container(
