@@ -18,8 +18,16 @@ class GroupChatBody extends StatefulWidget {
 class _GroupChatBodyState extends State<GroupChatBody> {
   //TODO: Domyslet jak se budou posilat ti spravni useri se svyma messages, nejakej subscriptor kterej bude hlidat kdyz prijde zprava jeste z BE
   // prozatim zkusit vymyslet jak propojit spravnyho usera s messagema ktere posila
-  List<ChatMessage> groupChatMessages = [];
-  // Chat groupChat
+  List groupChatItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    widget.groupChatUsers.forEach((chatUser) {
+      groupChatItems.add(chatUser);
+    });
+  }
+
   void refreshMessages() {
     setState(() {});
   }
@@ -32,31 +40,37 @@ class _GroupChatBodyState extends State<GroupChatBody> {
         onTap: () => FocusScope.of(context).unfocus(),
         child: Column(
           children: [
-            Expanded(
-                child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
-              child: ListView.builder(
-                  reverse: true,
-                  itemCount: widget.groupChatUsers.length,
-                  itemBuilder: (context, index) {
-                    return GroupChatUserAdded(
-                        chatUser: widget.groupChatUsers[index]);
-                  }),
-            )),
+            // Expanded(
+            //     child: Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
+            //   child: ListView.builder(
+            //       reverse: true,
+            //       itemCount: widget.groupChatUsers.length,
+            //       itemBuilder: (context, index) {
+            //         return GroupChatUserAdded(
+            //             chatUser: widget.groupChatUsers[index]);
+            //       }),
+            // )),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
                 child: ListView.builder(
                     reverse: true,
-                    itemCount: groupChatMessages.length,
+                    itemCount: groupChatItems.length,
                     itemBuilder: (context, index) {
-                      final reversedIndex =
-                          groupChatMessages.length - 1 - index;
-                      return Message(message: groupChatMessages[reversedIndex]);
+                      final reversedIndex = groupChatItems.length - 1 - index;
+                      if (groupChatItems[reversedIndex] is ChatMessage) {
+                        return Message(message: groupChatItems[reversedIndex]);
+                      } else if (groupChatItems[index] is ChatUser) {
+                        return GroupChatUserAdded(
+                            chatUser: groupChatItems[index]);
+                      } else {
+                        return Container();
+                      }
                     }),
               ),
             ),
-            ChatInputField(refreshMessages, groupChatMessages),
+            ChatInputField(refreshMessages, groupChatItems),
           ],
         ),
       ),

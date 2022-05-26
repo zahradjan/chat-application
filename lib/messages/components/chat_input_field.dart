@@ -10,7 +10,7 @@ import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
   final Function() notifyParent;
-  List<ChatMessage> chatMessages = [];
+  List chatMessages = [];
   ChatInputField(this.notifyParent, this.chatMessages);
 
   @override
