@@ -1,9 +1,10 @@
-import 'package:Decentio/components/chat_card.dart';
+import 'package:Decentio/screens/chats/components/chat_card.dart';
 import 'package:Decentio/components/filled_outline_button.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/message_screen_body.dart';
 import 'package:Decentio/messages/message_screen.dart';
-import 'package:Decentio/models/chat.dart';
+import 'package:Decentio/models/chat/Chat.dart';
+import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:flutter/material.dart';
 
 class ChatsScreenBody extends StatefulWidget {
@@ -12,6 +13,7 @@ class ChatsScreenBody extends StatefulWidget {
   @override
   State<ChatsScreenBody> createState() => _ChatsScreenBodyState();
 }
+//TODO: tady se pak budou muset tahat jednotlive chaty ktere se zde budou listovat a posilat dal
 
 class _ChatsScreenBodyState extends State<ChatsScreenBody> {
   @override
@@ -36,14 +38,13 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: chatsData.length,
+            itemCount: chats.length,
             itemBuilder: (context, index) => ChatCard(
-              chat: chatsData[index],
+              chat: chats[index],
               press: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      MessagesScreen(chatData: chatsData[index]),
+                  builder: (context) => MessagesScreen(chatData: chats[index]),
                 ),
               ),
             ),

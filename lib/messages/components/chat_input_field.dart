@@ -2,14 +2,17 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:Decentio/models/ChatMessage.dart';
+import 'package:Decentio/messages/components/message.dart';
+import 'package:Decentio/models/chatMessage/ChatMessage.dart';
+import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
 import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
   final Function() notifyParent;
-  ChatInputField(this.notifyParent);
+  List chatMessages = [];
+  ChatInputField(this.notifyParent, this.chatMessages);
 
   @override
   State<ChatInputField> createState() => _ChatInputFieldState();
@@ -96,11 +99,14 @@ class _ChatInputFieldState extends State<ChatInputField> {
               onPressed: () {
                 setState(() {
                   if (_textController.text.isNotEmpty) {
-                    demeChatMessages.add(ChatMessage(
-                        text: _textController.text,
-                        isSender: true,
-                        messageType: ChatMessageType.text,
-                        messageStatus: MessageStatus.not_view));
+                    widget.chatMessages.add(Message(
+                        message: ChatMessage(
+                            text: _textController.text,
+                            sender: ChatUser(),
+                            isSender: true,
+                            time: DateTime.now(),
+                            messageType: ChatMessageType.text,
+                            messageStatus: MessageStatus.not_view)));
 
                     widget.notifyParent();
                     _textController.clear();

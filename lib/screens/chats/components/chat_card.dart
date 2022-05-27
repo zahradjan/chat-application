@@ -1,7 +1,7 @@
-import 'package:Decentio/models/chat.dart';
+import 'package:Decentio/models/chat/Chat.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
+import '../../../../../constants.dart';
 
 class ChatCard extends StatelessWidget {
   const ChatCard({
@@ -25,10 +25,14 @@ class ChatCard extends StatelessWidget {
             Stack(
               children: [
                 CircleAvatar(
+                  //TODO:tohle je potom pro group chaty icona
+                  // backgroundColor: Theme.of(context).colorScheme.secondary,
+                  // radius: 24,
+                  // child: Icon(Icons.people_alt),
                   radius: 24,
-                  backgroundImage: AssetImage(chat.image),
+                  backgroundImage: AssetImage(chat.user.avatarImage),
                 ),
-                if (chat.isActive)
+                if (chat.user.isActive)
                   Positioned(
                     right: 0,
                     bottom: 0,
@@ -53,7 +57,7 @@ class ChatCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      chat.name,
+                      chat.user.name,
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -62,7 +66,7 @@ class ChatCard extends StatelessWidget {
                     SizedBox(height: 8),
                     Opacity(
                       opacity: 0.64,
-                      child: Text(chat.lastMessage,
+                      child: Text(chat.lastMessage.text,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -75,7 +79,7 @@ class ChatCard extends StatelessWidget {
             Opacity(
               opacity: 0.64,
               child: Text(
-                chat.time,
+                chat.user.lastSeen,
                 style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
             ),

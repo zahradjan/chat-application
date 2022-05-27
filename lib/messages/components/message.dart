@@ -1,7 +1,8 @@
 import 'package:Decentio/messages/components/audio_message.dart';
 import 'package:Decentio/messages/components/text_message.dart';
 import 'package:Decentio/messages/components/video_message.dart';
-import 'package:Decentio/models/ChatMessage.dart';
+import 'package:Decentio/models/chatMessage/ChatMessage.dart';
+import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
@@ -39,7 +40,7 @@ class Message extends StatelessWidget {
           if (!message.isSender) ...[
             CircleAvatar(
               radius: 12,
-              backgroundImage: AssetImage("assets/images/user_2.png"),
+              backgroundImage: AssetImage(message.sender.avatarImage),
             ),
             SizedBox(width: DefaultPadding / 2),
           ],
