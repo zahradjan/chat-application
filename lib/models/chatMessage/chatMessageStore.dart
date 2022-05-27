@@ -7,6 +7,7 @@ List<ChatMessage> demoChatMessagesAlbert = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -14,6 +15,7 @@ List<ChatMessage> demoChatMessagesAlbert = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -21,6 +23,7 @@ List<ChatMessage> demoChatMessagesAlbert = [
     messageType: ChatMessageType.audio,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -28,6 +31,7 @@ List<ChatMessage> demoChatMessagesAlbert = [
     messageType: ChatMessageType.video,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -35,6 +39,7 @@ List<ChatMessage> demoChatMessagesAlbert = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_sent,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -42,6 +47,7 @@ List<ChatMessage> demoChatMessagesAlbert = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -49,6 +55,7 @@ List<ChatMessage> demoChatMessagesAlbert = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -56,6 +63,7 @@ List<ChatMessage> demoChatMessagesAlbert = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: false,
   ),
 ];
@@ -66,6 +74,7 @@ List<ChatMessage> demoChatMessagesJacob = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[1],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -73,6 +82,7 @@ List<ChatMessage> demoChatMessagesJacob = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -80,6 +90,7 @@ List<ChatMessage> demoChatMessagesJacob = [
     messageType: ChatMessageType.audio,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[1],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -87,6 +98,7 @@ List<ChatMessage> demoChatMessagesJacob = [
     messageType: ChatMessageType.video,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -94,6 +106,7 @@ List<ChatMessage> demoChatMessagesJacob = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_sent,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -101,6 +114,7 @@ List<ChatMessage> demoChatMessagesJacob = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[1],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -108,6 +122,7 @@ List<ChatMessage> demoChatMessagesJacob = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -115,6 +130,7 @@ List<ChatMessage> demoChatMessagesJacob = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     sender: chatUsers[1],
+    time: DateTime.now(),
     isSender: false,
   ),
 ];
@@ -125,6 +141,7 @@ List<ChatMessage> demoChatMessagesJoe = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[2],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -132,6 +149,7 @@ List<ChatMessage> demoChatMessagesJoe = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -139,6 +157,7 @@ List<ChatMessage> demoChatMessagesJoe = [
     messageType: ChatMessageType.audio,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[2],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -146,6 +165,7 @@ List<ChatMessage> demoChatMessagesJoe = [
     messageType: ChatMessageType.video,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -153,6 +173,7 @@ List<ChatMessage> demoChatMessagesJoe = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_sent,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -160,6 +181,7 @@ List<ChatMessage> demoChatMessagesJoe = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[2],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -167,6 +189,7 @@ List<ChatMessage> demoChatMessagesJoe = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -174,6 +197,7 @@ List<ChatMessage> demoChatMessagesJoe = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     sender: chatUsers[2],
+    time: DateTime.now(),
     isSender: false,
   ),
 ];
@@ -183,6 +207,7 @@ List<ChatMessage> demoChatMessagesEsther = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[3],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -190,6 +215,7 @@ List<ChatMessage> demoChatMessagesEsther = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -197,6 +223,7 @@ List<ChatMessage> demoChatMessagesEsther = [
     messageType: ChatMessageType.audio,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[3],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -204,6 +231,7 @@ List<ChatMessage> demoChatMessagesEsther = [
     messageType: ChatMessageType.video,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -211,6 +239,7 @@ List<ChatMessage> demoChatMessagesEsther = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_sent,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -218,6 +247,7 @@ List<ChatMessage> demoChatMessagesEsther = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[3],
+    time: DateTime.now(),
     isSender: false,
   ),
   ChatMessage(
@@ -225,6 +255,7 @@ List<ChatMessage> demoChatMessagesEsther = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     sender: chatUsers[0],
+    time: DateTime.now(),
     isSender: true,
   ),
   ChatMessage(
@@ -232,6 +263,7 @@ List<ChatMessage> demoChatMessagesEsther = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     sender: chatUsers[3],
+    time: DateTime.now(),
     isSender: false,
   ),
 ];

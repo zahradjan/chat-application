@@ -26,8 +26,17 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
     });
   }
 
+  List<Widget> chatItems = [];
   //TODO:jeste bude potreba upravit az bude BE
   // List<ChatMessage> currentMessages = demoChatMessages;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.currentChat.chatMessages.forEach((message) {
+      chatItems.add(Message(message: message));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,17 +51,17 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
                 padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
                 child: ListView.builder(
                     reverse: true,
-                    itemCount: widget.currentChat.chatMessages.length,
+                    itemCount: chatItems.length,
                     itemBuilder: (context, index) {
-                      final reversedIndex =
-                          widget.currentChat.chatMessages.length - 1 - index;
-                      return Message(
-                        message: widget.currentChat.chatMessages[reversedIndex],
-                      );
+                      final reversedIndex = chatItems.length - 1 - index;
+                      return chatItems[reversedIndex];
+                      // return Message(
+                      //   message: widget.currentChat.chatMessages[reversedIndex],
+                      // );
                     }),
               ),
             ),
-            ChatInputField(refreshMessages, widget.currentChat.chatMessages),
+            ChatInputField(refreshMessages, chatItems),
           ],
         ),
       ),

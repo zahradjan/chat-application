@@ -8,12 +8,14 @@ class ChatMessage {
   String text;
   ChatMessageType messageType;
   MessageStatus messageStatus;
+  DateTime time;
   ChatUser sender;
   bool isSender;
 
   ChatMessage({
     this.id = '',
     this.text = '',
+    required this.time,
     required this.sender,
     required this.messageType,
     required this.messageStatus,

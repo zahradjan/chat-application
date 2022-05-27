@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:Decentio/messages/components/message.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
@@ -98,12 +99,14 @@ class _ChatInputFieldState extends State<ChatInputField> {
               onPressed: () {
                 setState(() {
                   if (_textController.text.isNotEmpty) {
-                    widget.chatMessages.add(ChatMessage(
-                        text: _textController.text,
-                        sender: ChatUser(),
-                        isSender: true,
-                        messageType: ChatMessageType.text,
-                        messageStatus: MessageStatus.not_view));
+                    widget.chatMessages.add(Message(
+                        message: ChatMessage(
+                            text: _textController.text,
+                            sender: ChatUser(),
+                            isSender: true,
+                            time: DateTime.now(),
+                            messageType: ChatMessageType.text,
+                            messageStatus: MessageStatus.not_view)));
 
                     widget.notifyParent();
                     _textController.clear();
