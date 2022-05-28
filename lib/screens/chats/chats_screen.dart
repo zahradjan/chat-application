@@ -2,6 +2,7 @@ import 'package:Decentio/components/filled_outline_button.dart';
 import 'package:Decentio/screens/chats/components/users_body.dart';
 import 'package:Decentio/screens/chats/components/chats_screen_body.dart';
 import 'package:Decentio/constants.dart';
+import 'package:Decentio/screens/profile/profile.dart';
 import 'package:flutter/material.dart';
 
 class ChatsScreen extends StatefulWidget {
@@ -62,11 +63,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
       automaticallyImplyLeading: false,
       title: Row(children: [
         IconButton(
-          iconSize: 30,
-          onPressed: () {},
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Profile(),
+            ),
+          ),
           icon: CircleAvatar(
-            radius: 25,
-            backgroundImage: AssetImage("assets/images/user_5.png"),
+            radius: 30,
+            backgroundImage: AssetImage("assets/images/user_6.jpg"),
           ),
         ),
         SizedBox(

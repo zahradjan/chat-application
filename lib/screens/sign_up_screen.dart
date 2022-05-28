@@ -14,61 +14,64 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
-            child: Column(
-              children: [
-                Spacer(
-                  flex: 2,
-                ),
-                Text(
-                  "Please enter your credentials",
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-                SizedBox(height: DefaultPadding * 1.5),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter your email',
-                    labelStyle: TextStyle(),
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: SafeArea(
+          child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
+              child: Column(
+                children: [
+                  Spacer(
+                    flex: 2,
                   ),
-                ),
-                SizedBox(height: DefaultPadding * 1.5),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter your username',
+                  Text(
+                    "Please enter your credentials",
+                    style: Theme.of(context).textTheme.headline1,
                   ),
-                ),
-                SizedBox(height: DefaultPadding * 1.5),
-                TextFormField(
-                  decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    labelText: 'Enter your password',
-                  ),
-                ),
-                SizedBox(height: DefaultPadding * 3),
-                PrimaryButton(
-                    text: "Sign up",
-                    color: Theme.of(context).colorScheme.primary,
-                    press: () {}),
-                SizedBox(height: DefaultPadding * 1.5),
-                PrimaryButton(
-                  text: "Back",
-                  color: Theme.of(context).colorScheme.secondary,
-                  press: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WelcomeScreen(),
+                  SizedBox(height: DefaultPadding * 1.5),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Enter your email',
+                      labelStyle: TextStyle(),
                     ),
                   ),
-                ),
-                Spacer(
-                  flex: 2,
-                ),
-              ],
-            )),
+                  SizedBox(height: DefaultPadding * 1.5),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Enter your username',
+                    ),
+                  ),
+                  SizedBox(height: DefaultPadding * 1.5),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Enter your password',
+                    ),
+                  ),
+                  SizedBox(height: DefaultPadding * 3),
+                  PrimaryButton(
+                      text: "Sign up",
+                      color: Theme.of(context).colorScheme.primary,
+                      press: () {}),
+                  SizedBox(height: DefaultPadding * 1.5),
+                  PrimaryButton(
+                    text: "Back",
+                    color: Theme.of(context).colorScheme.secondary,
+                    press: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WelcomeScreen(),
+                      ),
+                    ),
+                  ),
+                  Spacer(
+                    flex: 2,
+                  ),
+                ],
+              )),
+        ),
       ),
     );
   }
