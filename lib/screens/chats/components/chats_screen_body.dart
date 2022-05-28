@@ -1,3 +1,5 @@
+import 'package:Decentio/models/chatUser/ChatUser.dart';
+import 'package:Decentio/screens/chats/components/user_card.dart';
 import 'package:Decentio/screens/chats/components/chat_card.dart';
 import 'package:Decentio/components/filled_outline_button.dart';
 import 'package:Decentio/constants.dart';
@@ -16,6 +18,23 @@ class ChatsScreenBody extends StatefulWidget {
 //TODO: tady se pak budou muset tahat jednotlive chaty ktere se zde budou listovat a posilat dal
 
 class _ChatsScreenBodyState extends State<ChatsScreenBody> {
+  List<ChatUser> activeUsers = [];
+
+  // void showRecentMessages() {
+  //   setState(() {});
+  // }
+
+  // void showActiveUsers() {
+  //   setState(() {
+  //     activeUsers.clear();
+  //     chats.forEach((chat) {
+  //       if (chat.user.isActive && !activeUsers.contains(chat.user)) {
+  //         activeUsers.add(chat.user);
+  //       }
+  //     });
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -38,17 +57,19 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: chats.length,
-            itemBuilder: (context, index) => ChatCard(
-              chat: chats[index],
-              press: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MessagesScreen(chatData: chats[index]),
-                ),
-              ),
-            ),
-          ),
+              itemCount: chats.length,
+              itemBuilder: (context, index) {
+                return ChatCard(
+                  chat: chats[index],
+                  press: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          MessagesScreen(chatData: chats[index]),
+                    ),
+                  ),
+                );
+              }),
         ),
       ],
     );
