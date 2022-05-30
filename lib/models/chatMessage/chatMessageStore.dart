@@ -1,9 +1,10 @@
+import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/chatUserStore.dart';
 
-List<ChatMessage> demoChatMessagesAlbert = [
+List<ChatMessage> demoChatMessagesKynes = [
   ChatMessage(
-    text: "Hi Sajol,",
+    text: "Hi Paul,",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
@@ -11,7 +12,7 @@ List<ChatMessage> demoChatMessagesAlbert = [
     isSender: false,
   ),
   ChatMessage(
-    text: "Hello Albert, How are you?",
+    text: "Hello Kynes, How are you?",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
@@ -68,9 +69,9 @@ List<ChatMessage> demoChatMessagesAlbert = [
   ),
 ];
 
-List<ChatMessage> demoChatMessagesJacob = [
+List<ChatMessage> demoChatMessagesJessica = [
   ChatMessage(
-    text: "Hi Sajol,",
+    text: "Hi Paul,",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[1],
@@ -78,7 +79,7 @@ List<ChatMessage> demoChatMessagesJacob = [
     isSender: false,
   ),
   ChatMessage(
-    text: "Hello Jacob, How are you?",
+    text: "Hello Jessica, How are you?",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
@@ -126,7 +127,7 @@ List<ChatMessage> demoChatMessagesJacob = [
     isSender: true,
   ),
   ChatMessage(
-    text: "Hello Abdullah! I am...",
+    text: "Hello Paul! I am...",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     sender: chatUsers[1],
@@ -135,9 +136,9 @@ List<ChatMessage> demoChatMessagesJacob = [
   ),
 ];
 
-List<ChatMessage> demoChatMessagesJoe = [
+List<ChatMessage> demoChatMessagesDuncan = [
   ChatMessage(
-    text: "Hi Sajol,",
+    text: "Hi Paul,",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[2],
@@ -145,7 +146,7 @@ List<ChatMessage> demoChatMessagesJoe = [
     isSender: false,
   ),
   ChatMessage(
-    text: "Hello Joe, How are you?",
+    text: "Hello Duncan, How are you?",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
@@ -201,9 +202,9 @@ List<ChatMessage> demoChatMessagesJoe = [
     isSender: false,
   ),
 ];
-List<ChatMessage> demoChatMessagesEsther = [
+List<ChatMessage> demoChatMessagesLeto = [
   ChatMessage(
-    text: "Hi Sajol,",
+    text: "Hi Paul,",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[3],
@@ -211,7 +212,7 @@ List<ChatMessage> demoChatMessagesEsther = [
     isSender: false,
   ),
   ChatMessage(
-    text: "Hello Esther, How are you?",
+    text: "Hello Leto, How are you?",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
     sender: chatUsers[0],
@@ -263,6 +264,138 @@ List<ChatMessage> demoChatMessagesEsther = [
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
     sender: chatUsers[3],
+    time: DateTime.now(),
+    isSender: false,
+  ),
+];
+List<ChatMessage> demoChatMessagesChani = [
+  ChatMessage(
+    text: "Hi Paul,",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    sender: chatUsers[4],
+    time: DateTime.now(),
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "Hello Chani, How are you?",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    sender: chatUsers[0],
+    time: DateTime.now(),
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "",
+    messageType: ChatMessageType.audio,
+    messageStatus: MessageStatus.viewed,
+    sender: chatUsers[4],
+    time: DateTime.now(),
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "",
+    messageType: ChatMessageType.video,
+    messageStatus: MessageStatus.viewed,
+    sender: chatUsers[0],
+    time: DateTime.now(),
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "Error happend",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_sent,
+    sender: chatUsers[0],
+    time: DateTime.now(),
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "This looks great man!!",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    sender: chatUsers[4],
+    time: DateTime.now(),
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "Glad you like it",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    sender: chatUsers[0],
+    time: DateTime.now(),
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "You’re welcome :)",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    sender: chatUsers[4],
+    time: DateTime.now(),
+    isSender: false,
+  ),
+];
+List<ChatMessage> demoChatMessagesBaron = [
+  ChatMessage(
+    text: "Hi Paul,",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    sender: chatUsers[5],
+    time: DateTime.now(),
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "Hello Baron, How are you?",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    sender: chatUsers[0],
+    time: DateTime.now(),
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "",
+    messageType: ChatMessageType.audio,
+    messageStatus: MessageStatus.viewed,
+    sender: chatUsers[5],
+    time: DateTime.now(),
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "",
+    messageType: ChatMessageType.video,
+    messageStatus: MessageStatus.viewed,
+    sender: chatUsers[0],
+    time: DateTime.now(),
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "Error happend",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_sent,
+    sender: chatUsers[0],
+    time: DateTime.now(),
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "This looks great man!!",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.viewed,
+    sender: chatUsers[5],
+    time: DateTime.now(),
+    isSender: false,
+  ),
+  ChatMessage(
+    text: "Glad you like it",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    sender: chatUsers[0],
+    time: DateTime.now(),
+    isSender: true,
+  ),
+  ChatMessage(
+    text: "You’re welcome :)",
+    messageType: ChatMessageType.text,
+    messageStatus: MessageStatus.not_view,
+    sender: chatUsers[5],
     time: DateTime.now(),
     isSender: false,
   ),

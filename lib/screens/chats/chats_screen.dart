@@ -71,7 +71,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
           ),
           icon: CircleAvatar(
             radius: 30,
-            backgroundImage: AssetImage("assets/images/user_6.jpg"),
+            backgroundImage: AssetImage("assets/images/paul_atreides.jpg"),
           ),
         ),
         SizedBox(

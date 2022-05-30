@@ -83,6 +83,7 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
   }
 
   Widget buildRecentMessagesList() {
+    logDebug(chats.length);
     return Expanded(
       child: ListView.builder(
           itemCount: chats.length,
