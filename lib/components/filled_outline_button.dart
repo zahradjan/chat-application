@@ -1,17 +1,19 @@
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
 
 class FillOutlineButton extends StatelessWidget {
-  const FillOutlineButton({
+  FillOutlineButton({
     Key? key,
     this.isFilled = true,
     required this.press,
     required this.text,
   }) : super(key: key);
 
-  final bool isFilled;
-  final VoidCallback press;
+  bool isFilled;
+  VoidCallback press;
   final String text;
 
   @override

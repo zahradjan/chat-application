@@ -14,7 +14,7 @@ List<ChatUser> chatUsers = [
       avatarImage: "assets/images/user_4.png",
       isActive: true,
       isSelected: false,
-      lastSeen: "Active"),
+      lastSeen: "online"),
   ChatUser(
       id: "",
       name: "Joe Wilson",
