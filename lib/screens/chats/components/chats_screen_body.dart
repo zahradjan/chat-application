@@ -23,6 +23,9 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
   String listSwitcher = "";
   bool recentMessFill = true;
   bool activeUsersFill = false;
+  void refresh() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +86,6 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
   }
 
   Widget buildRecentMessagesList() {
-    logDebug(chats.length);
     return Expanded(
       child: ListView.builder(
           itemCount: chats.length,
@@ -93,7 +95,8 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
               press: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MessagesScreen(chatData: chats[index]),
+                  builder: (context) => MessagesScreen(
+                      chatData: chats[index], notifyParent: refresh),
                 ),
               ),
             );

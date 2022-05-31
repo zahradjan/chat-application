@@ -2,6 +2,7 @@ import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
 import 'package:Decentio/models/chat/Chat.dart';
+import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatMessage/chatMessageStore.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
@@ -10,14 +11,21 @@ import 'package:loggy/loggy.dart';
 
 class MessageScreenBody extends StatefulWidget {
   Chat currentChat;
-  MessageScreenBody({required this.currentChat});
+  Function() notifyParent;
+  MessageScreenBody({required this.currentChat, required this.notifyParent});
   @override
   State<MessageScreenBody> createState() => _MessageScreenBodyState();
 }
 
 class _MessageScreenBodyState extends State<MessageScreenBody> {
+  List<Widget> chatItems = [];
+
   void refreshMessages() {
     setState(() {
+      widget.currentChat.chatMessages.forEach((message) {
+        chatItems.add(Message(message: message));
+      });
+      widget.notifyParent();
       // _scrollController.animateTo(
       //   _scrollController.position.maxScrollExtent,
       //   curve: Curves.easeOut,
@@ -26,7 +34,6 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
     });
   }
 
-  List<Widget> chatItems = [];
   //TODO:jeste bude potreba upravit az bude BE
   // List<ChatMessage> currentMessages = demoChatMessages;
 
@@ -61,7 +68,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
                     }),
               ),
             ),
-            ChatInputField(refreshMessages, chatItems),
+            ChatInputField(refreshMessages, widget.currentChat.chatMessages),
           ],
         ),
       ),

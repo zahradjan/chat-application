@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 
 class MessagesScreen extends StatefulWidget {
   Chat chatData;
-  MessagesScreen({required this.chatData});
+  Function() notifyParent;
+  MessagesScreen({required this.chatData, required this.notifyParent});
 
   @override
   State<MessagesScreen> createState() => _MessagesScreenState();
@@ -19,7 +20,8 @@ class _MessagesScreenState extends State<MessagesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(widget.chatData),
-      body: MessageScreenBody(currentChat: widget.chatData),
+      body: MessageScreenBody(
+          currentChat: widget.chatData, notifyParent: widget.notifyParent),
     );
   }
 

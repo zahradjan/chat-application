@@ -1,3 +1,3 @@
-import 'package:Decentio/screens/groupChat/group_chat_screen.dart';
+import 'package:Decentio/models/groupChat/GroupChat.dart';
 
 List<GroupChat> groupChats = [];

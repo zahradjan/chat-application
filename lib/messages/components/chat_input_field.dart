@@ -11,7 +11,7 @@ import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
   final Function() notifyParent;
-  List chatMessages = [];
+  List<ChatMessage> chatMessages = [];
   ChatInputField(this.notifyParent, this.chatMessages);
 
   @override
@@ -99,14 +99,13 @@ class _ChatInputFieldState extends State<ChatInputField> {
               onPressed: () {
                 setState(() {
                   if (_textController.text.isNotEmpty) {
-                    widget.chatMessages.add(Message(
-                        message: ChatMessage(
-                            text: _textController.text,
-                            sender: ChatUser(),
-                            isSender: true,
-                            time: DateTime.now(),
-                            messageType: ChatMessageType.text,
-                            messageStatus: MessageStatus.not_view)));
+                    widget.chatMessages.add(ChatMessage(
+                        text: _textController.text,
+                        sender: ChatUser(),
+                        isSender: true,
+                        time: DateTime.now(),
+                        messageType: ChatMessageType.text,
+                        messageStatus: MessageStatus.not_view));
 
                     widget.notifyParent();
                     _textController.clear();
