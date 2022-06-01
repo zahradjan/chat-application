@@ -11,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
 
 class GroupChatBody extends StatefulWidget {
-  List<ChatUser> groupChatUsers;
-  GroupChatBody({Key? key, required this.groupChatUsers}) : super(key: key);
+  GroupChat groupChat;
+  GroupChatBody({Key? key, required this.groupChat}) : super(key: key);
 
   @override
   State<GroupChatBody> createState() => _GroupChatBodyState();
@@ -40,7 +40,7 @@ class _GroupChatBodyState extends State<GroupChatBody> {
   @override
   void initState() {
     super.initState();
-    widget.groupChatUsers.forEach((chatUser) {
+    widget.groupChat.users.forEach((chatUser) {
       groupChatItems.add(GroupChatUserAdded(chatUser: chatUser));
     });
     // currentChat.chatMessages = chatMessages;
@@ -50,9 +50,9 @@ class _GroupChatBodyState extends State<GroupChatBody> {
 
   void refreshMessages() {
     setState(() {
-      // currentChat.chatMessages.forEach((message) {
-      //   groupChatItems.add(Message(message: message));
-      // });
+      widget.groupChat.chatMessages.forEach((message) {
+        groupChatItems.add(Message(message: message));
+      });
     });
   }
 
@@ -76,7 +76,7 @@ class _GroupChatBodyState extends State<GroupChatBody> {
                     }),
               ),
             ),
-            // ChatInputField(refreshMessages, currentChat.chatMessages),
+            ChatInputField(refreshMessages, widget.groupChat.chatMessages),
           ],
         ),
       ),

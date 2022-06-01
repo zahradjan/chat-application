@@ -2,8 +2,13 @@ import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatMessage/chatMessageStore.dart';
 import 'package:Decentio/models/chatUser/chatUserStore.dart';
+import 'package:Decentio/models/groupChat/GroupChat.dart';
 
-List<Chat> chats = [
+List chats = [
+  GroupChat(
+      users: [chatUsers[0], chatUsers[1]],
+      // lastMessage: demoChatMessagesKynes.last,
+      chatMessages: demoChatMessagesKynes),
   Chat(
       user: chatUsers[0],
       lastMessage: demoChatMessagesKynes.last,

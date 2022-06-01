@@ -1,25 +1,26 @@
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
+import 'package:Decentio/models/groupChat/GroupChat.dart';
 import 'package:Decentio/screens/groupChat/components/group_chat_body.dart';
 import 'package:flutter/material.dart';
 
-class GroupChat extends StatefulWidget {
-  List<ChatUser> groupChatUsers;
-  GroupChat({required this.groupChatUsers});
+class GroupChatScreen extends StatefulWidget {
+  GroupChat groupChat;
+  GroupChatScreen({required this.groupChat});
   // const GroupChat({ Key? key }) : super(key: key);
 
   @override
-  State<GroupChat> createState() => _GroupChatState();
+  State<GroupChatScreen> createState() => _GroupChatScreenState();
 }
 
-class _GroupChatState extends State<GroupChat> {
+class _GroupChatScreenState extends State<GroupChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
       body: GroupChatBody(
-        groupChatUsers: widget.groupChatUsers,
+        groupChat: widget.groupChat,
       ),
     );
   }

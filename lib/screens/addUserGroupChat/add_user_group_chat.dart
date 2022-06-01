@@ -3,6 +3,7 @@ import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:Decentio/models/chatUser/chatUserStore.dart';
+import 'package:Decentio/models/groupChat/GroupChat.dart';
 import 'package:Decentio/screens/addUserGroupChat/components/add_user_group_chat_body.dart';
 import 'package:Decentio/screens/groupChat/group_chat_screen.dart';
 import 'package:flutter/material.dart';
@@ -62,11 +63,14 @@ class _AddUserState extends State<AddUser> {
                     !selectedGroupChatUsers.contains(chatUser))
                   selectedGroupChatUsers.add(chatUser);
               });
+              GroupChat newGroupChat =
+                  GroupChat(users: selectedGroupChatUsers, chatMessages: []);
+              // chats.add(newGroupChat);
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => GroupChat(
-                      groupChatUsers: selectedGroupChatUsers,
+                    builder: (context) => GroupChatScreen(
+                      groupChat: newGroupChat,
                     ),
                   ));
             });

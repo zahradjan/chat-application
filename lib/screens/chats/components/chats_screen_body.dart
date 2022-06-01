@@ -1,5 +1,6 @@
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:Decentio/models/chatUser/chatUserStore.dart';
+import 'package:Decentio/models/groupChat/GroupChat.dart';
 import 'package:Decentio/screens/chats/components/user_card.dart';
 import 'package:Decentio/screens/chats/components/chat_card.dart';
 import 'package:Decentio/components/filled_outline_button.dart';
@@ -8,6 +9,8 @@ import 'package:Decentio/messages/components/message_screen_body.dart';
 import 'package:Decentio/messages/message_screen.dart';
 import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chat/chatStore.dart';
+import 'package:Decentio/screens/groupChat/components/group_chat_card.dart';
+import 'package:Decentio/screens/groupChat/group_chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
 
@@ -90,24 +93,39 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
       child: ListView.builder(
           itemCount: chats.length,
           itemBuilder: (context, index) {
-            return ChatCard(
-              chat: chats[index],
-              press: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MessagesScreen(
-                      chatData: chats[index], notifyParent: refresh),
+            if (chats[index] is GroupChat) {
+              return GroupChatCard(
+                groupChat: chats[index],
+                press: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        GroupChatScreen(groupChat: chats[index]),
+                  ),
                 ),
-              ),
-            );
+              );
+            } else {
+              return ChatCard(
+                chat: chats[index],
+                press: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MessagesScreen(
+                        chatData: chats[index], notifyParent: refresh),
+                  ),
+                ),
+              );
+            }
           }),
     );
   }
 
   Widget buildActiveUsersList() {
     List activeChatUsers = [];
-    chats.forEach(
-        (chat) => {if (chat.user.isActive) activeChatUsers.add(chat.user)});
+    chats.forEach((chat) => {
+          //TODO:Tohle jeste pozmenit budou se posilat jenom chatUsers z nejakyho jinyho listu
+          if (chat is Chat && chat.user.isActive) activeChatUsers.add(chat.user)
+        });
     return Expanded(
       child: ListView.builder(
           itemCount: activeChatUsers.length,
