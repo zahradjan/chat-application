@@ -48,9 +48,6 @@ class _GroupChatBodyState extends State<GroupChatBody> {
     widget.groupChat.chatMessages.forEach((message) {
       groupChatItems.add(Message(message: message));
     });
-    // currentChat.chatMessages = chatMessages;
-    // currentChat.users = widget.groupChatUsers;
-    // currentChat.lastMessage = chatMessages.last;
   }
 
   void refreshMessages() {
