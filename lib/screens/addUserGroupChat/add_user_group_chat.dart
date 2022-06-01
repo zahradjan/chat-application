@@ -11,7 +11,10 @@ import 'package:loggy/loggy.dart';
 
 class AddUser extends StatefulWidget {
   ChatUser originalChatUser;
-  AddUser({Key? key, required this.originalChatUser}) : super(key: key);
+  Function() notifyParent;
+  AddUser(
+      {Key? key, required this.originalChatUser, required this.notifyParent})
+      : super(key: key);
   @override
   State<AddUser> createState() => _AddUserState();
 }
@@ -71,6 +74,7 @@ class _AddUserState extends State<AddUser> {
                   MaterialPageRoute(
                     builder: (context) => GroupChatScreen(
                       groupChat: newGroupChat,
+                      notifyParent: widget.notifyParent,
                     ),
                   ));
             });

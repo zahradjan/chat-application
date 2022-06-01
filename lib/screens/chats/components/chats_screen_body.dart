@@ -99,8 +99,10 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        GroupChatScreen(groupChat: chats[index]),
+                    builder: (context) => GroupChatScreen(
+                      groupChat: chats[index],
+                      notifyParent: refresh,
+                    ),
                   ),
                 ),
               );

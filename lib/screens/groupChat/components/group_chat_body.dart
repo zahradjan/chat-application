@@ -12,7 +12,9 @@ import 'package:loggy/loggy.dart';
 
 class GroupChatBody extends StatefulWidget {
   GroupChat groupChat;
-  GroupChatBody({Key? key, required this.groupChat}) : super(key: key);
+  Function() notifyParent;
+  GroupChatBody({Key? key, required this.groupChat, required this.notifyParent})
+      : super(key: key);
 
   @override
   State<GroupChatBody> createState() => _GroupChatBodyState();
@@ -53,6 +55,7 @@ class _GroupChatBodyState extends State<GroupChatBody> {
       widget.groupChat.chatMessages.forEach((message) {
         groupChatItems.add(Message(message: message));
       });
+      widget.notifyParent();
     });
   }
 

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
@@ -7,7 +9,8 @@ import 'package:flutter/material.dart';
 
 class GroupChatScreen extends StatefulWidget {
   GroupChat groupChat;
-  GroupChatScreen({required this.groupChat});
+  Function() notifyParent;
+  GroupChatScreen({required this.groupChat, required this.notifyParent});
   // const GroupChat({ Key? key }) : super(key: key);
 
   @override
@@ -21,6 +24,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
       appBar: buildAppBar(),
       body: GroupChatBody(
         groupChat: widget.groupChat,
+        notifyParent: widget.notifyParent,
       ),
     );
   }
