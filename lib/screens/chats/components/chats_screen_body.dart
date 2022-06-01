@@ -37,7 +37,7 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
         Container(
           padding: EdgeInsets.fromLTRB(
               DefaultPadding, 0, DefaultPadding, DefaultPadding),
-          color: PrimaryColor,
+          color: Theme.of(context).primaryColor,
           child: Row(
             children: [
               FillOutlineButton(

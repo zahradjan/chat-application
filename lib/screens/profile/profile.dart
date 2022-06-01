@@ -54,7 +54,7 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: DefaultPadding * 2),
               PrimaryButton(
                 text: "Confirm",
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).buttonTheme.colorScheme!.primary,
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -65,7 +65,7 @@ class _ProfileState extends State<Profile> {
               SizedBox(height: 8),
               PrimaryButton(
                 text: "Back",
-                color: Theme.of(context).colorScheme.secondary,
+                color: Theme.of(context).buttonTheme.colorScheme!.secondary,
                 press: () => Navigator.push(
                   context,
                   MaterialPageRoute(

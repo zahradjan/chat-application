@@ -53,12 +53,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: DefaultPadding * 3),
                   PrimaryButton(
                       text: "Sign up",
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).buttonTheme.colorScheme!.primary,
                       press: () {}),
                   SizedBox(height: DefaultPadding * 1.5),
                   PrimaryButton(
                     text: "Back",
-                    color: Theme.of(context).colorScheme.secondary,
+                    color: Theme.of(context).buttonTheme.colorScheme!.secondary,
                     press: () => Navigator.push(
                       context,
                       MaterialPageRoute(

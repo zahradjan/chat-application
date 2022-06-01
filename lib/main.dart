@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'Decentio',
       debugShowCheckedModeBanner: false,
       theme: lightThemeData(context),
+      darkTheme: darkThemeData(context),
       home: WelcomeScreen(),
     );
   }
