@@ -6,9 +6,7 @@ import 'package:Decentio/models/groupChat/GroupChat.dart';
 
 List chats = [
   GroupChat(
-      users: [chatUsers[0], chatUsers[1]],
-      // lastMessage: demoChatMessagesKynes.last,
-      chatMessages: demoChatMessagesKynes),
+      users: [chatUsers[2], chatUsers[3]], chatMessages: demoChatMessagesTeam),
   Chat(
       user: chatUsers[0],
       lastMessage: demoChatMessagesKynes.last,
