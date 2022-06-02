@@ -13,7 +13,7 @@ ThemeData lightThemeData(BuildContext context) {
           textStyle:
               TextStyle(fontSize: 24, color: TextLightThemePrimaryColor)),
       bodyText1: GoogleFonts.getFont("Atkinson Hyperlegible",
-          textStyle: TextStyle(color: TextLightThemePrimaryColor)),
+          textStyle: TextStyle(color: PrimaryColor)),
     ),
     colorScheme: ColorScheme.light(
       primary: PrimaryColor,
@@ -48,7 +48,7 @@ ThemeData darkThemeData(BuildContext context) {
       headline1: GoogleFonts.getFont("Atkinson Hyperlegible",
           textStyle: TextStyle(fontSize: 24, color: TextDarkThemePrimaryColor)),
       bodyText1: GoogleFonts.getFont("Atkinson Hyperlegible",
-          textStyle: TextStyle(color: TextDarkThemePrimaryColor)),
+          textStyle: TextStyle(color: Colors.white)),
     ),
     colorScheme: ColorScheme.dark().copyWith(
       primary: PrimaryColorDark,

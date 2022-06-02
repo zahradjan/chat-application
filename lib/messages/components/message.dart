@@ -4,6 +4,7 @@ import 'package:Decentio/messages/components/video_message.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
+import 'package:loggy/loggy.dart';
 
 import '../../../constants.dart';
 
@@ -63,7 +64,8 @@ class MessageStatusDot extends StatelessWidget {
         case MessageStatus.not_sent:
           return ErrorColor;
         case MessageStatus.not_view:
-          return Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.1);
+          return SecondaryColor;
+        // return Theme.of(context).textTheme.bodyText1!.color!.withOpacity(0.1);
         case MessageStatus.viewed:
           return PrimaryColor;
         default:
@@ -76,7 +78,7 @@ class MessageStatusDot extends StatelessWidget {
       height: 12,
       width: 12,
       decoration: BoxDecoration(
-        // color: dotColor(status!),
+        color: dotColor(status!),
         shape: BoxShape.circle,
       ),
       child: Icon(

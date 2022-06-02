@@ -1,16 +1,17 @@
-# flutter_chat_app
+<h1 align="center"> Decentio </h1>
 
-A new Flutter project.
+[![Flutter](https://img.shields.io/badge/Flutter-555555?style=for-the-badge&logo=Flutter)](https://flutter.dev/)
+[![Dart](https://img.shields.io/badge/Dart-555555?style=for-the-badge&logo=Dart)](dart.dev)
 
-## Getting Started
+![](assets/icons/decentioLogoLight.png)
 
-This project is a starting point for a Flutter application.
+<p>Decentio je chatovací aplikace navržena s použitím nejnovějších technologií. Jedná se o testovací aplikaci na které má být otestována architektura moderních chatovacíh aplikací s použitím aktualně nejnovějších technologií. Aplikace je součástí praktické části diplomové práce.</p>
 
-A few resources to get you started if this is your first Flutter project:
+<p>Aplikace je sestavena na základě analýzi architektur znamých a používaných chatovacích aplikací jako je WhatsApp a Messenger.</p>
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![](assets/images/Decentio%20Readme%20.png)
+![](assets/images/Decentio%20Readme%20Dark.png)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Autoři
+
+* **Jan Zahradník** - *Celý projekt* - [Jan Zahradník](https://github.com/ocasusMaximus)
