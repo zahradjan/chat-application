@@ -1,8 +1,8 @@
 <h1 align="center"> Decentio </h1>
 <p align="center">
-<a href="https://flutter.dev/"><img src="https://img.shields.io/badge/Flutter-555555?style=for-the-badge&logo=Flutter" alt="Flutter"></a>
-<a href="dart.dev"><img src="https://img.shields.io/badge/Dart-555555?style=for-the-badge&logo=Dart" alt="Dart"></a>
-<a href="https://www.sqlite.org/index.html"><img src="https://img.shields.io/badge/SQLite-555555?style=for-the-badge&logo=SQLite" alt="SQLite"></a>
+<a href="https://flutter.dev/"><img src="https://img.shields.io/badge/Flutter-bf8464?style=for-the-badge&logo=Flutter" alt="Flutter"></a>
+<a href="dart.dev"><img src="https://img.shields.io/badge/Dart-bf8464?style=for-the-badge&logo=Dart" alt="Dart"></a>
+<a href="https://www.sqlite.org/index.html"><img src="https://img.shields.io/badge/SQLite-bf8464?style=for-the-badge&logo=SQLite" alt="SQLite"></a>
 </p>
 <p align="center">
 <img height="500px" src="assets/icons/decentioLogoLight.png"></>
