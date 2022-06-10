@@ -17,6 +17,8 @@ class _LocationMapState extends State<LocationMap> {
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 
+  Marker locationMarker = Marker(markerId: const MarkerId('locationMarker'));
+
   Completer<GoogleMapController> _controller = Completer();
 
   final CameraPosition _kGooglePlex = CameraPosition(
@@ -34,17 +36,26 @@ class _LocationMapState extends State<LocationMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
+          mapType: MapType.hybrid,
+          initialCameraPosition: _kGooglePlex,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          markers: {if (locationMarker != null) locationMarker},
+          onTap: addMarker),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToTheLake,
         label: Text('To the lake!'),
         icon: Icon(Icons.directions_boat),
       ),
     );
+  }
+
+  addMarker(LatLng pos) {
+    setState(() {
+      locationMarker =
+          Marker(markerId: const MarkerId('locationMarker'), position: pos);
+    });
+    return locationMarker;
   }
 }

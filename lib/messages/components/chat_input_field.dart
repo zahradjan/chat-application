@@ -1,9 +1,7 @@
-import 'package:Decentio/components/flutter_map.dart';
 import 'package:Decentio/components/google_map.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
@@ -17,7 +15,6 @@ class ChatInputField extends StatefulWidget {
 
 class _ChatInputFieldState extends State<ChatInputField> {
   TextEditingController _textController = TextEditingController();
-  PickerMapController _mapController = PickerMapController();
   @override
   Widget build(BuildContext context) {
     return Container(
