@@ -2,9 +2,7 @@ import 'package:Decentio/messages/components/audio_message.dart';
 import 'package:Decentio/messages/components/text_message.dart';
 import 'package:Decentio/messages/components/video_message.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
-import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
-import 'package:loggy/loggy.dart';
 
 import '../../../constants.dart';
 

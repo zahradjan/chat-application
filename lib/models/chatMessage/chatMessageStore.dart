@@ -1,4 +1,3 @@
-import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/chatUserStore.dart';
 

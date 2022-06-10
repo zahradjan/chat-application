@@ -1,14 +1,10 @@
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
-import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
-import 'package:Decentio/models/chatUser/ChatUser.dart';
-import 'package:Decentio/models/chatUser/chatUserStore.dart';
 import 'package:Decentio/models/groupChat/GroupChat.dart';
 import 'package:Decentio/screens/groupChat/components/group_chat_added_user.dart';
 import 'package:flutter/material.dart';
-import 'package:loggy/loggy.dart';
 
 class GroupChatBody extends StatefulWidget {
   GroupChat groupChat;

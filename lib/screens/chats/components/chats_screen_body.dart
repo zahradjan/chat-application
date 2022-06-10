@@ -1,18 +1,15 @@
 import 'package:Decentio/models/chatUser/ChatUser.dart';
-import 'package:Decentio/models/chatUser/chatUserStore.dart';
 import 'package:Decentio/models/groupChat/GroupChat.dart';
 import 'package:Decentio/screens/chats/components/user_card.dart';
 import 'package:Decentio/screens/chats/components/chat_card.dart';
 import 'package:Decentio/components/filled_outline_button.dart';
 import 'package:Decentio/constants.dart';
-import 'package:Decentio/messages/components/message_screen_body.dart';
 import 'package:Decentio/messages/message_screen.dart';
 import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:Decentio/screens/groupChat/components/group_chat_card.dart';
 import 'package:Decentio/screens/groupChat/group_chat_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:loggy/loggy.dart';
 
 class ChatsScreenBody extends StatefulWidget {
   const ChatsScreenBody({Key? key}) : super(key: key);

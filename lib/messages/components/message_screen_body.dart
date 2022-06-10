@@ -2,12 +2,7 @@ import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
 import 'package:Decentio/models/chat/Chat.dart';
-import 'package:Decentio/models/chat/chatStore.dart';
-import 'package:Decentio/models/chatMessage/ChatMessage.dart';
-import 'package:Decentio/models/chatMessage/chatMessageStore.dart';
-import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
-import 'package:loggy/loggy.dart';
 
 class MessageScreenBody extends StatefulWidget {
   Chat currentChat;

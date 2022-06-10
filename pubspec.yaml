@@ -33,7 +33,11 @@ dependencies:
   loggy: ^2.0.1+1
   sqflite: ^2.0.2+1
   encrypt: ^5.0.1
-
+  location: ^4.2.0
+  geolocator: ^8.2.0
+  flutter_osm_plugin: ^0.34.0+1
+  
+  
 flutter_icons:
   android: true
   ios: true

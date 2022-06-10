@@ -1,12 +1,8 @@
-import 'dart:async';
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:Decentio/messages/components/message.dart';
+import 'package:Decentio/components/flutter_map.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
-import 'package:loggy/loggy.dart';
+import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
 import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
@@ -20,6 +16,7 @@ class ChatInputField extends StatefulWidget {
 
 class _ChatInputFieldState extends State<ChatInputField> {
   TextEditingController _textController = TextEditingController();
+  PickerMapController _mapController = PickerMapController();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -82,14 +79,28 @@ class _ChatInputFieldState extends State<ChatInputField> {
                           .withOpacity(0.64),
                     ),
                     SizedBox(width: DefaultPadding / 4),
-                    Icon(
-                      Icons.camera_alt_outlined,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .color!
-                          .withOpacity(0.64),
+                    IconButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FlutterMap()),
+                      ),
+                      icon: Icon(
+                        Icons.location_on,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .color!
+                            .withOpacity(0.64),
+                      ),
                     ),
+                    // Icon(
+                    //   Icons.camera_alt_outlined,
+                    //   color: Theme.of(context)
+                    //       .textTheme
+                    //       .bodyText1!
+                    //       .color!
+                    //       .withOpacity(0.64),
+                    // ),
                   ],
                 ),
               ),
