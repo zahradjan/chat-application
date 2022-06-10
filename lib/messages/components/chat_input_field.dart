@@ -1,4 +1,5 @@
 import 'package:Decentio/components/flutter_map.dart';
+import 'package:Decentio/components/google_map.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
@@ -82,7 +83,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                     IconButton(
                       onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => FlutterMap()),
+                        MaterialPageRoute(builder: (context) => LocationMap()),
                       ),
                       icon: Icon(
                         Icons.location_on,
