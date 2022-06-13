@@ -37,7 +37,8 @@ class LocationShareService implements ILocationShareService {
   }
 
 //TODO: try GEOLOCATOR instead of location package
-  Future<Position> _determinePosition() async {
+  @override
+  Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
