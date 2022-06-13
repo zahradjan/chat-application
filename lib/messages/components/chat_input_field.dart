@@ -80,7 +80,9 @@ class _ChatInputFieldState extends State<ChatInputField> {
                     IconButton(
                       onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LocationMap()),
+                        MaterialPageRoute(
+                            builder: (context) => LocationMap(
+                                widget.chatMessages, widget.notifyParent)),
                       ),
                       icon: Icon(
                         Icons.location_on,

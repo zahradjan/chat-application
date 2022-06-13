@@ -1,0 +1,26 @@
+import 'package:Decentio/models/chatMessage/ChatMessage.dart';
+import 'package:flutter/material.dart';
+
+import '../../../constants.dart';
+
+class ImageMessage extends StatelessWidget {
+  ChatMessage message;
+  ImageMessage({
+    Key? key,
+    required this.message,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.45, // 45% of total width
+      child: AspectRatio(
+        aspectRatio: 0.5,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: message.img,
+        ),
+      ),
+    );
+  }
+}
