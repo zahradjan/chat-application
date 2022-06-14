@@ -1,4 +1,5 @@
 import 'package:Decentio/messages/components/audio_message.dart';
+import 'package:Decentio/messages/components/file_message.dart';
 import 'package:Decentio/messages/components/image_message.dart';
 import 'package:Decentio/messages/components/text_message.dart';
 import 'package:Decentio/messages/components/video_message.dart';
@@ -27,6 +28,8 @@ class Message extends StatelessWidget {
           return VideoMessage();
         case ChatMessageType.image:
           return ImageMessage(message: message);
+        case ChatMessageType.file:
+          return FileMessage(message: message);
         default:
           return SizedBox();
       }

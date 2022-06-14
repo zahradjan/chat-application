@@ -77,7 +77,6 @@ class _LocationMapState extends State<LocationMap> {
           setState(() {
             _imageBytes = imageBytes;
             // Share.share('https://www.google.com/maps/search/?api=1&query=${currentMArker.position.latitude},${currentMArker.position.longitude}');
-            logDebug("tu");
             widget.chatMessages.add(ChatMessage(
                 time: DateTime.now(),
                 img: Image.memory(_imageBytes),

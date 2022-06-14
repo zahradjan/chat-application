@@ -1,7 +1,12 @@
+import 'dart:io';
+
 import 'package:Decentio/components/google_map.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:loggy/loggy.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
@@ -15,6 +20,29 @@ class ChatInputField extends StatefulWidget {
 
 class _ChatInputFieldState extends State<ChatInputField> {
   TextEditingController _textController = TextEditingController();
+
+  Future<List<PlatformFile>?> pickAFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      logDebug(file.name);
+      logDebug(file.bytes);
+      logDebug(file.size);
+      logDebug(file.extension);
+      logDebug(file.path);
+    }
+    return result?.files;
+
+    // Share.shareFiles([result.files.single.path.toString()]);
+    // Share.share(result.files.single.path.toString());
+    // } else {
+    //   // User canceled the picker
+    //   // Doresit vyjimku
+    //   NullThrownError();
+    // }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -68,13 +96,39 @@ class _ChatInputFieldState extends State<ChatInputField> {
                             border: InputBorder.none,
                           )),
                     ),
-                    Icon(
-                      Icons.attach_file,
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyText1!
-                          .color!
-                          .withOpacity(0.64),
+                    IconButton(
+                      icon: Icon(
+                        Icons.attach_file,
+                        color: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .color!
+                            .withOpacity(0.64),
+                      ),
+                      onPressed: () {
+                        var attachedFiles = pickAFile();
+                        attachedFiles.then((files) => files?.forEach((file) {
+                              var fileType = ChatMessageType.file;
+                              logDebug(file.extension);
+
+                              if (['jpg', 'png'].contains(file.extension)) {
+                                fileType = ChatMessageType.image;
+                                var imgBytes = file.bytes;
+                                logDebug(imgBytes);
+                                setState(() {
+                                  widget.chatMessages.add(ChatMessage(
+                                      sender: ChatUser(),
+                                      img: Image.file(File(file.path!)),
+                                      isSender: true,
+                                      time: DateTime.now(),
+                                      messageType: fileType,
+                                      messageStatus: MessageStatus.not_view));
+                                  widget.notifyParent();
+                                });
+                              }
+                              logDebug(fileType);
+                            }));
+                      },
                     ),
                     SizedBox(width: DefaultPadding / 4),
                     IconButton(

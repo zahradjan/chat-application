@@ -1,7 +1,7 @@
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/cupertino.dart';
 
-enum ChatMessageType { text, audio, image, video }
+enum ChatMessageType { text, audio, image, video, file }
 enum MessageStatus { not_sent, not_view, viewed }
 
 class ChatMessage {
