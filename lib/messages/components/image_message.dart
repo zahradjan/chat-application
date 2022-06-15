@@ -23,7 +23,7 @@ class ImageMessage extends StatelessWidget {
           aspectRatio: 0.5,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Hero(tag: 'grow', child: Image.file(message.file!)),
+            child: Hero(tag: message, child: Image.file(message.file!)),
           ),
         ),
       ),
@@ -46,7 +46,7 @@ class GrowImage extends StatelessWidget {
           aspectRatio: 0.5,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Hero(tag: 'grow', child: Image.file(message.file!)),
+            child: Hero(tag: message, child: Image.file(message.file!)),
           ),
         ),
       ),
