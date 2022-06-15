@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:Decentio/constants.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loggy/loggy.dart';
+import 'package:path_provider/path_provider.dart';
 
 class LocationMap extends StatefulWidget {
   List<ChatMessage> chatMessages;
@@ -27,11 +29,12 @@ class _LocationMapState extends State<LocationMap> {
   Marker locationMarker = Marker(markerId: const MarkerId('locationMarker'));
   late GoogleMapController _googleMapController;
   Completer<GoogleMapController> _controller = Completer();
-  var _imageBytes;
+  // var _imageBytes;
   CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(47.42796133580664, 73.085749655962),
     zoom: 14.4746,
   );
+  var _imageBytes;
 
   @override
   Widget build(BuildContext context) {
@@ -70,16 +73,22 @@ class _LocationMapState extends State<LocationMap> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          var imageBytes;
+          Uint8List? imageBytes;
           await _controller.future.then((controller) async {
             imageBytes = await controller.takeSnapshot();
           });
+          String tempPath = (await getTemporaryDirectory()).path;
+
+          File file = File('$tempPath/test.png');
+
+          _imageBytes = imageBytes;
+
+          await file.writeAsBytes(_imageBytes!);
+
           setState(() {
-            _imageBytes = imageBytes;
-            // Share.share('https://www.google.com/maps/search/?api=1&query=${currentMArker.position.latitude},${currentMArker.position.longitude}');
             widget.chatMessages.add(ChatMessage(
                 time: DateTime.now(),
-                img: Image.memory(_imageBytes),
+                file: file,
                 sender: chatUsers[0],
                 messageType: ChatMessageType.image,
                 messageStatus: MessageStatus.not_view,

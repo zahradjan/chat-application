@@ -23,15 +23,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
 
   Future<List<PlatformFile>?> pickAFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      PlatformFile file = result.files.first;
-
-      logDebug(file.name);
-      logDebug(file.bytes);
-      logDebug(file.size);
-      logDebug(file.extension);
-      logDebug(file.path);
-    }
+    // TODO: poresit v pripade ze uzivatel nic nevybere
     return result?.files;
 
     // Share.shareFiles([result.files.single.path.toString()]);
@@ -113,19 +105,19 @@ class _ChatInputFieldState extends State<ChatInputField> {
 
                               if (['jpg', 'png'].contains(file.extension)) {
                                 fileType = ChatMessageType.image;
-                                var imgBytes = file.bytes;
-                                logDebug(imgBytes);
-                                setState(() {
-                                  widget.chatMessages.add(ChatMessage(
-                                      sender: ChatUser(),
-                                      img: Image.file(File(file.path!)),
-                                      isSender: true,
-                                      time: DateTime.now(),
-                                      messageType: fileType,
-                                      messageStatus: MessageStatus.not_view));
-                                  widget.notifyParent();
-                                });
                               }
+
+                              setState(() {
+                                widget.chatMessages.add(ChatMessage(
+                                    sender: ChatUser(),
+                                    file: File(file.path!),
+                                    // img: Image.file(File(file.path!)),
+                                    isSender: true,
+                                    time: DateTime.now(),
+                                    messageType: fileType,
+                                    messageStatus: MessageStatus.not_view));
+                                widget.notifyParent();
+                              });
                               logDebug(fileType);
                             }));
                       },
