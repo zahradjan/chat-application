@@ -1,15 +1,18 @@
 import 'dart:io';
 
 import 'package:Decentio/models/chatUser/ChatUser.dart';
+import 'package:Decentio/models/location/location.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 
-enum ChatMessageType { text, audio, image, video, file }
+enum ChatMessageType { text, audio, image, video, file, location }
 enum MessageStatus { not_sent, not_view, viewed }
 
 class ChatMessage {
   String id;
   String text;
-  File? file;
+  PlatformFile? file;
+  Location? location;
   @Deprecated('Will be substituted by file prop')
   Image? img;
   ChatMessageType messageType;
@@ -23,6 +26,7 @@ class ChatMessage {
     this.text = '',
     this.img,
     this.file,
+    this.location,
     required this.time,
     required this.sender,
     required this.messageType,

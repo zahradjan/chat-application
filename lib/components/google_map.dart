@@ -5,7 +5,9 @@ import 'dart:typed_data';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/chatUserStore.dart';
+import 'package:Decentio/models/location/location.dart';
 import 'package:Decentio/services/locationshare/location_share_service_impl.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -27,12 +29,21 @@ class LocationMap extends StatefulWidget {
 
 class _LocationMapState extends State<LocationMap> {
   Marker locationMarker = Marker(markerId: const MarkerId('locationMarker'));
-  late GoogleMapController _googleMapController;
   Completer<GoogleMapController> _controller = Completer();
-  CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(47.42796133580664, 73.085749655962),
-    zoom: 14.4746,
-  );
+
+  late LatLng targetedPosition;
+  Future<LatLng> getUserPosition() async {
+    Position userInitLocation =
+        await LocationShareService().determinePosition();
+    return LatLng(userInitLocation.latitude, userInitLocation.longitude);
+  }
+
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   getUserPosition();
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -41,17 +52,18 @@ class _LocationMapState extends State<LocationMap> {
         child: Stack(children: [
           GoogleMap(
               mapType: MapType.normal,
-              initialCameraPosition: _kGooglePlex,
+              initialCameraPosition: CameraPosition(
+                  target: LatLng(40.27638647789279, -97.88926594389271),
+                  zoom: 4),
               onMapCreated: (GoogleMapController controller) async {
-                Position userLocation =
-                    await LocationShareService().determinePosition();
+                LatLng userPosition = await getUserPosition();
                 controller.animateCamera(
                     CameraUpdate.newCameraPosition(CameraPosition(
-                  target: LatLng(userLocation.latitude, userLocation.longitude),
+                  target: userPosition,
                   zoom: 18,
                 )));
                 addMarker(
-                    LatLng(userLocation.latitude, userLocation.longitude));
+                    LatLng(userPosition.latitude, userPosition.longitude));
 
                 _controller.complete(controller);
               },
@@ -71,13 +83,19 @@ class _LocationMapState extends State<LocationMap> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          File file = await saveSnapshotToFile();
+          Uint8List? imageBytes;
+          await _controller.future.then((controller) async {
+            imageBytes = await controller.takeSnapshot();
+          });
+          Location location =
+              Location(Image.memory(imageBytes!), targetedPosition);
+
           setState(() {
             widget.chatMessages.add(ChatMessage(
                 time: DateTime.now(),
-                file: file,
+                location: location,
                 sender: chatUsers[0],
-                messageType: ChatMessageType.image,
+                messageType: ChatMessageType.location,
                 messageStatus: MessageStatus.not_view,
                 isSender: true));
             widget.notifyParent();
@@ -95,6 +113,7 @@ class _LocationMapState extends State<LocationMap> {
     setState(() {
       locationMarker =
           Marker(markerId: const MarkerId('locationMarker'), position: pos);
+      targetedPosition = pos;
     });
     return locationMarker;
   }
@@ -116,18 +135,17 @@ class _LocationMapState extends State<LocationMap> {
   }
 
 //TODO: to services maybe and refactor
-  Future<File> saveSnapshotToFile() async {
-    //TODO: exception handle
-    String tempPath = (await getTemporaryDirectory()).path;
-    var uuid = Uuid().v4();
+  // Future<PlatformFile> saveSnapshotToFile() async {
+  //   //TODO: exception handle
+  //   // String tempPath = (await getTemporaryDirectory()).path;
+  //   // var uuid = Uuid().v4();
 
-    File file = File('$tempPath/snapshot_$uuid.png');
-    Uint8List? imageBytes;
-    await _controller.future.then((controller) async {
-      imageBytes = await controller.takeSnapshot();
-    });
-    logDebug(file.path);
-    await file.writeAsBytes(imageBytes!);
-    return file;
-  }
+  //   // File file = File('$tempPath/snapshot_$uuid.png');
+  //   Uint8List? imageBytes;
+  //   await _controller.future.then((controller) async {
+  //     imageBytes = await controller.takeSnapshot();
+  //   });
+
+  //   return pFile;
+  // }
 }

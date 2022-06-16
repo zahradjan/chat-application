@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:flutter/material.dart';
-
 
 class ImageMessage extends StatelessWidget {
   ChatMessage message;
@@ -22,7 +23,8 @@ class ImageMessage extends StatelessWidget {
           aspectRatio: 0.5,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Hero(tag: message, child: Image.file(message.file!)),
+            child: Hero(
+                tag: message, child: Image.file(File(message.file!.path!))),
           ),
         ),
       ),
@@ -45,7 +47,8 @@ class GrowImage extends StatelessWidget {
           aspectRatio: 0.5,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Hero(tag: message, child: Image.file(message.file!)),
+            child: Hero(
+                tag: message, child: Image.file(File(message.file!.path!))),
           ),
         ),
       ),

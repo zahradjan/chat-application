@@ -1,6 +1,7 @@
 import 'package:Decentio/messages/components/audio_message.dart';
 import 'package:Decentio/messages/components/file_message.dart';
 import 'package:Decentio/messages/components/image_message.dart';
+import 'package:Decentio/messages/components/location_message.dart';
 import 'package:Decentio/messages/components/text_message.dart';
 import 'package:Decentio/messages/components/video_message.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
@@ -30,6 +31,8 @@ class Message extends StatelessWidget {
           return ImageMessage(message: message);
         case ChatMessageType.file:
           return FileMessage(message: message);
+        case ChatMessageType.location:
+          return LocationMessage(message: message);
         default:
           return SizedBox();
       }

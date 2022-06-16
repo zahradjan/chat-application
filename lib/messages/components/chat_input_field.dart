@@ -109,7 +109,7 @@ class _ChatInputFieldState extends State<ChatInputField> {
                               setState(() {
                                 widget.chatMessages.add(ChatMessage(
                                     sender: ChatUser(),
-                                    file: File(file.path!),
+                                    file: file,
                                     // img: Image.file(File(file.path!)),
                                     isSender: true,
                                     time: DateTime.now(),
