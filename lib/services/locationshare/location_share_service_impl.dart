@@ -1,41 +1,7 @@
 import 'package:Decentio/services/locationshare/location_share_service.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart';
 
 class LocationShareService implements ILocationShareService {
-  @override
-  Future<LocationData> getLocationData(Location location) async {
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
-
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
-        //TODO: Implement when user will not enable service
-        // return ;
-      }
-    }
-
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        //TODO: Implement when user will not grant  permission
-      }
-    }
-
-    _locationData = await location.getLocation();
-    return _locationData;
-  }
-
-  @override
-  Future<Location> sendLocationData() {
-    // TODO: implement sendLocationData
-    throw UnimplementedError();
-  }
-
 //TODO: try GEOLOCATOR instead of location package
   @override
   Future<Position> determinePosition() async {

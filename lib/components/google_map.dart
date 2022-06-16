@@ -6,12 +6,12 @@ import 'package:Decentio/constants.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/chatUserStore.dart';
 import 'package:Decentio/services/locationshare/location_share_service_impl.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loggy/loggy.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class LocationMap extends StatefulWidget {
   List<ChatMessage> chatMessages;
@@ -29,12 +29,10 @@ class _LocationMapState extends State<LocationMap> {
   Marker locationMarker = Marker(markerId: const MarkerId('locationMarker'));
   late GoogleMapController _googleMapController;
   Completer<GoogleMapController> _controller = Completer();
-  // var _imageBytes;
   CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(47.42796133580664, 73.085749655962),
     zoom: 14.4746,
   );
-  var _imageBytes;
 
   @override
   Widget build(BuildContext context) {
@@ -73,18 +71,7 @@ class _LocationMapState extends State<LocationMap> {
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          Uint8List? imageBytes;
-          await _controller.future.then((controller) async {
-            imageBytes = await controller.takeSnapshot();
-          });
-          String tempPath = (await getTemporaryDirectory()).path;
-
-          File file = File('$tempPath/test.png');
-
-          _imageBytes = imageBytes;
-
-          await file.writeAsBytes(_imageBytes!);
-
+          File file = await saveSnapshotToFile();
           setState(() {
             widget.chatMessages.add(ChatMessage(
                 time: DateTime.now(),
@@ -126,5 +113,21 @@ class _LocationMapState extends State<LocationMap> {
         SizedBox(width: DefaultPadding / 2),
       ],
     );
+  }
+
+//TODO: to services maybe and refactor
+  Future<File> saveSnapshotToFile() async {
+    //TODO: exception handle
+    String tempPath = (await getTemporaryDirectory()).path;
+    var uuid = Uuid().v4();
+
+    File file = File('$tempPath/snapshot_$uuid.png');
+    Uint8List? imageBytes;
+    await _controller.future.then((controller) async {
+      imageBytes = await controller.takeSnapshot();
+    });
+    logDebug(file.path);
+    await file.writeAsBytes(imageBytes!);
+    return file;
   }
 }

@@ -6,7 +6,6 @@ import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
-import 'package:share_plus/share_plus.dart';
 import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {

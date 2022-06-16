@@ -1,7 +1,6 @@
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants.dart';
 
 class ImageMessage extends StatelessWidget {
   ChatMessage message;
