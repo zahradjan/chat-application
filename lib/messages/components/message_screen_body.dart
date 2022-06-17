@@ -2,7 +2,9 @@ import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
 import 'package:Decentio/models/chat/Chat.dart';
+import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:flutter/material.dart';
+import 'package:loggy/loggy.dart';
 
 class MessageScreenBody extends StatefulWidget {
   Chat currentChat;
@@ -14,13 +16,22 @@ class MessageScreenBody extends StatefulWidget {
 
 class _MessageScreenBodyState extends State<MessageScreenBody> {
   List<Widget> chatItems = [];
+  List<ChatMessage> chatMessages = [];
 
   void refreshMessages() {
     setState(() {
+      logDebug(chatMessages.length);
       //TODO: neni idealni potrebovalo by aby se jen pridali novy a ne zase vseci
       widget.currentChat.chatMessages.forEach((message) {
+        if (chatMessages.any((actualMessage) {
+          logDebug("Actual: " + actualMessage.id);
+          logDebug("New: " + message.id);
+          return actualMessage.id == message.id;
+        })) return;
         chatItems.add(Message(message: message));
       });
+
+      // chatMessages = widget.currentChat.chatMessages;
       widget.notifyParent();
       // _scrollController.animateTo(
       //   _scrollController.position.maxScrollExtent,
@@ -36,6 +47,7 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
   @override
   void initState() {
     super.initState();
+    chatMessages = widget.currentChat.chatMessages;
     widget.currentChat.chatMessages.forEach((message) {
       chatItems.add(Message(message: message));
     });

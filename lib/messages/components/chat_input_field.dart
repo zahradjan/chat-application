@@ -6,6 +6,7 @@ import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
+import 'package:uuid/uuid.dart';
 import '../../../constants.dart';
 
 class ChatInputField extends StatefulWidget {
@@ -154,8 +155,10 @@ class _ChatInputFieldState extends State<ChatInputField> {
             IconButton(
               onPressed: () {
                 setState(() {
+                  var id = Uuid().v4();
                   if (_textController.text.isNotEmpty) {
                     widget.chatMessages.add(ChatMessage(
+                        id: id,
                         text: _textController.text,
                         sender: ChatUser(),
                         isSender: true,

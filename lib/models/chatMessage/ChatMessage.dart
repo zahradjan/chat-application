@@ -4,6 +4,7 @@ import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:Decentio/models/location/location.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:uuid/uuid.dart';
 
 enum ChatMessageType { text, audio, image, video, file, location }
 enum MessageStatus { not_sent, not_view, viewed }
