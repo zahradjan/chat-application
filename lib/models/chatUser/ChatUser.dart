@@ -1,14 +1,16 @@
+import 'package:flutter/material.dart';
+
 class ChatUser {
   String id;
   String name;
-  String avatarImage;
+  String? avatarImage;
   bool isActive;
   bool isSelected;
   String lastSeen;
 
   ChatUser(
       {this.id = '',
-      this.avatarImage = '',
+      this.avatarImage,
       this.lastSeen = '',
       this.isActive = false,
       this.isSelected = false,

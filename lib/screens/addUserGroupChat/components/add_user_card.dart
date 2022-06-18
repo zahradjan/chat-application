@@ -23,7 +23,7 @@ class AddUserCard extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 24,
-                    backgroundImage: AssetImage(chatUser.avatarImage),
+                    backgroundImage: AssetImage(chatUser.avatarImage!),
                   ),
                   if (chatUser.isActive)
                     Positioned(

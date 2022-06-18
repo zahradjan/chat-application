@@ -30,7 +30,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         children: [
           BackButton(),
           CircleAvatar(
-            backgroundImage: AssetImage(chatData.user.avatarImage),
+            backgroundImage: AssetImage(chatData.user.avatarImage!),
           ),
           SizedBox(width: DefaultPadding * 0.75),
           Column(
