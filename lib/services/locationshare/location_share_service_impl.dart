@@ -1,5 +1,6 @@
 import 'package:Decentio/services/locationshare/location_share_service.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationShareService implements ILocationShareService {
 //TODO: try GEOLOCATOR instead of location package
@@ -39,5 +40,12 @@ class LocationShareService implements ILocationShareService {
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
     return await Geolocator.getCurrentPosition();
+  }
+
+  @override
+  Future<LatLng> getUserPosition() async {
+    Position userInitLocation =
+        await LocationShareService().determinePosition();
+    return LatLng(userInitLocation.latitude, userInitLocation.longitude);
   }
 }

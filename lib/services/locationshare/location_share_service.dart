@@ -1,7 +1,7 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 abstract class ILocationShareService {
-  // Future<LocationData> getLocationData(Location location);
-  // Future<Location> sendLocationData();
+  Future<LatLng> getUserPosition();
   Future<Position> determinePosition();
 }

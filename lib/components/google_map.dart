@@ -30,13 +30,9 @@ class LocationMap extends StatefulWidget {
 class _LocationMapState extends State<LocationMap> {
   Marker locationMarker = Marker(markerId: const MarkerId('locationMarker'));
   Completer<GoogleMapController> _controller = Completer();
+  LocationShareService _locationShareService = LocationShareService();
 
   late LatLng targetedPosition;
-  Future<LatLng> getUserPosition() async {
-    Position userInitLocation =
-        await LocationShareService().determinePosition();
-    return LatLng(userInitLocation.latitude, userInitLocation.longitude);
-  }
 
   // @override
   // void initState() {
@@ -56,7 +52,8 @@ class _LocationMapState extends State<LocationMap> {
                   target: LatLng(40.27638647789279, -97.88926594389271),
                   zoom: 4),
               onMapCreated: (GoogleMapController controller) async {
-                LatLng userPosition = await getUserPosition();
+                LatLng userPosition =
+                    await _locationShareService.getUserPosition();
                 controller.animateCamera(
                     CameraUpdate.newCameraPosition(CameraPosition(
                   target: userPosition,
@@ -87,6 +84,7 @@ class _LocationMapState extends State<LocationMap> {
           await _controller.future.then((controller) async {
             imageBytes = await controller.takeSnapshot();
           });
+
           Location location =
               Location(Image.memory(imageBytes!), targetedPosition);
 
@@ -133,19 +131,4 @@ class _LocationMapState extends State<LocationMap> {
       ],
     );
   }
-
-//TODO: to services maybe and refactor
-  // Future<PlatformFile> saveSnapshotToFile() async {
-  //   //TODO: exception handle
-  //   // String tempPath = (await getTemporaryDirectory()).path;
-  //   // var uuid = Uuid().v4();
-
-  //   // File file = File('$tempPath/snapshot_$uuid.png');
-  //   Uint8List? imageBytes;
-  //   await _controller.future.then((controller) async {
-  //     imageBytes = await controller.takeSnapshot();
-  //   });
-
-  //   return pFile;
-  // }
 }

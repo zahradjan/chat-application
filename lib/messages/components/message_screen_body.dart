@@ -20,29 +20,20 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
 
   void refreshMessages() {
     setState(() {
-      logDebug(chatMessages.length);
       //TODO: neni idealni potrebovalo by aby se jen pridali novy a ne zase vseci
       widget.currentChat.chatMessages.forEach((message) {
-        if (chatMessages.any((actualMessage) {
-          logDebug("Actual: " + actualMessage.id);
-          logDebug("New: " + message.id);
-          return actualMessage.id == message.id;
-        })) return;
+        // if (chatMessages.any((actualMessage) {
+        //   logDebug("Actual: " + actualMessage.id);
+        //   logDebug("New: " + message.id);
+        //   return actualMessage.id == message.id;
+        // })) return;
         chatItems.add(Message(message: message));
       });
 
       // chatMessages = widget.currentChat.chatMessages;
       widget.notifyParent();
-      // _scrollController.animateTo(
-      //   _scrollController.position.maxScrollExtent,
-      //   curve: Curves.easeOut,
-      //   duration: const Duration(milliseconds: 300),
-      // );
     });
   }
-
-  //TODO:jeste bude potreba upravit az bude BE
-  // List<ChatMessage> currentMessages = demoChatMessages;
 
   @override
   void initState() {
