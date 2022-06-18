@@ -34,8 +34,6 @@ class LocalDatabaseFactory {
             chat_id TEXT NOT NULL,
             id TEXT PRIMARY KEY,
             sender TEXT NOT NULL,
-            receiver TEXT NOT NULL,
-            contents TEXT NOT NULL,
             receipt TEXT NOT NULL,
             received_at TIMESTAMP NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
