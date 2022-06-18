@@ -3,7 +3,7 @@ import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/groupChat/GroupChat.dart';
-import 'package:Decentio/screens/groupChat/components/group_chat_added_user.dart';
+import 'package:Decentio/messages/components/added_user_message.dart';
 import 'package:flutter/material.dart';
 
 class GroupChatBody extends StatefulWidget {
@@ -38,9 +38,6 @@ class _GroupChatBodyState extends State<GroupChatBody> {
   @override
   void initState() {
     super.initState();
-    widget.groupChat.users.forEach((chatUser) {
-      groupChatItems.add(GroupChatUserAdded(chatUser: chatUser));
-    });
     widget.groupChat.chatMessages.forEach((message) {
       groupChatItems.add(Message(message: message));
     });
@@ -68,10 +65,10 @@ class _GroupChatBodyState extends State<GroupChatBody> {
                 padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
                 child: ListView.builder(
                     reverse: true,
-                    itemCount: groupChatItems.length,
+                    itemCount: chatMessages.length,
                     itemBuilder: (context, index) {
-                      final reversedIndex = groupChatItems.length - 1 - index;
-                      return groupChatItems[reversedIndex];
+                      final reversedIndex = chatMessages.length - 1 - index;
+                      return Message(message: chatMessages[reversedIndex]);
                     }),
               ),
             ),

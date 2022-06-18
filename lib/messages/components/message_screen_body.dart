@@ -15,22 +15,12 @@ class MessageScreenBody extends StatefulWidget {
 }
 
 class _MessageScreenBodyState extends State<MessageScreenBody> {
-  List<Widget> chatItems = [];
   List<ChatMessage> chatMessages = [];
 
   void refreshMessages() {
     setState(() {
       //TODO: neni idealni potrebovalo by aby se jen pridali novy a ne zase vseci
-      widget.currentChat.chatMessages.forEach((message) {
-        // if (chatMessages.any((actualMessage) {
-        //   logDebug("Actual: " + actualMessage.id);
-        //   logDebug("New: " + message.id);
-        //   return actualMessage.id == message.id;
-        // })) return;
-        chatItems.add(Message(message: message));
-      });
 
-      // chatMessages = widget.currentChat.chatMessages;
       widget.notifyParent();
     });
   }
@@ -39,9 +29,6 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
   void initState() {
     super.initState();
     chatMessages = widget.currentChat.chatMessages;
-    widget.currentChat.chatMessages.forEach((message) {
-      chatItems.add(Message(message: message));
-    });
   }
 
   @override
@@ -57,10 +44,10 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
                 padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
                 child: ListView.builder(
                     reverse: true,
-                    itemCount: chatItems.length,
+                    itemCount: chatMessages.length,
                     itemBuilder: (context, index) {
-                      final reversedIndex = chatItems.length - 1 - index;
-                      return chatItems[reversedIndex];
+                      final reversedIndex = chatMessages.length - 1 - index;
+                      return Message(message: chatMessages[reversedIndex]);
                       // return Message(
                       //   message: widget.currentChat.chatMessages[reversedIndex],
                       // );

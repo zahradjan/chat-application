@@ -33,6 +33,9 @@ class Message extends StatelessWidget {
           return FileMessage(message: message);
         case ChatMessageType.location:
           return LocationMessage(message: message);
+        //TODO: added user and info messages
+        case ChatMessageType.addedUser:
+          return LocationMessage(message: message);
         default:
           return SizedBox();
       }

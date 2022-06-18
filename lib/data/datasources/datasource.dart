@@ -1,5 +1,5 @@
 import 'package:Decentio/messages/components/message.dart';
-import 'package:Decentio/models/chat/chat.dart';
+import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 
 abstract class IDataSource {
