@@ -1,12 +1,54 @@
-// import 'package:Decentio/data/datasources/datasource.dart';
-// import 'package:Decentio/models/chat/chat.dart';
-// import 'package:Decentio/models/chatMessage/ChatMessage.dart';
-// import 'package:sqflite/sqflite.dart';
+import 'package:Decentio/data/datasources/datasource.dart';
+import 'package:Decentio/models/chat/Chat.dart';
+import 'package:Decentio/models/chatMessage/ChatMessage.dart';
+import 'package:sqflite/sqflite.dart';
 
-// class SqfliteDatasource implements IDataSource {
-//   final Database _db;
+class SqfliteDataSource implements IDataSource {
+  final Database _db;
 
-//   const SqfliteDatasource(this._db);
+  const SqfliteDataSource(this._db);
+
+  @override
+  Future<void> addChat(Chat chat) {
+    // TODO: implement addChat
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> addMessage(ChatMessage message) {
+    // TODO: implement addMessage
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteChat(String chatId) {
+    // TODO: implement deleteChat
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Chat>> findAllChats() {
+    // TODO: implement findAllChats
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Chat> findChat(String chatId) {
+    // TODO: implement findChat
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<ChatMessage>> findMessages(String chatId) {
+    // TODO: implement findMessages
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateMessage(ChatMessage message) {
+    // TODO: implement updateMessage
+    throw UnimplementedError();
+  }
 
 //   @override
 //   Future<void> addChat(Chat chat) async {
@@ -37,7 +79,7 @@
 //     return _db.transaction((txn) async {
 //       final chatsWithLatestMessage =
 //           await txn.rawQuery('''SELECT messages.* FROM
-//       (SELECT 
+//       (SELECT
 //         chat_id, MAX(created_at) AS created_at
 //        FROM messages
 //        GROUP BY chat_id
@@ -50,7 +92,7 @@
 //       if (chatsWithLatestMessage.isEmpty) return [];
 
 //       final chatsWithUnreadMessages =
-//           await txn.rawQuery('''SELECT chat_id, count(*) as unread 
+//           await txn.rawQuery('''SELECT chat_id, count(*) as unread
 //       FROM messages
 //       WHERE receipt = ?
 //       GROUP BY chat_id
@@ -127,4 +169,4 @@
 //   //   });
 //   // }
 
-// }
+}
