@@ -3,8 +3,12 @@ import 'dart:io';
 import 'package:Decentio/components/google_map.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
+import 'package:Decentio/services/locationshare/location_share_service_impl.dart';
+import 'package:app_settings/app_settings.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loggy/loggy.dart';
 import 'package:uuid/uuid.dart';
 import '../../../constants.dart';
@@ -20,7 +24,7 @@ class ChatInputField extends StatefulWidget {
 
 class _ChatInputFieldState extends State<ChatInputField> {
   TextEditingController _textController = TextEditingController();
-
+  LocationShareService _locationShareService = LocationShareService();
   Future<List<PlatformFile>?> pickAFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     // TODO: poresit v pripade ze uzivatel nic nevybere
@@ -124,12 +128,65 @@ class _ChatInputFieldState extends State<ChatInputField> {
                     ),
                     SizedBox(width: DefaultPadding / 4),
                     IconButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => LocationMap(
-                                widget.chatMessages, widget.notifyParent)),
-                      ),
+                      onPressed: () async {
+                        bool serviceEnabled =
+                            await _locationShareService.locationServiceStatus();
+                        if (!serviceEnabled) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text("Location service disabled"),
+
+                              titleTextStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary),
+                              // backgroundColor: Theme.of(context).colorScheme.primary,
+                              content: Text("Please enable location service"),
+                              contentTextStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary),
+                            ),
+                          );
+                          return;
+                        }
+                        ;
+                        LocationPermission permission =
+                            await _locationShareService.locationPermission();
+                        // Test if location services are enabled.
+
+                        if (permission == LocationPermission.deniedForever) {
+                          // Permissions are denied forever, handle appropriately.
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text("Location permission denied"),
+
+                              titleTextStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary),
+                              // backgroundColor: Theme.of(context).colorScheme.primary,
+                              content: Text(
+                                  "In order to share your location you need to give Decentio permission"),
+                              contentTextStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary),
+                              actions: [
+                                TextButton(
+                                    onPressed: AppSettings.openLocationSettings,
+                                    child: Text("Settings"))
+                              ],
+                            ),
+                          );
+                          return;
+                        }
+
+                        LatLng userPosition =
+                            await _locationShareService.getUserLatLng();
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) {
+                            return LocationMap(widget.chatMessages,
+                                widget.notifyParent, userPosition);
+                          }),
+                        );
+                      },
                       icon: Icon(
                         Icons.location_on,
                         color: Theme.of(context)

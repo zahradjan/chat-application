@@ -18,9 +18,11 @@ import 'package:uuid/uuid.dart';
 class LocationMap extends StatefulWidget {
   List<ChatMessage> chatMessages;
   final Function() notifyParent;
+  LatLng userPosition;
   LocationMap(
     this.chatMessages,
     this.notifyParent,
+    this.userPosition,
   );
 
   @override
@@ -33,13 +35,10 @@ class _LocationMapState extends State<LocationMap> {
   LocationShareService _locationShareService = LocationShareService();
 
   late LatLng targetedPosition;
-
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   getUserPosition();
-  //   super.initState();
-  // }
+  //USA
+  // CameraPosition(
+  //                 target: LatLng(40.27638647789279, -97.88926594389271),
+  //                 zoom: 4),
 
   @override
   Widget build(BuildContext context) {
@@ -48,19 +47,11 @@ class _LocationMapState extends State<LocationMap> {
         child: Stack(children: [
           GoogleMap(
               mapType: MapType.normal,
-              initialCameraPosition: CameraPosition(
-                  target: LatLng(40.27638647789279, -97.88926594389271),
-                  zoom: 4),
+              initialCameraPosition:
+                  CameraPosition(target: widget.userPosition, zoom: 14),
               onMapCreated: (GoogleMapController controller) async {
-                LatLng userPosition =
-                    await _locationShareService.getUserPosition();
-                controller.animateCamera(
-                    CameraUpdate.newCameraPosition(CameraPosition(
-                  target: userPosition,
-                  zoom: 18,
-                )));
-                addMarker(
-                    LatLng(userPosition.latitude, userPosition.longitude));
+                addMarker(LatLng(widget.userPosition.latitude,
+                    widget.userPosition.longitude));
 
                 _controller.complete(controller);
               },
@@ -69,12 +60,6 @@ class _LocationMapState extends State<LocationMap> {
               myLocationButtonEnabled: true,
               markers: {if (locationMarker != null) locationMarker},
               onTap: addMarker),
-          // Container(
-          //   decoration: BoxDecoration(color: Colors.blueGrey[50]),
-          //   height: 300,
-          //   width: 240,
-          //   child: _imageBytes != null ? Image.memory(_imageBytes) : null,
-          // )
         ]),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

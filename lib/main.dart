@@ -1,3 +1,4 @@
+import 'package:Decentio/configuration.dart';
 import 'package:Decentio/screens/welcome_screen.dart';
 import 'package:Decentio/theme.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  await ConfigurationBase.configure();
   runApp(MyApp());
 }
 
