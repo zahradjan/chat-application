@@ -42,6 +42,9 @@ dependencies:
   map_launcher: ^2.2.3
   file_icon: ^1.0.0
   app_settings: ^4.0.4
+  bloc: ^7.0.0
+  equatable: ^2.0.3
+  shared_preferences: ^2.0.6
   
   
 flutter_icons:
