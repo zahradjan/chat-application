@@ -1,5 +1,4 @@
 import 'package:Decentio/constants.dart';
-import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +23,7 @@ class AddUserCard extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 24,
-                    backgroundImage: AssetImage(chatUser.avatarImage),
+                    backgroundImage: AssetImage(chatUser.avatarImage!),
                   ),
                   if (chatUser.isActive)
                     Positioned(

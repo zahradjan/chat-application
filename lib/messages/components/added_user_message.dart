@@ -1,17 +1,17 @@
 import 'package:Decentio/constants.dart';
-import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
 
-class GroupChatUserAdded extends StatefulWidget {
+//TODO: jeste popremyslet jak by slo vymyslet aby se pridalo vsechno jako v messagi zaroven je ale dobre sem davat usery
+class UserAddedMessage extends StatefulWidget {
   ChatUser chatUser;
-  GroupChatUserAdded({Key? key, required this.chatUser}) : super(key: key);
+  UserAddedMessage({Key? key, required this.chatUser}) : super(key: key);
 
   @override
-  State<GroupChatUserAdded> createState() => _GroupChatUserAddedState();
+  State<UserAddedMessage> createState() => _UserAddedMessageState();
 }
 
-class _GroupChatUserAddedState extends State<GroupChatUserAdded> {
+class _UserAddedMessageState extends State<UserAddedMessage> {
   @override
   Widget build(BuildContext context) {
     return Container(

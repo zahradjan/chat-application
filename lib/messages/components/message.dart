@@ -1,10 +1,11 @@
 import 'package:Decentio/messages/components/audio_message.dart';
+import 'package:Decentio/messages/components/file_message.dart';
+import 'package:Decentio/messages/components/image_message.dart';
+import 'package:Decentio/messages/components/location_message.dart';
 import 'package:Decentio/messages/components/text_message.dart';
 import 'package:Decentio/messages/components/video_message.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
-import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
-import 'package:loggy/loggy.dart';
 
 import '../../../constants.dart';
 
@@ -26,6 +27,15 @@ class Message extends StatelessWidget {
           return AudioMessage(message: message);
         case ChatMessageType.video:
           return VideoMessage();
+        case ChatMessageType.image:
+          return ImageMessage(message: message);
+        case ChatMessageType.file:
+          return FileMessage(message: message);
+        case ChatMessageType.location:
+          return LocationMessage(message: message);
+        //TODO: added user and info messages
+        case ChatMessageType.addedUser:
+          return LocationMessage(message: message);
         default:
           return SizedBox();
       }
@@ -41,7 +51,7 @@ class Message extends StatelessWidget {
           if (!message.isSender) ...[
             CircleAvatar(
               radius: 12,
-              backgroundImage: AssetImage(message.sender.avatarImage),
+              backgroundImage: AssetImage(message.sender.avatarImage!),
             ),
             SizedBox(width: DefaultPadding / 2),
           ],

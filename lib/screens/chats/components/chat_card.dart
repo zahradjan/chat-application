@@ -30,7 +30,7 @@ class ChatCard extends StatelessWidget {
                   // radius: 24,
                   // child: Icon(Icons.people_alt),
                   radius: 24,
-                  backgroundImage: AssetImage(chat.user.avatarImage),
+                  backgroundImage: AssetImage(chat.user.avatarImage!),
                 ),
                 if (chat.user.isActive)
                   Positioned(

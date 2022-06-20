@@ -1,9 +1,7 @@
-import 'package:Decentio/screens/chats/components/chats_screen_body.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/message_screen_body.dart';
 import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/screens/addUserGroupChat/add_user_group_chat.dart';
-import 'package:Decentio/screens/groupChat/group_chat_screen.dart';
 import 'package:flutter/material.dart';
 
 class MessagesScreen extends StatefulWidget {
@@ -32,7 +30,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
         children: [
           BackButton(),
           CircleAvatar(
-            backgroundImage: AssetImage(chatData.user.avatarImage),
+            backgroundImage: AssetImage(chatData.user.avatarImage!),
           ),
           SizedBox(width: DefaultPadding * 0.75),
           Column(

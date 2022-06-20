@@ -1,4 +1,3 @@
-import 'package:Decentio/components/filled_outline_button.dart';
 import 'package:Decentio/screens/chats/components/users_body.dart';
 import 'package:Decentio/screens/chats/components/chats_screen_body.dart';
 import 'package:Decentio/constants.dart';

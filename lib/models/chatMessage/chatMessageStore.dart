@@ -1,9 +1,9 @@
-import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/chatUserStore.dart';
 
 List<ChatMessage> demoChatMessagesKynes = [
   ChatMessage(
+    id: '1',
     text: "Hi Paul,",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
@@ -12,6 +12,7 @@ List<ChatMessage> demoChatMessagesKynes = [
     isSender: false,
   ),
   ChatMessage(
+    id: '2',
     text: "Hello Kynes, How are you?",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
@@ -20,6 +21,7 @@ List<ChatMessage> demoChatMessagesKynes = [
     isSender: true,
   ),
   ChatMessage(
+    id: '3',
     text: "",
     messageType: ChatMessageType.audio,
     messageStatus: MessageStatus.viewed,
@@ -28,6 +30,7 @@ List<ChatMessage> demoChatMessagesKynes = [
     isSender: false,
   ),
   ChatMessage(
+    id: '4',
     text: "",
     messageType: ChatMessageType.video,
     messageStatus: MessageStatus.viewed,
@@ -36,6 +39,7 @@ List<ChatMessage> demoChatMessagesKynes = [
     isSender: true,
   ),
   ChatMessage(
+    id: '5',
     text: "Error happend",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_sent,
@@ -44,6 +48,7 @@ List<ChatMessage> demoChatMessagesKynes = [
     isSender: true,
   ),
   ChatMessage(
+    id: '6',
     text: "This looks great man!!",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
@@ -52,6 +57,7 @@ List<ChatMessage> demoChatMessagesKynes = [
     isSender: false,
   ),
   ChatMessage(
+    id: '7',
     text: "Glad you like it",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
@@ -60,6 +66,7 @@ List<ChatMessage> demoChatMessagesKynes = [
     isSender: true,
   ),
   ChatMessage(
+    id: '8',
     text: "Hope you are doing well...",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
@@ -87,6 +94,7 @@ List<ChatMessage> demoChatMessagesJessica = [
     isSender: true,
   ),
   ChatMessage(
+    id: '1',
     text: "",
     messageType: ChatMessageType.audio,
     messageStatus: MessageStatus.viewed,
@@ -95,6 +103,7 @@ List<ChatMessage> demoChatMessagesJessica = [
     isSender: false,
   ),
   ChatMessage(
+    id: '1',
     text: "",
     messageType: ChatMessageType.video,
     messageStatus: MessageStatus.viewed,
@@ -111,6 +120,7 @@ List<ChatMessage> demoChatMessagesJessica = [
     isSender: true,
   ),
   ChatMessage(
+    id: '1',
     text: "This looks great man!!",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.viewed,
@@ -119,6 +129,7 @@ List<ChatMessage> demoChatMessagesJessica = [
     isSender: false,
   ),
   ChatMessage(
+    id: '1',
     text: "Glad you like it",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,
@@ -127,6 +138,7 @@ List<ChatMessage> demoChatMessagesJessica = [
     isSender: true,
   ),
   ChatMessage(
+    id: '1',
     text: "Hello Paul! I am...",
     messageType: ChatMessageType.text,
     messageStatus: MessageStatus.not_view,

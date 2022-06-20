@@ -2,10 +2,7 @@ import 'package:Decentio/constants.dart';
 import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
 import 'package:Decentio/models/chat/Chat.dart';
-import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
-import 'package:Decentio/models/chatMessage/chatMessageStore.dart';
-import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:flutter/material.dart';
 import 'package:loggy/loggy.dart';
 
@@ -18,31 +15,20 @@ class MessageScreenBody extends StatefulWidget {
 }
 
 class _MessageScreenBodyState extends State<MessageScreenBody> {
-  List<Widget> chatItems = [];
+  List<ChatMessage> chatMessages = [];
 
   void refreshMessages() {
     setState(() {
-      widget.currentChat.chatMessages.forEach((message) {
-        chatItems.add(Message(message: message));
-      });
+      //TODO: neni idealni potrebovalo by aby se jen pridali novy a ne zase vseci
+
       widget.notifyParent();
-      // _scrollController.animateTo(
-      //   _scrollController.position.maxScrollExtent,
-      //   curve: Curves.easeOut,
-      //   duration: const Duration(milliseconds: 300),
-      // );
     });
   }
-
-  //TODO:jeste bude potreba upravit az bude BE
-  // List<ChatMessage> currentMessages = demoChatMessages;
 
   @override
   void initState() {
     super.initState();
-    widget.currentChat.chatMessages.forEach((message) {
-      chatItems.add(Message(message: message));
-    });
+    chatMessages = widget.currentChat.chatMessages;
   }
 
   @override
@@ -58,10 +44,10 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
                 padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
                 child: ListView.builder(
                     reverse: true,
-                    itemCount: chatItems.length,
+                    itemCount: chatMessages.length,
                     itemBuilder: (context, index) {
-                      final reversedIndex = chatItems.length - 1 - index;
-                      return chatItems[reversedIndex];
+                      final reversedIndex = chatMessages.length - 1 - index;
+                      return Message(message: chatMessages[reversedIndex]);
                       // return Message(
                       //   message: widget.currentChat.chatMessages[reversedIndex],
                       // );
