@@ -16,10 +16,13 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
   await ConfigurationBase.configure();
-  runApp(MyApp());
+  final firstPage = ConfigurationBase.start();
+  runApp(Decentio(firstPage));
 }
 
-class MyApp extends StatelessWidget {
+class Decentio extends StatelessWidget {
+  Widget initPage;
+  Decentio(this.initPage);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightThemeData(context),
       darkTheme: darkThemeData(context),
-      home: WelcomeScreen(),
+      home: initPage,
     );
   }
 }
