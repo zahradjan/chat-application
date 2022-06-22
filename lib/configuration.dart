@@ -2,6 +2,7 @@ import 'package:Decentio/data/datasources/sqflite_datasource.dart';
 import 'package:Decentio/data/factories/local_database_factory.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:Decentio/screens/sign_up_screen.dart';
+import 'package:Decentio/screens/welcome_screen.dart';
 import 'package:Decentio/services/message/message_service.dart';
 import 'package:Decentio/services/typing/typing_notification_service.dart';
 import 'package:Decentio/services/user/user_service.dart';
@@ -38,11 +39,13 @@ class ConfigurationBase {
 
   static Widget composeOnboardingUi() {
     ProfileImageCubit imageCubit = ProfileImageCubit();
+    //TODO: je moznost providera dat sem, nebo davat tam kam je potreba ty data updatovat, je potreba vymyslet kam je dat abychom vedeli
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (BuildContext context) => imageCubit),
+        BlocProvider<ProfileImageCubit>(
+            create: (BuildContext context) => imageCubit),
       ],
-      child: SignUpScreen(),
+      child: WelcomeScreen(),
     );
   }
 

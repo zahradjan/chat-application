@@ -1,8 +1,10 @@
 import 'package:Decentio/configuration.dart';
 import 'package:Decentio/screens/welcome_screen.dart';
+import 'package:Decentio/state_management/profile/profile_image_cubit.dart';
 import 'package:Decentio/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_loggy/flutter_loggy.dart';
 import 'package:loggy/loggy.dart';
 
@@ -26,12 +28,18 @@ class Decentio extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Decentio',
-      debugShowCheckedModeBanner: false,
-      theme: lightThemeData(context),
-      darkTheme: darkThemeData(context),
-      home: initPage,
-    );
+    ProfileImageCubit imageCubit = ProfileImageCubit();
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider<ProfileImageCubit>(
+              create: (BuildContext context) => imageCubit),
+        ],
+        child: MaterialApp(
+          title: 'Decentio',
+          debugShowCheckedModeBanner: false,
+          theme: lightThemeData(context),
+          darkTheme: darkThemeData(context),
+          home: initPage,
+        ));
   }
 }

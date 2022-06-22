@@ -57,15 +57,10 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   SizedBox(height: DefaultPadding * 1.5),
                   PrimaryButton(
-                    text: "Back",
-                    color: Theme.of(context).buttonTheme.colorScheme!.secondary,
-                    press: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WelcomeScreen(),
-                      ),
-                    ),
-                  ),
+                      text: "Back",
+                      color:
+                          Theme.of(context).buttonTheme.colorScheme!.secondary,
+                      press: () => Navigator.maybePop(context)),
                   Spacer(
                     flex: 2,
                   ),
