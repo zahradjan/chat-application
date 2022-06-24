@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:Decentio/components/primary_button.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/screens/chats/chats_screen.dart';
+import 'package:Decentio/screens/profile/profile_image_widget.dart';
 import 'package:Decentio/screens/welcome_screen.dart';
 import 'package:Decentio/state_management/profile/profile_image_cubit.dart';
 import 'package:flutter/material.dart';
@@ -30,37 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   //   flex: 2,
                   // ),
                   SizedBox(height: DefaultPadding * 4),
-                  SizedBox(
-                    height: 130,
-                    width: MediaQuery.of(context).size.width,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(126.0),
-                      onTap: () async {
-                        await context.read<ProfileImageCubit>().getImage();
-                      },
-                      child: Center(
-                        child: CircleAvatar(
-                          radius: 70,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.secondary,
-                          child: BlocBuilder<ProfileImageCubit, String>(
-                            builder: (context, state) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(100.0),
-                                child: state == ''
-                                    ? Icon(Icons.person_outline_rounded,
-                                        size: 50.0, color: Colors.black)
-                                    : Image.file(File(state),
-                                        width: 400,
-                                        height: 400,
-                                        fit: BoxFit.fill),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  ProfileImageWidget(),
                   SizedBox(height: DefaultPadding * 1.5),
                   TextFormField(
                     decoration: const InputDecoration(
