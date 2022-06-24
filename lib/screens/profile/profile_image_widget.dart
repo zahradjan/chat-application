@@ -20,23 +20,62 @@ class ProfileImageWidget extends StatelessWidget {
           await context.read<ProfileImageCubit>().getImage();
         },
         child: Center(
-          child: CircleAvatar(
-            radius: 70,
-            backgroundColor: Theme.of(context).colorScheme.secondary,
-            child: BlocBuilder<ProfileImageCubit, String>(
-              builder: (context, state) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(100.0),
-                  child: state == ''
-                      ? Icon(Icons.person_outline_rounded,
-                          size: 50.0, color: Colors.black)
-                      : Image.file(File(state),
-                          width: 400, height: 400, fit: BoxFit.fill),
-                );
-              },
-            ),
+          child: BlocBuilder<ProfileImageCubit, String>(
+            builder: (context, state) {
+              return state == ''
+                  ? Stack(
+                      children: [
+                        CircleAvatar(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                          radius: 65,
+                          child: Container(
+                            child: Icon(Icons.person_outline_rounded,
+                                size: 50.0, color: Colors.black),
+                          ),
+                        ),
+                        AddPhotoWidget()
+                      ],
+                    )
+                  : Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 65,
+                          child: ClipOval(
+                            child: Image.file(File(state),
+                                width: 400, height: 400, fit: BoxFit.fill),
+                          ),
+                        ),
+                        AddPhotoWidget()
+                      ],
+                    );
+            },
           ),
         ),
+      ),
+    );
+  }
+}
+
+class AddPhotoWidget extends StatelessWidget {
+  const AddPhotoWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 80,
+      right: 0,
+      child: Container(
+        height: 50,
+        width: 50,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+                width: 3, color: Theme.of(context).scaffoldBackgroundColor),
+            color: Theme.of(context).colorScheme.secondary),
+        child: Icon(Icons.add_a_photo, size: 30.0, color: Colors.black),
       ),
     );
   }
