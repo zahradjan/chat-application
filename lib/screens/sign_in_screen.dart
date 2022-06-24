@@ -1,4 +1,5 @@
 import 'package:Decentio/components/primary_button.dart';
+import 'package:Decentio/configuration.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/screens/chats/chats_screen.dart';
 import 'package:Decentio/screens/welcome_screen.dart';
@@ -51,7 +52,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     press: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChatsScreen(),
+                        builder: (context) =>
+                            ConfigurationBase.composeRegisteringUi(),
                       ),
                     ),
                   ),

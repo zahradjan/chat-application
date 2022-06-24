@@ -53,10 +53,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
           icon: Icon(Icons.local_phone),
           onPressed: () {},
         ),
-        IconButton(
-          icon: Icon(Icons.videocam),
-          onPressed: () {},
-        ),
+        // IconButton(
+        //   icon: Icon(Icons.videocam),
+        //   onPressed: () {},
+        // ),
         IconButton(
           icon: Icon(Icons.add),
           onPressed: () {

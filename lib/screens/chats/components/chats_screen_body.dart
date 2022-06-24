@@ -9,10 +9,14 @@ import 'package:Decentio/models/chat/Chat.dart';
 import 'package:Decentio/models/chat/chatStore.dart';
 import 'package:Decentio/screens/groupChat/components/group_chat_card.dart';
 import 'package:Decentio/screens/groupChat/group_chat_screen.dart';
+import 'package:Decentio/state_management/home/home_cubit.dart';
+import 'package:Decentio/state_management/home/home_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatsScreenBody extends StatefulWidget {
-  const ChatsScreenBody({Key? key}) : super(key: key);
+  ChatUser me;
+  ChatsScreenBody({Key? key, required this.me}) : super(key: key);
 
   @override
   State<ChatsScreenBody> createState() => _ChatsScreenBodyState();
@@ -25,6 +29,13 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
   bool activeUsersFill = false;
   void refresh() {
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _initialSetup();
+    super.initState();
   }
 
   @override
@@ -48,17 +59,33 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
                   isFilled: recentMessFill,
                   text: "Recent Message"),
               SizedBox(width: DefaultPadding),
-              FillOutlineButton(
-                press: () {
-                  setState(() {
-                    listSwitcher = "activeUsers";
-                    recentMessFill = false;
-                    activeUsersFill = true;
-                  });
-                },
-                text: "Active",
-                isFilled: activeUsersFill,
-              ),
+              SizedBox(
+                child: BlocBuilder<HomeCubit, HomeState>(
+                    builder: (_, state) => FillOutlineButton(
+                          press: () {
+                            setState(() {
+                              listSwitcher = "activeUsers";
+                              recentMessFill = false;
+                              activeUsersFill = true;
+                            });
+                          },
+                          text: state is HomeSuccess
+                              ? "Active (${state.onlineUsers.length})"
+                              : "Active (0)",
+                          isFilled: activeUsersFill,
+                        )),
+              )
+              // FillOutlineButton(
+              //   press: () {
+              //     setState(() {
+              //       listSwitcher = "activeUsers";
+              //       recentMessFill = false;
+              //       activeUsersFill = true;
+              //     });
+              //   },
+              //   text: "Active",
+              //   isFilled: activeUsersFill,
+              // ),
             ],
           ),
         ),
@@ -141,5 +168,15 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
             );
           }),
     );
+  }
+
+  _initialSetup() async {
+    // final user = (!widget.me.isActive)
+    //     ? await context.read<HomeCubit>().connect()
+    //     : widget.me;
+
+    // // context.read<ChatsCubit>().chats();
+    context.read<HomeCubit>().activeUsers(widget.me);
+    // context.read<MessageBloc>().add(MessageEvent.onSubscribed(user));
   }
 }

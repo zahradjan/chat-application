@@ -1,22 +1,38 @@
+import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:Decentio/screens/chats/components/users_body.dart';
 import 'package:Decentio/screens/chats/components/chats_screen_body.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/screens/profile/profile.dart';
+import 'package:Decentio/state_management/home/home_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatsScreen extends StatefulWidget {
-  const ChatsScreen({Key? key}) : super(key: key);
+  ChatUser me;
+  ChatsScreen({required this.me, Key? key}) : super(key: key);
 
   @override
   State<ChatsScreen> createState() => _ChatsScreenState();
 }
 
 class _ChatsScreenState extends State<ChatsScreen> {
+  ChatUser? _user;
+  @override
+  void initState() {
+    // TODO: implement initState
+    _user = widget.me;
+    _initialSetup();
+    super.initState();
+  }
+
   final ValueNotifier<int> pageIndex = ValueNotifier(0);
-  final pages = const [
-    ChatsScreenBody(),
+  late var pages = [
+    ChatsScreenBody(me: widget.me),
     UsersBody(),
-    ChatsScreenBody(),
+    //TODO:CallsBodyScreen
+    // ChatsScreenBody(
+    //   me: _user!,
+    // ),
   ];
   @override
   Widget build(BuildContext context) {
@@ -85,5 +101,14 @@ class _ChatsScreenState extends State<ChatsScreen> {
         ),
       ],
     );
+  }
+
+  _initialSetup() async {
+    // final user =
+    //     (!_user!.isActive) ? await context.read<HomeCubit>().connect() : _user;
+
+    // // context.read<ChatsCubit>().chats();
+    // context.read<HomeCubit>().activeUsers(user!);
+    // context.read<MessageBloc>().add(MessageEvent.onSubscribed(user));
   }
 }

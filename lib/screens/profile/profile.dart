@@ -52,26 +52,16 @@ class _ProfileState extends State<Profile> {
               ),
               SizedBox(height: DefaultPadding * 2),
               PrimaryButton(
-                text: "Confirm",
-                color: Theme.of(context).buttonTheme.colorScheme!.primary,
-                press: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChatsScreen(),
-                  ),
-                ),
-              ),
+                  text: "Confirm",
+                  color: Theme.of(context).buttonTheme.colorScheme!.primary,
+                  //TODO: save new edits and push to chats screen
+                  press: () => Navigator.maybePop(context)),
+
               SizedBox(height: 8),
               PrimaryButton(
-                text: "Back",
-                color: Theme.of(context).buttonTheme.colorScheme!.secondary,
-                press: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChatsScreen(),
-                  ),
-                ),
-              ),
+                  text: "Back",
+                  color: Theme.of(context).buttonTheme.colorScheme!.secondary,
+                  press: () => Navigator.maybePop(context)),
               Spacer(flex: 2)
             ],
           ),
