@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 class ProfileImageCubit extends Cubit<String> {
   final _picker = FilePicker.platform;
 
-  //TODO: nemuze vracet null, vyresit co bude vracet na init
   ProfileImageCubit() : super('');
 
   Future<void> getImage() async {

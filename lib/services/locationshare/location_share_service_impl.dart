@@ -5,7 +5,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationShareService implements ILocationShareService {
-//TODO: try GEOLOCATOR instead of location package
   @override
   Future<Position> determinePosition() async {
     return await Geolocator.getCurrentPosition();

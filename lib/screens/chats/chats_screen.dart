@@ -19,7 +19,6 @@ class _ChatsScreenState extends State<ChatsScreen> {
   ChatUser? _user;
   @override
   void initState() {
-    // TODO: implement initState
     _user = widget.me;
     _initialSetup();
     super.initState();

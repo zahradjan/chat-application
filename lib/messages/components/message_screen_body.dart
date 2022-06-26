@@ -19,8 +19,6 @@ class _MessageScreenBodyState extends State<MessageScreenBody> {
 
   void refreshMessages() {
     setState(() {
-      //TODO: neni idealni potrebovalo by aby se jen pridali novy a ne zase vseci
-
       widget.notifyParent();
     });
   }

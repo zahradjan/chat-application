@@ -33,7 +33,6 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _initialSetup();
     super.initState();
   }
