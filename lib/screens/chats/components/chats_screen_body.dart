@@ -170,9 +170,9 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
   }
 
   _initialSetup() async {
-    // final user = (!widget.me.isActive)
-    //     ? await context.read<HomeCubit>().connect()
-    //     : widget.me;
+    final user = (!widget.me.isActive)
+        ? await context.read<HomeCubit>().connect()
+        : widget.me;
 
     // // context.read<ChatsCubit>().chats();
     context.read<HomeCubit>().activeUsers(widget.me);
