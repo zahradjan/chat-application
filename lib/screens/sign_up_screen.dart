@@ -6,6 +6,7 @@ import 'package:Decentio/configuration.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/screens/profile/profile_image_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:loggy/loggy.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -91,6 +92,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                     listener: (_, state) {
                       if (state is ProfileSuccess) {
+                        logDebug(state);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

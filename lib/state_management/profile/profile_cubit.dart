@@ -27,5 +27,6 @@ class ProfileCubit extends Cubit<ProfileState> {
 
     final userJson = user.toJson();
     await _localCache.save('User', userJson);
+    emit(ProfileSuccess(user));
   }
 }

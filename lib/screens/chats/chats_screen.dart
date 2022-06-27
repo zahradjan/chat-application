@@ -78,7 +78,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Profile(),
+              builder: (context) => Profile(
+                profileUser: widget.me,
+              ),
             ),
           ),
           icon: CircleAvatar(
