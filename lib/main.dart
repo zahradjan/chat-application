@@ -1,6 +1,4 @@
 import 'package:Decentio/configuration.dart';
-import 'package:Decentio/screens/welcome_screen.dart';
-import 'package:Decentio/state_management/home/home_cubit.dart';
 import 'package:Decentio/state_management/profile/profile_image_cubit.dart';
 import 'package:Decentio/theme.dart';
 import 'package:flutter/material.dart';

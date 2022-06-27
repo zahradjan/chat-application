@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:Decentio/constants.dart';
@@ -7,13 +6,8 @@ import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/chatUser/chatUserStore.dart';
 import 'package:Decentio/models/location/location.dart';
 import 'package:Decentio/services/locationshare/location_share_service_impl.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:loggy/loggy.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:uuid/uuid.dart';
 
 class LocationMap extends StatefulWidget {
   List<ChatMessage> chatMessages;

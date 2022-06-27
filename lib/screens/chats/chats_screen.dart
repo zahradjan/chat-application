@@ -3,9 +3,7 @@ import 'package:Decentio/screens/chats/components/users_body.dart';
 import 'package:Decentio/screens/chats/components/chats_screen_body.dart';
 import 'package:Decentio/constants.dart';
 import 'package:Decentio/screens/profile/profile.dart';
-import 'package:Decentio/state_management/home/home_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatsScreen extends StatefulWidget {
   ChatUser me;

@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:Decentio/components/google_map.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
@@ -147,7 +146,6 @@ class _ChatInputFieldState extends State<ChatInputField> {
                           );
                           return;
                         }
-                        ;
                         LocationPermission permission =
                             await _locationShareService.locationPermission();
                         // Test if location services are enabled.

@@ -1,14 +1,9 @@
-import 'dart:io';
 
 import 'package:Decentio/components/primary_button.dart';
 import 'package:Decentio/configuration.dart';
 import 'package:Decentio/constants.dart';
-import 'package:Decentio/screens/chats/chats_screen.dart';
 import 'package:Decentio/screens/profile/profile_image_widget.dart';
-import 'package:Decentio/screens/welcome_screen.dart';
-import 'package:Decentio/state_management/profile/profile_image_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);

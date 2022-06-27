@@ -3,7 +3,6 @@ import 'package:Decentio/messages/components/chat_input_field.dart';
 import 'package:Decentio/messages/components/message.dart';
 import 'package:Decentio/models/chatMessage/ChatMessage.dart';
 import 'package:Decentio/models/groupChat/GroupChat.dart';
-import 'package:Decentio/messages/components/added_user_message.dart';
 import 'package:flutter/material.dart';
 
 class GroupChatBody extends StatefulWidget {
