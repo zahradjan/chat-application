@@ -1,3 +1,4 @@
+import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 

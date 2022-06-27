@@ -1,4 +1,6 @@
-
+import 'package:Decentio/state_management/profile/profile_bloc.dart';
+import 'package:Decentio/state_management/profile/profile_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Decentio/components/primary_button.dart';
 import 'package:Decentio/configuration.dart';
 import 'package:Decentio/constants.dart';
@@ -13,12 +15,15 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  String _username = '';
+  String _email = '';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: SafeArea(
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SafeArea(
           child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: DefaultPadding),
               child: Column(
@@ -35,6 +40,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       labelText: 'Enter your email',
                       labelStyle: TextStyle(),
                     ),
+                    onChanged: (value) {
+                      _email = value;
+                    },
                   ),
                   SizedBox(height: DefaultPadding * 1.5),
                   TextFormField(
@@ -42,39 +50,110 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       border: UnderlineInputBorder(),
                       labelText: 'Enter your username',
                     ),
+                    onChanged: (value) {
+                      _username = value;
+                    },
                   ),
                   SizedBox(height: DefaultPadding * 1.5),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Enter your password',
-                    ),
-                  ),
+                  // TextFormField(
+                  //   decoration: const InputDecoration(
+                  //     border: UnderlineInputBorder(),
+                  //     labelText: 'Enter your password',
+                  //   ),
+                  // ),
                   SizedBox(height: DefaultPadding * 3),
-                  PrimaryButton(
-                    text: "Sign up",
-                    color: Theme.of(context).buttonTheme.colorScheme!.primary,
-                    press: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ConfigurationBase.composeRegisteringUi(),
-                      ),
-                    ),
+                  BlocConsumer<ProfileCubit, ProfileState>(
+                    builder: (context, state) => state is ProfileLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : PrimaryButton(
+                            text: "Sign up",
+                            color: Theme.of(context)
+                                .buttonTheme
+                                .colorScheme!
+                                .primary,
+                            press: () async {
+                              final error = checkInputs();
+                              if (error.isNotEmpty) {
+                                final snackBar = SnackBar(
+                                  content: Text(
+                                    error,
+                                    style: TextStyle(
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                                return;
+                              }
+                              await createProfileInSession();
+                            },
+                          ),
+                    listener: (_, state) {
+                      if (state is ProfileSuccess) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ConfigurationBase.composeChatsUI(state.user),
+                          ),
+                        );
+                      }
+                    },
                   ),
+                  // PrimaryButton(
+                  //   text: "Sign up",
+                  //   color: Theme.of(context).buttonTheme.colorScheme!.primary,
+                  //   press: () async {
+                  //     final error = checkInputs();
+                  //     if (error.isNotEmpty) {
+                  //       final snackBar = SnackBar(
+                  //         content: Text(
+                  //           error,
+                  //           style: TextStyle(
+                  //               fontSize: 14.0, fontWeight: FontWeight.bold),
+                  //         ),
+                  //       );
+                  //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  //       return;
+                  //     }
+                  //     await createProfileInSession();
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) =>
+                  //             ConfigurationBase.composeRegisteringUi(),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                   SizedBox(height: DefaultPadding * 1.5),
                   PrimaryButton(
                       text: "Back",
                       color:
                           Theme.of(context).buttonTheme.colorScheme!.secondary,
                       press: () => Navigator.maybePop(context)),
-                  Spacer(
-                    flex: 2,
-                  ),
+                  // Spacer(
+                  //   flex: 2,
+                  // ),
                 ],
               )),
         ),
       ),
     );
+  }
+
+  createProfileInSession() async {
+    //TODO: profile image upload
+    await context.read<ProfileCubit>().connectProfile(_username);
+  }
+
+  String checkInputs() {
+    var error = '';
+    if (_email.isEmpty) error = 'Enter email';
+
+    if (_username.isEmpty) error = error + '\nEnter display name';
+
+    return error;
   }
 }

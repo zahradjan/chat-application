@@ -1,5 +1,5 @@
-
 class ChatUser {
+  //TODO: password mozna udelat jinou classu user pro profileusera, nechci posilat heslo kazdeho usera
   String id;
   String name;
   String? avatarImage;
