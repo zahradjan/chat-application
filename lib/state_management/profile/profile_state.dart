@@ -1,4 +1,5 @@
-part of 'profile_bloc.dart';
+import 'package:Decentio/models/chatUser/ChatUser.dart';
+import 'package:equatable/equatable.dart';
 
 abstract class ProfileState extends Equatable {}
 

@@ -1,7 +1,7 @@
 import 'package:Decentio/cache/local_chache.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:Decentio/services/user/user_service.dart';
-import 'package:Decentio/state_management/profile/profile_bloc.dart';
+import 'package:Decentio/state_management/profile/profile_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:uuid/uuid.dart';
 
@@ -28,5 +28,16 @@ class ProfileCubit extends Cubit<ProfileState> {
     final userJson = user.toJson();
     await _localCache.save('User', userJson);
     emit(ProfileSuccess(user));
+  }
+
+  Future<void> updateProfile({String name = '', String? password}) async {
+    //TODO: image, and other props update
+    emit(ProfileLoading());
+    var profileUser = _localCache.fetch("User");
+    var chatUser = ChatUser.fromJson(profileUser);
+    chatUser.name = name;
+    final userJson = chatUser.toJson();
+    await _localCache.save('User', userJson);
+    emit(ProfileSuccess(chatUser));
   }
 }

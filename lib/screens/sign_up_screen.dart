@@ -1,5 +1,5 @@
-import 'package:Decentio/state_management/profile/profile_bloc.dart';
 import 'package:Decentio/state_management/profile/profile_cubit.dart';
+import 'package:Decentio/state_management/profile/profile_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:Decentio/components/primary_button.dart';
 import 'package:Decentio/configuration.dart';
@@ -103,32 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }
                     },
                   ),
-                  // PrimaryButton(
-                  //   text: "Sign up",
-                  //   color: Theme.of(context).buttonTheme.colorScheme!.primary,
-                  //   press: () async {
-                  //     final error = checkInputs();
-                  //     if (error.isNotEmpty) {
-                  //       final snackBar = SnackBar(
-                  //         content: Text(
-                  //           error,
-                  //           style: TextStyle(
-                  //               fontSize: 14.0, fontWeight: FontWeight.bold),
-                  //         ),
-                  //       );
-                  //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  //       return;
-                  //     }
-                  //     await createProfileInSession();
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) =>
-                  //             ConfigurationBase.composeRegisteringUi(),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
+
                   SizedBox(height: DefaultPadding * 1.5),
                   PrimaryButton(
                       text: "Back",

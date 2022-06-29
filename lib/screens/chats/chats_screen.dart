@@ -1,3 +1,4 @@
+import 'package:Decentio/configuration.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:Decentio/screens/chats/components/users_body.dart';
 import 'package:Decentio/screens/chats/components/chats_screen_body.dart';
@@ -78,15 +79,20 @@ class _ChatsScreenState extends State<ChatsScreen> {
           onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => Profile(
-                profileUser: widget.me,
-              ),
-            ),
+                builder: (context) =>
+                    ConfigurationBase.composeProfileUI(widget.me)),
           ),
-          icon: CircleAvatar(
-            radius: 30,
-            backgroundImage: AssetImage("assets/images/paul_atreides.jpg"),
-          ),
+          icon: widget.me.avatarImage != null
+              ? CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage(widget.me.avatarImage!),
+                )
+              : CircleAvatar(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  radius: 30,
+                  child:
+                      Icon(Icons.person_outline_rounded, color: Colors.black),
+                ),
         ),
         SizedBox(
           width: 6,

@@ -2,6 +2,7 @@ import 'package:Decentio/data/datasources/sqflite_datasource.dart';
 import 'package:Decentio/data/factories/local_database_factory.dart';
 import 'package:Decentio/models/chatUser/ChatUser.dart';
 import 'package:Decentio/screens/chats/chats_screen.dart';
+import 'package:Decentio/screens/profile/profile.dart';
 import 'package:Decentio/screens/sign_up_screen.dart';
 import 'package:Decentio/screens/welcome_screen.dart';
 import 'package:Decentio/services/message/message_service.dart';
@@ -53,6 +54,18 @@ class ConfigurationBase {
         BlocProvider(create: (BuildContext context) => homeCubit),
       ],
       child: ChatsScreen(me: me),
+    );
+  }
+
+  static Widget composeProfileUI(ChatUser me) {
+    ProfileCubit profileCubit = ProfileCubit(_userService, _localCache);
+
+    //TODO: add providers
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (BuildContext context) => profileCubit),
+      ],
+      child: Profile(profileUser: me),
     );
   }
 
