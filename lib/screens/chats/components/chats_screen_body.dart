@@ -175,7 +175,7 @@ class _ChatsScreenBodyState extends State<ChatsScreenBody> {
         : widget.me;
 
     // // context.read<ChatsCubit>().chats();
-    context.read<HomeCubit>().activeUsers(widget.me);
+    // context.read<HomeCubit>().activeUsers(widget.me);
     // context.read<MessageBloc>().add(MessageEvent.onSubscribed(user));
   }
 }
