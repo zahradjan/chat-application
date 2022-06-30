@@ -35,16 +35,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(height: DefaultPadding * 4),
                   ProfileImageWidget(),
                   SizedBox(height: DefaultPadding * 1.5),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      labelText: 'Enter your email',
-                      labelStyle: TextStyle(),
-                    ),
-                    onChanged: (value) {
-                      _email = value;
-                    },
-                  ),
                   SizedBox(height: DefaultPadding * 1.5),
                   TextFormField(
                     decoration: const InputDecoration(

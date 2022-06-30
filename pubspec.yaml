@@ -46,6 +46,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
   shared_preferences: ^2.0.6
+  ipfs_client_flutter: ^1.0.7
   
   
 flutter_icons:
