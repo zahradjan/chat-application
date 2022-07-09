@@ -18,10 +18,7 @@ import {
   VideoCallButton,
   VoiceCallButton,
 } from "@chatscope/chat-ui-kit-react";
-import { initDatabase } from "../data/database/database.js";
 export function HomePage() {
-  // initDatabase();
-
   return (
     <div style={{ position: "relative", height: "100vh" }}>
       <MainContainer responsive>
