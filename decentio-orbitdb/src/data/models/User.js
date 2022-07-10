@@ -1,4 +1,4 @@
-class User {
+export default class User {
   _username;
   _avatarImage;
   constructor(username, avatarImage) {

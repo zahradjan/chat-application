@@ -8,12 +8,13 @@ function App() {
   // initDatabase();
   return (
     <div className="App">
-      <SingUpPage></SingUpPage>
+      {/* <SingUpPage></SingUpPage> */}
       {/* <HomePage></HomePage> */}
-      {/* <Routes>
-        <Route path="/" element={<HomePage />}></Route>
+      <Routes>
+        <Route path="/" element={<SingUpPage />}></Route>
+        <Route path="/home" element={<HomePage />}></Route>
       </Routes>
-      <Route path="/chat"></Route> */}
+      {/* <Route path="/chat"></Route> */}
     </div>
   );
 }

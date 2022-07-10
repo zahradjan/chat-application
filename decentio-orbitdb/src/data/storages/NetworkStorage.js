@@ -1,3 +1,1 @@
-export default class NetworkStorage {
-  constructor() {}
-}
+export default class NetworkStorage {}
