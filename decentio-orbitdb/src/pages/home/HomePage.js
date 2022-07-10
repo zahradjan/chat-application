@@ -1,9 +1,9 @@
-import Kynes from "../images/kynes.jpg";
-import Baron from "../images/baron_harkonnen.jpg";
-import Chani from "../images/chani.jpg";
-import DukeLeto from "../images/leto_atreides.jpg";
-import LadyJessica from "../images/lady_jessica.jpg";
-import DuncanIdaho from "../images/duncan_idaho.jpg";
+import Kynes from "../../images/kynes.jpg";
+import Baron from "../../images/baron_harkonnen.jpg";
+import Chani from "../../images/chani.jpg";
+import DukeLeto from "../../images/leto_atreides.jpg";
+import LadyJessica from "../../images/lady_jessica.jpg";
+import DuncanIdaho from "../../images/duncan_idaho.jpg";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
   Avatar,
