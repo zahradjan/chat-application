@@ -7,6 +7,7 @@ export default class MainStorage {
   }
 
   init() {
+    console.log(this.sessionStorage.username);
     const dbConfig = {
       // If database doesn't exist, create it
       create: true,

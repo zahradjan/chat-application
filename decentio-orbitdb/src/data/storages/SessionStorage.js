@@ -8,12 +8,17 @@ export default class SessionStorage {
     const username = Cookies.get(cookieKey);
     return username ? { username } : null;
   }
+  isAuthenticated() {
+    return !!this._user;
+  }
 
   async _setUser(user) {
-    if (user && !user.username) throw new Error('"user.username" is not defined');
+    if (!user) throw new Error('"username" is not defined');
+    // ;if (user && !user.username) throw new Error('"user.username" is not defined')
     // runInAction(() => {
     this._user = user;
     // })
+    console.log(user);
     this._cacheUser(user);
   }
 
