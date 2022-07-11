@@ -1,12 +1,16 @@
 import Cookies from "js-cookie";
-
+import { makeAutoObservable } from "mobx";
 const cookieKey = "orbit-chat-username";
 export default class SessionStorage {
   _user;
+  constructor(rootStorage) {
+    this.rootStorage = rootStorage;
+    makeAutoObservable(this);
+  }
 
   _readUserFromCache() {
     const username = Cookies.get(cookieKey);
-    return username ? { username } : null;
+    return username ? username : null;
   }
   isAuthenticated() {
     return !!this._user;
@@ -24,9 +28,24 @@ export default class SessionStorage {
 
   _cacheUser(user) {
     if (user) {
-      Cookies.set(cookieKey, user.username);
+      Cookies.set(cookieKey, user);
     } else {
       Cookies.remove(cookieKey);
     }
+  }
+
+  loadFromCache() {
+    const cached = this._readUserFromCache();
+    if (cached) this.login(cached);
+  }
+
+  login(user) {
+    console.log("User login");
+    return this._setUser(user);
+  }
+
+  logout() {
+    console.log("User logout");
+    return this._setUser(null);
   }
 }

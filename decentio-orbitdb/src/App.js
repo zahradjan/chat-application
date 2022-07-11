@@ -1,37 +1,34 @@
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { HomePage } from "./pages/home/HomePage";
 import { SingUpPage } from "./pages/signup/SignUpPage.jsx";
-import SessionStorage from "./data/storages/SessionStorage.js";
-import MainStorage from "./data/database/MainStorage.js";
-import { useState } from "react";
-const session = new SessionStorage();
-const mainStorage = new MainStorage(session);
-mainStorage.init();
-function App() {
-  if (mainStorage.ipfsNode) console.log(mainStorage.orbitDb.id);
-  const [user, setUser] = useState("");
-  //TODO: USER from database if it is possible not simply from cookies
-  console.log(session.isAuthenticated());
-  const onLogin = async (username) => {
-    // e.preventDefault();
-    console.log(username);
-    if (user !== "") {
-      console.log("jsem tu ");
-      await session._setUser(user);
-    }
-    console.log("SessionUser: " + session._user);
-  };
+import React, { useState } from "react";
+import RootStorage, { useStores } from "./data/storages/RootStorage.js";
+import { Provider, Observer } from "mobx-react";
 
+function AppView() {
+  const { sessionStorage } = useStores();
+  console.log(!sessionStorage._user);
+  if (!sessionStorage._user) sessionStorage.loadFromCache();
+  //TODO: USER from database if it is possible not simply from cookies
+  // console.log(rootStorage.sessionStorage.isAuthenticated());
+  // console.log(rootStorage.sessionStorage.loadFromCache());
+  console.log(sessionStorage._user);
+  return (
+    <React.Suspense fallback={<p>Loading</p>}>
+      <Routes>
+        <Route path="/" element={<SingUpPage />}></Route>
+      </Routes>
+    </React.Suspense>
+  );
+}
+
+function App() {
   return (
     <div className="App">
-      <Routes>
-        <Route
-          path="/"
-          element={session.isAuthenticated ? <SingUpPage onSubmit={onLogin} setUser={setUser} /> : <HomePage session={session} />}
-        ></Route>
-        {/* <Route path="/home" element={<HomePage />}></Route> */}
-      </Routes>
+      <Provider store={useStores()}>
+        <BrowserRouter>{<Observer>{() => <AppView></AppView>}</Observer>}</BrowserRouter>
+      </Provider>
     </div>
   );
 }

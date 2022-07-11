@@ -19,13 +19,9 @@ import {
   VoiceCallButton,
 } from "@chatscope/chat-ui-kit-react";
 import { useEffect } from "react";
-import MainStorage from "../../data/database/MainStorage.js";
 
-export function HomePage(session) {
-  const storage = new MainStorage(session);
-  useEffect(() => {
-    storage.start();
-  }, []);
+export function HomePage() {
+  useEffect(() => {}, []);
   return (
     <div style={{ position: "relative", height: "100vh" }}>
       <MainContainer responsive>

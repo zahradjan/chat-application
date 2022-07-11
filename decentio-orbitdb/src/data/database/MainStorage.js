@@ -1,19 +1,21 @@
 import OrbitDB from "orbit-db";
 import IPFS from "ipfs";
-
+import { makeAutoObservable } from "mobx";
 export default class MainStorage {
   constructor(sessionStorage) {
     this.sessionStorage = sessionStorage;
+    makeAutoObservable(this);
   }
 
   init() {
-    console.log(this.sessionStorage.username);
+    if (!!this.sessionStorage._user) return;
+    console.log(this.sessionStorage._user);
     const dbConfig = {
       // If database doesn't exist, create it
       create: true,
       // Don't wait to load from the network
       sync: false,
-      directory: `/orbitdb/decentio-orbitdb-chat-${this.sessionStorage.username}`,
+      directory: `/orbitdb/decentio-orbitdb-chat-${this.sessionStorage._user}`,
       // Load only the local version of the database
       // localOnly: true,
       // Allow anyone to write to the database,
@@ -24,7 +26,7 @@ export default class MainStorage {
     };
     const ipfsConfig = {
       preload: { enabled: false }, // Prevents large data transfers
-      repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.sessionStorage.username}`,
+      repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.sessionStorage._user}`,
       EXPERIMENTAL: {
         pubsub: true,
       },
@@ -63,20 +65,10 @@ export default class MainStorage {
     this.orbitDb = await OrbitDB.createInstance(this.ipfsNode, orbitDbconf);
   }
 
-  // const store = async (name) => {
-  //   // Create IPFS instance
-  //   const ipfs = await IPFS.create(ipfsConfig);
-  //   // Create an OrbitDB instance
-  //   const orbitdb = await OrbitDB.createInstance(ipfs);
-  //   // Open (or create) database
-  //   const db = await orbitdb.docstore(name, dbConfig);
-
-  //   await db.load();
-  //   db.events.on("replicated", (address) => {
-  //     console.log(db.iterator({ limit: -1 }).collect());
-  //   });
-
-  //   // Done
-  //   return db;
-  // };
+  async handleStop() {
+    await this.orbitDb.disconnect();
+    await this.ipfsNode.stop();
+    delete this.orbitDb;
+    delete this.ipfsNode;
+  }
 }
