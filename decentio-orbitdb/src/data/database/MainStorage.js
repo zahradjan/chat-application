@@ -8,7 +8,9 @@ export default class MainStorage {
   }
 
   init() {
-    if (!!this.sessionStorage._user) return;
+    if (!this.sessionStorage._user) return;
+    if (this.ipfsNode) return;
+    if (this.orbitDb) return;
     console.log(this.sessionStorage._user);
     const dbConfig = {
       // If database doesn't exist, create it
@@ -49,7 +51,6 @@ export default class MainStorage {
         },
       },
     };
-
     this.start(ipfsConfig, dbConfig);
   }
 

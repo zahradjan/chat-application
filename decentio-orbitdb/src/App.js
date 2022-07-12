@@ -1,11 +1,10 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { HomePage } from "./pages/home/HomePage";
-import { SingUpPage } from "./pages/signup/SignUpPage.jsx";
+import { MainPage } from "./pages/main/MainPage.js";
 import React, { useState } from "react";
 import RootStorage, { useStores } from "./data/storages/RootStorage.js";
 import { Provider, Observer } from "mobx-react";
-
+import "./themes/default/main.scss";
 function AppView() {
   const { sessionStorage } = useStores();
   console.log(!sessionStorage._user);
@@ -17,7 +16,7 @@ function AppView() {
   return (
     <React.Suspense fallback={<p>Loading</p>}>
       <Routes>
-        <Route path="/" element={<SingUpPage />}></Route>
+        <Route path="/" element={<MainPage />}></Route>
       </Routes>
     </React.Suspense>
   );
