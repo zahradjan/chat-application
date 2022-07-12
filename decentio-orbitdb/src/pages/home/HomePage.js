@@ -29,7 +29,7 @@ export function HomePage() {
   const _me = sessionStorage._user;
   useEffect(() => {
     mainStorage.init();
-  }, []);
+  }, [mainStorage]);
 
   console.log("HomePage user " + sessionStorage._user);
   return (

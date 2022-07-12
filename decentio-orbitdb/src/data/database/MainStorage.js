@@ -1,13 +1,14 @@
 import OrbitDB from "orbit-db";
 import IPFS from "ipfs";
 import { makeAutoObservable } from "mobx";
+
 export default class MainStorage {
   constructor(sessionStorage) {
     this.sessionStorage = sessionStorage;
     makeAutoObservable(this);
   }
 
-  init() {
+  async init() {
     if (!this.sessionStorage._user) return;
     if (this.ipfsNode) return;
     if (this.orbitDb) return;
@@ -51,19 +52,54 @@ export default class MainStorage {
         },
       },
     };
-    this.start(ipfsConfig, dbConfig);
+    await this.start(ipfsConfig, dbConfig);
   }
 
   async start(ipfsConf, orbitDbconf) {
     await this.startIpfsNode(ipfsConf);
     await this.startOrbitDb(orbitDbconf);
-  }
+    const id = await this.ipfsNode.id();
+    this.ipfsNode.pubsub.subscribe(id.id, this.handleMessageReceived.bind(this));
 
+    this.sendMessage(id.id, "Hello World");
+    this.sendMessage(id.id, "Hello");
+
+    // var cache = await this.orbitDb._createCache("test");
+    // console.log(await this.orbitDb._haveLocalData(cache, "test"));
+    // this.getIpfsPeers();
+  }
+  handleMessageReceived(msg) {
+    console.log(msg);
+    console.log(msg.data.toString());
+    // if (this.onmessage) this.onmessage(msg);
+  }
+  // onmessage = console.log;
+
+  async sendMessage(topic, message) {
+    try {
+      const msgString = JSON.stringify(message);
+      const messageBuffer = Buffer.from(msgString);
+      await this.ipfsNode.pubsub.publish(topic, messageBuffer);
+    } catch (e) {
+      throw e;
+    }
+  }
   async startIpfsNode(ipfsConf) {
     this.ipfsNode = await IPFS.create(ipfsConf);
   }
   async startOrbitDb(orbitDbconf) {
     this.orbitDb = await OrbitDB.createInstance(this.ipfsNode, orbitDbconf);
+  }
+  async getIpfsPeers() {
+    const peers = await this.ipfsNode.swarm.peers();
+    console.log(peers);
+    return peers;
+  }
+
+  async createDBStore(address) {
+    const store = await this.orbitDb.docstore(address);
+    await store.load();
+    return store;
   }
 
   async handleStop() {
