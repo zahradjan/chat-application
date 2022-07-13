@@ -5,9 +5,7 @@
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.9.3",
     "@chatscope/use-chat": "^1.4.0",
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
+   
     "ipfs": "^0.58.1",
     "js-cookie": "^3.0.1",
     "mobx": "^6.6.1",

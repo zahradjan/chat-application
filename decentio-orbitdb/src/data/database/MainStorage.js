@@ -52,28 +52,106 @@ export default class MainStorage {
         },
       },
     };
+
     await this.start(ipfsConfig, dbConfig);
   }
 
   async start(ipfsConf, orbitDbconf) {
     await this.startIpfsNode(ipfsConf);
     await this.startOrbitDb(orbitDbconf);
-    const id = await this.ipfsNode.id();
-    this.ipfsNode.pubsub.subscribe(id.id, this.handleMessageReceived.bind(this));
+    const peerInfo = await this.ipfsNode.id();
+    this.ipfsNode.pubsub.subscribe(peerInfo.id, this.handleMessageReceived.bind(this));
 
-    this.sendMessage(id.id, "Hello World");
-    this.sendMessage(id.id, "Hello");
+    // this.sendMessage(peerInfo.id, "Hello World");
+    // this.sendMessage(peerInfo.id, "Hello");
+    const defaultOptions = { accessController: { write: [this.orbitDb.identity.id] } };
 
-    // var cache = await this.orbitDb._createCache("test");
-    // console.log(await this.orbitDb._haveLocalData(cache, "test"));
-    // this.getIpfsPeers();
+    const docStoreOptions = {
+      ...defaultOptions,
+      indexBy: "hash",
+    };
+
+    const messages = await this.orbitDb.docstore("messages", docStoreOptions);
+    await messages.load();
+
+    const user = await this.orbitDb.kvstore("user", defaultOptions);
+    // await user.load();
+    await user.set("messages", messages.id);
+
+    // await this.updateProfileField("username", "Paul Atreides", user);
+    // user.set("avatarImage", "./../../images/paul_atreides.jpg");
+    // await this.updateProfileField("username", "Duncan Idaho", user);
+    await this.loadFixtureData(
+      {
+        username: "Paul Atreides",
+        messages: messages.id,
+        nodeId: peerInfo.id,
+      },
+      user
+    );
+
+    const getProfiles = await this.getAllProfileFields(user);
+    console.log(getProfiles);
+    const peers = await this.ipfsNode.pubsub.peers(peerInfo.id);
+    console.log(peers);
+    // this.ipfsNode.on("peer:connect", this.handlePeerConnected.bind(this));
   }
-  handleMessageReceived(msg) {
-    console.log(msg);
+
+  async deleteProfileField(key, user) {
+    const cid = await user.del(key);
+    return cid;
+  }
+
+  getAllProfileFields(user) {
+    return user.all;
+  }
+
+  getProfileField(key, user) {
+    return user.get(key);
+  }
+
+  async updateProfileField(key, value, user) {
+    const cid = await user.set(key, value);
+    return cid;
+  }
+
+  async handleMessageReceived(msg) {
+    const parsedMsg = JSON.parse(msg.data.toString());
+    const msgKeys = Object.keys(parsedMsg);
+    console.log(msgKeys);
+    switch (msgKeys[0]) {
+      case "userDb":
+        var peerDb = await this.orbitDb.open(parsedMsg.userDb);
+        peerDb.events.on("replicated", async () => {
+          if (peerDb.get("pieces")) {
+            console.log(peerDb.all);
+          }
+        });
+        break;
+      default:
+        break;
+    }
     console.log(msg.data.toString());
     // if (this.onmessage) this.onmessage(msg);
   }
+
   // onmessage = console.log;
+
+  handlePeerConnected(ipfsPeer, user) {
+    const ipfsId = ipfsPeer.id.toB58String();
+    setTimeout(async () => {
+      await this.sendMessage(ipfsId, { userDb: user.id });
+    }, 2000);
+    console.log(ipfsPeer);
+  }
+
+  async loadFixtureData(fixtureData, user) {
+    const fixtureKeys = Object.keys(fixtureData);
+    for (let i in fixtureKeys) {
+      let key = fixtureKeys[i];
+      if (!user.get(key)) await user.set(key, fixtureData[key]);
+    }
+  }
 
   async sendMessage(topic, message) {
     try {
