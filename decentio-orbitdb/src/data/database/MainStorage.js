@@ -1,6 +1,7 @@
 import OrbitDB from "orbit-db";
 import IPFS from "ipfs";
 import { makeAutoObservable } from "mobx";
+import UserStorage from "../storages/UserStorage.js";
 
 export default class MainStorage {
   constructor(sessionStorage) {
@@ -74,45 +75,28 @@ export default class MainStorage {
     const messages = await this.orbitDb.docstore("messages", docStoreOptions);
     await messages.load();
 
-    const user = await this.orbitDb.kvstore("user", defaultOptions);
+    const user = new UserStorage(this.ipfsNode, this.orbitDb);
+    await user.init();
+    await user.updateProfileField("messages", messages.id);
     // await user.load();
-    await user.set("messages", messages.id);
+    // await user.set("messages", messages.id);
 
     // await this.updateProfileField("username", "Paul Atreides", user);
     // user.set("avatarImage", "./../../images/paul_atreides.jpg");
     // await this.updateProfileField("username", "Duncan Idaho", user);
-    await this.loadFixtureData(
-      {
-        username: "Paul Atreides",
-        messages: messages.id,
-        nodeId: peerInfo.id,
-      },
-      user
-    );
-
-    const getProfiles = await this.getAllProfileFields(user);
-    console.log(getProfiles);
+    // await this.loadFixtureData(
+    //   {
+    //     username: "Paul Atreides",
+    //     messages: messages.id,
+    //     nodeId: peerInfo.id,
+    //   },
+    //   user
+    // );
+    const getUserProfileFields = await user.getAllProfileFields();
+    console.log(getUserProfileFields);
     const peers = await this.ipfsNode.pubsub.peers(peerInfo.id);
     console.log(peers);
     // this.ipfsNode.on("peer:connect", this.handlePeerConnected.bind(this));
-  }
-
-  async deleteProfileField(key, user) {
-    const cid = await user.del(key);
-    return cid;
-  }
-
-  getAllProfileFields(user) {
-    return user.all;
-  }
-
-  getProfileField(key, user) {
-    return user.get(key);
-  }
-
-  async updateProfileField(key, value, user) {
-    const cid = await user.set(key, value);
-    return cid;
   }
 
   async handleMessageReceived(msg) {
