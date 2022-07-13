@@ -1,10 +1,10 @@
 import Cookies from "js-cookie";
 import { makeAutoObservable } from "mobx";
 const cookieKey = "orbit-chat-username";
-export default class SessionStorage {
+export default class SessionStore {
   _user;
-  constructor(rootStorage) {
-    this.rootStorage = rootStorage;
+  constructor(rootStore) {
+    this.rootStore = rootStore;
     makeAutoObservable(this);
   }
 

@@ -1,27 +1,28 @@
 import OrbitDB from "orbit-db";
 import IPFS from "ipfs";
 import { makeAutoObservable } from "mobx";
-import UserStorage from "../storages/UserStorage.js";
 
-export default class MainStorage {
-  constructor(sessionStorage) {
-    this.sessionStorage = sessionStorage;
+export default class MainStore {
+  ipfsNode;
+  orbitDb;
+  constructor(rootStore) {
+    this.rootStore = rootStore;
     makeAutoObservable(this);
   }
 
   async init() {
-    if (!this.sessionStorage._user) return;
+    if (!this.rootStore.sessionStore._user) return;
     if (this.ipfsNode) return;
     if (this.orbitDb) return;
-    console.log(this.sessionStorage._user);
+    console.log(this.rootStore.sessionStore._user);
     const dbConfig = {
       // If database doesn't exist, create it
       create: true,
       // Don't wait to load from the network
       sync: false,
-      directory: `/orbitdb/decentio-orbitdb-chat-${this.sessionStorage._user}`,
+      // directory: `/orbitdb/decentio-orbitdb-chat-${this.sessionStorage._user}`,
       // Load only the local version of the database
-      // localOnly: true,
+      localOnly: true,
       // Allow anyone to write to the database,
       // otherwise only the creator of the database can write
       accessController: {
@@ -30,7 +31,7 @@ export default class MainStorage {
     };
     const ipfsConfig = {
       preload: { enabled: false }, // Prevents large data transfers
-      repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.sessionStorage._user}`,
+      // repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.sessionStorage._user}`,
       EXPERIMENTAL: {
         pubsub: true,
       },
@@ -44,9 +45,9 @@ export default class MainStorage {
             // '/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star',
             // WebRTC:
             // '/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star',
-            "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
-            "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
-            "/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/",
+            // "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
+            // "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
+            // "/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/",
             // Use local signal server
             // '/ip4/0.0.0.0/tcp/9090/wss/p2p-webrtc-star',
           ],
@@ -60,24 +61,26 @@ export default class MainStorage {
   async start(ipfsConf, orbitDbconf) {
     await this.startIpfsNode(ipfsConf);
     await this.startOrbitDb(orbitDbconf);
+
     const peerInfo = await this.ipfsNode.id();
+    console.log(peerInfo.addresses);
     this.ipfsNode.pubsub.subscribe(peerInfo.id, this.handleMessageReceived.bind(this));
 
     // this.sendMessage(peerInfo.id, "Hello World");
-    // this.sendMessage(peerInfo.id, "Hello");
-    const defaultOptions = { accessController: { write: [this.orbitDb.identity.id] } };
+    // // this.sendMessage(peerInfo.id, "Hello");
+    // const defaultOptions = { accessController: { write: [this.orbitDb.identity.id] } };
 
-    const docStoreOptions = {
-      ...defaultOptions,
-      indexBy: "hash",
-    };
+    // const docStoreOptions = {
+    //   ...defaultOptions,
+    //   indexBy: "hash",
+    // };
 
-    const messages = await this.orbitDb.docstore("messages", docStoreOptions);
-    await messages.load();
+    // const messages = await this.orbitDb.docstore("messages", docStoreOptions);
+    // await messages.load();
 
-    const user = new UserStorage(this.ipfsNode, this.orbitDb);
-    await user.init();
-    await user.updateProfileField("messages", messages.id);
+    // const user = new UserStorage(this.ipfsNode, this.orbitDb);
+    // await user.init();
+    // await user.updateProfileField("messages", messages.id);
     // await user.load();
     // await user.set("messages", messages.id);
 
@@ -92,8 +95,8 @@ export default class MainStorage {
     //   },
     //   user
     // );
-    const getUserProfileFields = await user.getAllProfileFields();
-    console.log(getUserProfileFields);
+    // const getUserProfileFields = await user.getAllProfileFields();
+    // console.log(getUserProfileFields);
     const peers = await this.ipfsNode.pubsub.peers(peerInfo.id);
     console.log(peers);
     // this.ipfsNode.on("peer:connect", this.handlePeerConnected.bind(this));
@@ -107,7 +110,7 @@ export default class MainStorage {
       case "userDb":
         var peerDb = await this.orbitDb.open(parsedMsg.userDb);
         peerDb.events.on("replicated", async () => {
-          if (peerDb.get("pieces")) {
+          if (peerDb.get("messages")) {
             console.log(peerDb.all);
           }
         });
@@ -127,14 +130,6 @@ export default class MainStorage {
       await this.sendMessage(ipfsId, { userDb: user.id });
     }, 2000);
     console.log(ipfsPeer);
-  }
-
-  async loadFixtureData(fixtureData, user) {
-    const fixtureKeys = Object.keys(fixtureData);
-    for (let i in fixtureKeys) {
-      let key = fixtureKeys[i];
-      if (!user.get(key)) await user.set(key, fixtureData[key]);
-    }
   }
 
   async sendMessage(topic, message) {

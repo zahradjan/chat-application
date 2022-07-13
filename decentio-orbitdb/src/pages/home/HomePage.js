@@ -20,16 +20,16 @@ import {
   VideoCallButton,
   VoiceCallButton,
 } from "@chatscope/chat-ui-kit-react";
-import { useStores } from "../../data/storages/RootStorage.js";
+import { useStores } from "../../data/store/RootStore.js";
 import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { useEffect } from "react";
 
 export function HomePage() {
-  const { sessionStorage, mainStorage } = useStores();
+  const { sessionStore: sessionStorage, userStore: userStorage } = useStores();
   const _me = sessionStorage._user;
-  useEffect(() => {
-    mainStorage.init();
-  }, [mainStorage]);
+  // useEffect(() => {
+  //   // mainStorage.init();
+  // }, [mainStorage]);
 
   console.log("HomePage user " + sessionStorage._user);
   return (
