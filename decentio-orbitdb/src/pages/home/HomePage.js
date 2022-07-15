@@ -22,16 +22,13 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { useStores } from "../../data/store/RootStore.js";
 import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
-import { useEffect } from "react";
+import { inject, observer, useObserver } from "mobx-react";
 
-export function HomePage() {
-  const { sessionStore: sessionStorage, userStore: userStorage } = useStores();
-  const _me = sessionStorage._user;
-  // useEffect(() => {
-  //   // mainStorage.init();
-  // }, [mainStorage]);
-
-  console.log("HomePage user " + sessionStorage._user);
+function HomePage() {
+  const { sessionStore, userStore } = useStores();
+  const _me = sessionStore._user;
+  console.log(userStore.userProfile);
+  console.log("HomePage user " + sessionStore._user);
   return (
     <div style={{ position: "relative", height: "100vh" }}>
       <MainContainer responsive>
@@ -85,3 +82,5 @@ export function HomePage() {
     </div>
   );
 }
+
+export default inject("store")(observer(HomePage));

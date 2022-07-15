@@ -1,23 +1,15 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { MainPage } from "./pages/main/MainPage.js";
-import React, { useEffect, useState } from "react";
-import RootStore, { StoresContext, useStores } from "./data/store/RootStore.js";
-import { Provider, Observer } from "mobx-react";
+import React from "react";
+import { store, StoresContext, useStores } from "./data/store/RootStore.js";
 import "./themes/default/main.scss";
+import { inject, observer, Provider } from "mobx-react";
+import MainPage from "./pages/main/MainPage.js";
 function AppView() {
-  const { sessionStore: sessionStorage, mainStore: mainStorage } = useStores();
-  // mainStorage.init();
-  useEffect(() => {
-    const initStorages = async () => {
-      await mainStorage.init();
-    };
-    initStorages();
-  });
-  if (!sessionStorage._user) sessionStorage.loadFromCache();
   //TODO: USER from database if it is possible not simply from cookies
-  // console.log(rootStorage.sessionStorage.isAuthenticated());
-  // console.log(rootStorage.sessionStorage.loadFromCache());
+
+  const { dataStore } = useStores();
+  console.log(dataStore.ipfsNode);
   return (
     <React.Suspense fallback={<p>Loading</p>}>
       <Routes>
@@ -27,12 +19,14 @@ function AppView() {
   );
 }
 
+inject("store")(observer(AppView));
+
 function App() {
   return (
     <div className="App">
-      <Provider store={useStores}>
-        <BrowserRouter>{<Observer>{() => <AppView></AppView>}</Observer>}</BrowserRouter>
-      </Provider>
+      <BrowserRouter>
+        <Provider store={store}>{<AppView></AppView>}</Provider>
+      </BrowserRouter>
     </div>
   );
 }

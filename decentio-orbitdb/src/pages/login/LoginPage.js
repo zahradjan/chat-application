@@ -1,11 +1,21 @@
-import React from "react";
+import { inject, observer } from "mobx-react";
+import React, { useRef } from "react";
+import { useStores } from "../../data/store/RootStore.js";
 import DecentioLogo from "../../icons/decentioLogoLight.png";
 
-export function LoginPage({ onSubmit, setUserName }) {
-  const onChange = (e) => {
+function LoginPage() {
+  const { userStore, sessionStore } = useStores();
+  const userNameRef = useRef(null);
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.target.value);
-    setUserName(e.target.value);
+    const userName = userNameRef.current.value;
+    console.log(userName);
+    if (userName !== "") {
+      await sessionStore.login(userName);
+      await userStore.updateProfileField("username", userName);
+      console.log(userStore.getAllProfileFields());
+    }
   };
   return (
     <div
@@ -20,7 +30,7 @@ export function LoginPage({ onSubmit, setUserName }) {
         <img alt="logo" width={550} height={450} src={DecentioLogo}></img>
         <form onSubmit={onSubmit}>
           <div>
-            <input name="Username" onChange={onChange}></input>
+            <input ref={userNameRef} name="Username"></input>
           </div>
           <button type="submit">Sign in</button>
         </form>
@@ -28,3 +38,4 @@ export function LoginPage({ onSubmit, setUserName }) {
     </div>
   );
 }
+export default inject("store")(observer(LoginPage));

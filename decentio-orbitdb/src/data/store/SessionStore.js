@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 const cookieKey = "orbit-chat-username";
 export default class SessionStore {
   _user;
@@ -8,8 +8,14 @@ export default class SessionStore {
     makeAutoObservable(this);
   }
 
+  async init() {
+    await this.loadFromCache();
+    console.log(this._user);
+    console.log(this.isAuthenticated());
+  }
   _readUserFromCache() {
     const username = Cookies.get(cookieKey);
+    console.log(username);
     return username ? username : null;
   }
   isAuthenticated() {
@@ -19,10 +25,9 @@ export default class SessionStore {
   async _setUser(user) {
     if (!user) throw new Error('"username" is not defined');
     // ;if (user && !user.username) throw new Error('"user.username" is not defined')
-    // runInAction(() => {
-    this._user = user;
-    // })
-    console.log(user);
+    runInAction(() => {
+      this._user = user;
+    });
     this._cacheUser(user);
   }
 
@@ -34,14 +39,14 @@ export default class SessionStore {
     }
   }
 
-  loadFromCache() {
+  async loadFromCache() {
     const cached = this._readUserFromCache();
-    if (cached) this.login(cached);
+    if (cached) await this.login(cached);
   }
 
-  login(user) {
+  async login(user) {
     console.log("User login");
-    return this._setUser(user);
+    return await this._setUser(user);
   }
 
   logout() {
