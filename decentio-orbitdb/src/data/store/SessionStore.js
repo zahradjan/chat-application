@@ -1,17 +1,18 @@
+import { User } from "@chatscope/use-chat";
 import Cookies from "js-cookie";
-import { makeAutoObservable, runInAction } from "mobx";
+import { action, computed, makeAutoObservable, makeObservable, observable } from "mobx";
 const cookieKey = "orbit-chat-username";
 export default class SessionStore {
-  _user;
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
   }
 
+  _user = null;
+
   async init() {
     await this.loadFromCache();
     console.log(this._user);
-    console.log(this.isAuthenticated());
   }
   _readUserFromCache() {
     const username = Cookies.get(cookieKey);
@@ -25,10 +26,8 @@ export default class SessionStore {
   async _setUser(user) {
     if (!user) throw new Error('"username" is not defined');
     // ;if (user && !user.username) throw new Error('"user.username" is not defined')
-    runInAction(() => {
-      this._user = user;
-    });
     this._cacheUser(user);
+    this._user = user;
   }
 
   _cacheUser(user) {

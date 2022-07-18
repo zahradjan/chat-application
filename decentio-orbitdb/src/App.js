@@ -3,8 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React from "react";
 import { store, StoresContext, useStores } from "./data/store/RootStore.js";
 import "./themes/default/main.scss";
-import { inject, observer, Provider } from "mobx-react";
-import MainPage from "./pages/main/MainPage.js";
+import { MainPage } from "./pages/main/MainPage.js";
 function AppView() {
   //TODO: USER from database if it is possible not simply from cookies
 
@@ -19,13 +18,11 @@ function AppView() {
   );
 }
 
-inject("store")(observer(AppView));
-
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Provider store={store}>{<AppView></AppView>}</Provider>
+        <StoresContext.Provider value={store}>{<AppView></AppView>}</StoresContext.Provider>
       </BrowserRouter>
     </div>
   );

@@ -1,22 +1,26 @@
-import { inject, observer } from "mobx-react";
-import React, { useRef } from "react";
+import { inject, Observer, observer } from "mobx-react";
+import React, { useCallback, useRef } from "react";
 import { useStores } from "../../data/store/RootStore.js";
 import DecentioLogo from "../../icons/decentioLogoLight.png";
+import { HomePage } from "../home/HomePage.js";
 
-function LoginPage() {
+export const LoginPage = observer(() => {
   const { userStore, sessionStore } = useStores();
   const userNameRef = useRef(null);
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const userName = userNameRef.current.value;
-    console.log(userName);
-    if (userName !== "") {
-      await sessionStore.login(userName);
-      await userStore.updateProfileField("username", userName);
-      console.log(userStore.getAllProfileFields());
-    }
-  };
+  const onSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const userName = userNameRef.current.value;
+      console.log(userName);
+      if (userName !== "") {
+        await sessionStore.login(userName);
+        await userStore.updateUserField("username", userName);
+        console.log(userStore.getAllProfileFields());
+      }
+    },
+    [sessionStore, userStore]
+  );
   return (
     <div
       style={{
@@ -37,5 +41,5 @@ function LoginPage() {
       </div>
     </div>
   );
-}
-export default inject("store")(observer(LoginPage));
+});
+// export default inject("store")(observer(LoginPage));

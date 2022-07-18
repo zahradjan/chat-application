@@ -1,49 +1,49 @@
-import { action, computed, makeAutoObservable, makeObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 
 export default class UserStore {
-  userProfile;
+  user;
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
-    this.userProfile = undefined;
+    this.user = undefined;
   }
   //TODO: makeAutoObservable nefunguje sprave na hodnotach ktere nebyli inicializovany, je potreba user profile inicializovat
 
   async init() {
     console.log(this.rootStore.dataStore.orbitDb);
-    await this.setUser();
-    console.log(this.userProfile.id);
+    await this.setUserStore();
+    console.log(this.user.id);
   }
-  async setUser() {
+  async setUserStore() {
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
     const defaultOptions = { accessController: { write: [this.rootStore.dataStore.orbitDb.identity.id] } };
-    this.userProfile = await this.rootStore.dataStore.orbitDb.kvstore("user", defaultOptions);
-    await this.userProfile.load();
-    return this.userProfile;
+    this.user = await this.rootStore.dataStore.orbitDb.kvstore("user", defaultOptions);
+    await this.user.load();
+    return this.user;
   }
 
   async deleteProfileField(key) {
-    const cid = await this.userProfile.del(key);
+    const cid = await this.user.del(key);
     return cid;
   }
 
   getAllProfileFields() {
-    return this.userProfile.all;
+    return this.user.all;
   }
 
   getProfileField(key) {
-    return this.userProfile.get(key);
+    return this.user.get(key);
   }
 
-  async updateProfileField(key, value) {
-    const cid = await this.userProfile.set(key, value);
+  async updateUserField(key, value) {
+    const cid = await this.user.set(key, value);
     return cid;
   }
   async loadFixtureData(fixtureData) {
     const fixtureKeys = Object.keys(fixtureData);
     for (let i in fixtureKeys) {
       let key = fixtureKeys[i];
-      if (!this.userProfile.get(key)) await this.userProfile.set(key, fixtureData[key]);
+      if (!this.user.get(key)) await this.user.set(key, fixtureData[key]);
     }
   }
 }

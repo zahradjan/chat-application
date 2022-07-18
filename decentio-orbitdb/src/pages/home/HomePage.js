@@ -22,12 +22,12 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { useStores } from "../../data/store/RootStore.js";
 import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
-import { inject, observer, useObserver } from "mobx-react";
+import { observer } from "mobx-react";
 
-function HomePage() {
+export const HomePage = observer(() => {
   const { sessionStore, userStore } = useStores();
   const _me = sessionStore._user;
-  console.log(userStore.userProfile);
+  console.log(userStore.user);
   console.log("HomePage user " + sessionStore._user);
   return (
     <div style={{ position: "relative", height: "100vh" }}>
@@ -81,6 +81,5 @@ function HomePage() {
       </MainContainer>
     </div>
   );
-}
-
-export default inject("store")(observer(HomePage));
+});
+// export default inject("store")(observer(HomePage));
