@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 export default class UserStore {
   user;
@@ -7,19 +7,24 @@ export default class UserStore {
     makeAutoObservable(this);
     this.user = undefined;
   }
-  //TODO: makeAutoObservable nefunguje sprave na hodnotach ktere nebyli inicializovany, je potreba user profile inicializovat
 
   async init() {
-    console.log(this.rootStore.dataStore.orbitDb);
+    console.log(this.user);
     await this.setUserStore();
-    console.log(this.user.id);
+    console.log(this.user);
+  }
+  isUserStoreReady() {
+    return !!this.user;
   }
   async setUserStore() {
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
     const defaultOptions = { accessController: { write: [this.rootStore.dataStore.orbitDb.identity.id] } };
-    this.user = await this.rootStore.dataStore.orbitDb.kvstore("user", defaultOptions);
+    await this.rootStore.dataStore.orbitDb.kvstore("user", defaultOptions).then((data) =>
+      runInAction(() => {
+        this.user = data;
+      })
+    );
     await this.user.load();
-    return this.user;
   }
 
   async deleteProfileField(key) {

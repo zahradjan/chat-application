@@ -1,6 +1,6 @@
 import { User } from "@chatscope/use-chat";
 import Cookies from "js-cookie";
-import { action, computed, makeAutoObservable, makeObservable, observable } from "mobx";
+import { makeAutoObservable } from "mobx";
 const cookieKey = "orbit-chat-username";
 export default class SessionStore {
   constructor(rootStore) {

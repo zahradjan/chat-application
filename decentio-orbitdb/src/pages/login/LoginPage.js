@@ -1,8 +1,7 @@
-import { inject, Observer, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React, { useCallback, useRef } from "react";
 import { useStores } from "../../data/store/RootStore.js";
 import DecentioLogo from "../../icons/decentioLogoLight.png";
-import { HomePage } from "../home/HomePage.js";
 
 export const LoginPage = observer(() => {
   const { userStore, sessionStore } = useStores();

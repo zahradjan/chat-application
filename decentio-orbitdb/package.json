@@ -5,7 +5,6 @@
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.9.3",
     "@chatscope/use-chat": "^1.4.0",
-   
     "ipfs": "^0.58.1",
     "js-cookie": "^3.0.1",
     "mobx": "^6.6.1",
@@ -13,6 +12,7 @@
     "orbit-db": "^0.28.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-loader-spinner": "^5.1.5",
     "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.3",
     "sass": "^1.53.0",

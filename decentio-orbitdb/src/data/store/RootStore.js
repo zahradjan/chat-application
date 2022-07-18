@@ -12,8 +12,8 @@ export default class RootStore {
   }
   async initStores() {
     await this.sessionStore.init();
-    await this.dataStore.init();
-    await this.userStore.init();
+    // await this.dataStore.init();
+    // await this.userStore.init();
   }
 }
 export const store = new RootStore();
