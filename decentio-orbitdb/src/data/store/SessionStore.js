@@ -3,12 +3,13 @@ import Cookies from "js-cookie";
 import { makeAutoObservable } from "mobx";
 const cookieKey = "orbit-chat-username";
 export default class SessionStore {
+  _user;
+
   constructor(rootStore) {
     this.rootStore = rootStore;
+    this._user = undefined;
     makeAutoObservable(this);
   }
-
-  _user = null;
 
   async init() {
     await this.loadFromCache();

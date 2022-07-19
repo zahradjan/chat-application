@@ -6,20 +6,14 @@ import { useStores } from "../../data/store/RootStore.js";
 import { HomePage } from "../home/HomePage.js";
 import { LoginPage } from "../login/LoginPage.js";
 export const MainPage = observer(() => {
-  const [loading, setLoading] = useState(true);
-  const { sessionStore, userStore, dataStore } = useStores();
-  useEffect(() => {
-    const initStores = async () => {
-      await dataStore.init();
-      await userStore.init().then(() => setLoading(false));
-    };
-    initStores();
-  }, [userStore, dataStore]);
-  return !loading ? (
-    !sessionStore.isAuthenticated() ? (
-      <LoginPage />
-    ) : (
+  const { sessionStore, userStore } = useStores();
+
+  console.log("JSEM TU");
+  return userStore.isUserStoreReady() ? (
+    sessionStore.isAuthenticated() ? (
       <HomePage />
+    ) : (
+      <LoginPage />
     )
   ) : (
     <div

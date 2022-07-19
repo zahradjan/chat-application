@@ -4,8 +4,8 @@ export default class UserStore {
   user;
   constructor(rootStore) {
     this.rootStore = rootStore;
-    makeAutoObservable(this);
     this.user = undefined;
+    makeAutoObservable(this);
   }
 
   async init() {
