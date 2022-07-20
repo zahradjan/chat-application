@@ -13,11 +13,9 @@ export default class SessionStore {
 
   async init() {
     await this.loadFromCache();
-    console.log(this._user);
   }
   _readUserFromCache() {
     const username = Cookies.get(cookieKey);
-    console.log(username);
     return username ? username : null;
   }
   isAuthenticated() {

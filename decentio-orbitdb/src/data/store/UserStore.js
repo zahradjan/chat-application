@@ -9,9 +9,7 @@ export default class UserStore {
   }
 
   async init() {
-    console.log(this.user);
     await this.setUserStore();
-    console.log(this.user);
   }
   isUserStoreReady() {
     return !!this.user;
@@ -25,6 +23,7 @@ export default class UserStore {
       })
     );
     await this.user.load();
+    console.log(this.user.db);
   }
 
   async deleteProfileField(key) {

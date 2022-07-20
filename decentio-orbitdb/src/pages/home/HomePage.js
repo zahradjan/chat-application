@@ -25,10 +25,9 @@ import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { observer } from "mobx-react";
 
 export const HomePage = observer(() => {
-  const { sessionStore, userStore } = useStores();
+  const { sessionStore } = useStores();
   const _me = sessionStore._user;
-  console.log(userStore.user);
-  console.log("HomePage user " + sessionStore._user);
+
   return (
     <div style={{ position: "relative", height: "100vh" }}>
       <MainContainer responsive>
