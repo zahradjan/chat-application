@@ -14,7 +14,7 @@ export default class DataStore {
   async init() {
     if (this.ipfsNode !== undefined) return;
     if (this.orbitDb !== undefined) return;
-
+    // console.log(this.rootStore.sessionStore._user);
     const dbConfig = {
       // If database doesn't exist, create it
       create: true,
@@ -63,7 +63,8 @@ export default class DataStore {
       },
       // Prevents large data transfers
       //TODO: nejak oddelit at to neni random ale treba username nebo neco
-      repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${Math.random() * 1000}}`,
+      // repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${Math.random() * 1000}}`,
+      repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.rootStore.sessionStore._user}}`,
       EXPERIMENTAL: {
         pubsub: true,
       },

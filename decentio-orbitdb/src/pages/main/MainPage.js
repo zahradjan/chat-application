@@ -7,23 +7,22 @@ import { LoginPage } from "../login/LoginPage.js";
 export const MainPage = observer(() => {
   const { sessionStore, userStore } = useStores();
 
-  // console.log("JSEM TU");
-  return userStore.isUserStoreReady() ? (
-    sessionStore.isAuthenticated() ? (
+  return sessionStore.isAuthenticated() ? (
+    userStore.isUserStoreReady() ? (
       <HomePage />
     ) : (
-      <LoginPage />
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <Grid ariaLabel="loading-indicator" color={PrimaryColor} />
+      </div>
     )
   ) : (
-    <div
-      style={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-      }}
-    >
-      <Grid ariaLabel="loading-indicator" color={PrimaryColor} />
-    </div>
+    <LoginPage />
   );
 });

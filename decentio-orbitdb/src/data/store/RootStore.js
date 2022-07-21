@@ -10,8 +10,15 @@ export default class RootStore {
     this.userStore = new UserStore(this);
     this.initStores();
   }
+
   async initStores() {
     await this.sessionStore.init();
+    if (this.sessionStore.isAuthenticated()) {
+      await this.initDatabaseStores();
+    }
+  }
+
+  async initDatabaseStores() {
     await this.dataStore.init();
     await this.userStore.init();
   }
