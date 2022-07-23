@@ -33,13 +33,8 @@ export const ChatRoom = observer(() => {
       </ConversationHeader>
       <MessageList>
         {data.map((msg) => {
-          console.log(msg.message.data);
-          return (
-            <Message
-              key={msg.message.key}
-              model={{ sentTime: "just now", direction: "incoming", position: "first", message: msg.message.data }}
-            ></Message>
-          );
+          console.log(msg);
+          return <Message key={msg} model={{ sentTime: "just now", direction: "incoming", position: "first", message: msg }}></Message>;
         })}
       </MessageList>
       <MessageInput

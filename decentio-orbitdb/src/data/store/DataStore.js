@@ -1,11 +1,12 @@
 import OrbitDB from "orbit-db";
-import IPFS from "ipfs";
+import { create } from "ipfs";
 import { makeAutoObservable } from "mobx";
 import { multiaddr } from "multiaddr";
 import PeerMonitor from "ipfs-pubsub-peer-monitor";
 export default class DataStore {
   ipfsNode;
   orbitDb;
+  orbitDbPubsub;
   pubsubMonitor;
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -31,37 +32,37 @@ export default class DataStore {
       },
     };
     const ipfsConfig = {
-      // preload: { enabled: false },
-      relay: { enabled: true, hop: { enabled: true, active: true } },
-      libp2p: {
-        config: {
-          // dht: {
-          //   enabled: true,
-          // },
-          modules: {
-            transport: ["WebRTCStar", "WebSockets"],
-          },
-          // transport: {
-          //   WebRTCStar: {
-          //     wrtc,
-          //   },
-          // },
-        },
-      },
-      peerDiscovery: {
-        autoDial: true, // Auto connect to discovered peers (limited by ConnectionManager minPeers)
-        mdns: {
-          // mdns options
-          interval: 1000, // ms
-          enabled: true,
-        },
-        webRTCStar: {
-          // webrtc-star options
-          interval: 1000, // ms
-          enabled: false,
-        },
-        // .. other discovery module options.
-      },
+      preload: { enabled: false },
+      // relay: { enabled: true, hop: { enabled: true, active: true } },
+      // libp2p: {
+      //   config: {
+      //     // dht: {
+      //     //   enabled: true,
+      //     // },
+      //     modules: {
+      //       transport: ["WebRTCStar", "WebSockets"],
+      //     },
+      //     // transport: {
+      //     //   WebRTCStar: {
+      //     //     wrtc,
+      //     //   },
+      //     // },
+      //   },
+      // },
+      // peerDiscovery: {
+      //   autoDial: true, // Auto connect to discovered peers (limited by ConnectionManager minPeers)
+      //   mdns: {
+      //     // mdns options
+      //     interval: 1000, // ms
+      //     enabled: true,
+      //   },
+      //   webRTCStar: {
+      //     // webrtc-star options
+      //     interval: 1000, // ms
+      //     enabled: false,
+      //   },
+      //   // .. other discovery module options.
+      // },
       // Prevents large data transfers
       //TODO: nejak oddelit at to neni random ale treba username nebo neco
       // repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${Math.random() * 1000}}`,
@@ -80,6 +81,7 @@ export default class DataStore {
             // "/dns4/ws-star-signal-2.servep2p.com/tcp/443/wss/p2p-websocket-star",
             // "/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star",
             // WebRTC:
+
             "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
             "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
             "/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/",
@@ -90,11 +92,11 @@ export default class DataStore {
             // "/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss",
             // "/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star",
             //       // Use local signal server
-            "/ip4/0.0.0.0/tcp/4011/ws",
-            "/ip6/::/tcp/4011/ws",
+            // "/ip4/0.0.0.0/tcp/4011/ws",
+            // "/ip6/::/tcp/4011/ws",
           ],
         },
-        Bootstrap: [],
+        // Bootstrap: [],
       },
     };
 
@@ -104,55 +106,52 @@ export default class DataStore {
   async start(ipfsConf, orbitDbconf) {
     await this.startIpfsNode(ipfsConf);
     await this.startOrbitDb(orbitDbconf);
+    await this.startOrbitDbPubsub();
     // this.ipfsNode.config.set("Addresses.Swarm", ["/ip4/0.0.0.0/tcp/4002", "/ip4/127.0.0.1/tcp/4003/ws"], console.log);
     //TODO: Peer se connecti na stejnym pubsub topicu a lze volat ten connect, joined apod.
     //potrebuji je umet propojit tak aby kazdy mel svoji DB a komunikovali nejakym chat roomu == pubsub room a v tom se ukladali ty zpravy
     // vymodelovat si podrobneji jak tam bude proudit ta informace
     const peerInfo = await this.ipfsNode.id();
+
     console.log("Peer ID: " + peerInfo.id);
     // this.ipfsNode.libp2p.on("peer:connect", this.handlePeerConnected.bind(this));
     // this.ipfsNode.libp2p.pubsub.on("peer:connect", (peer) => console.log("Connected peer: " + peer));
     // this.ipfsNode.libp2p.on("peer:discovery", (peer) => console.log("Peer: " + peer));
     // const defaultOptions = { accessController: { write: [this.orbitDb.identity.id] } };
-    this.peersDb = await this.orbitDb.feed("peers");
-    await this.peersDb.load();
+    // this.peersDb = await this.orbitDb.feed("peers");
+    // await this.peersDb.load();
 
-    // const monitor = new PeerMonitor(this.ipfsNode.pubsub, "DecentioPubsubNetwork");
+    const monitor = new PeerMonitor(this.ipfsNode.pubsub, "FirstChatRoom");
     // this.ipfsNode.libp2p.pubsub.unsubscribe("DecentioPubsubNetwork");
-    this.ipfsNode.libp2p.pubsub.subscribe("DecentioPubsubNetwork", (msg) => console.log(msg));
-    this.ipfsNode.libp2p.pubsub.publish("DecentioPubsubNetwork", { message: "Hello", name: this.rootStore.sessionStore._user });
+    // this.ipfsNode.libp2p.pubsub.subscribe("DecentioPubsubNetwork", (msg) => console.log(msg));
+    // this.ipfsNode.libp2p.pubsub.publish("DecentioPubsubNetwork", { message: "Hello", name: this.rootStore.sessionStore._user });
 
-    this.peersDb.events.on("peer", (peer) => console.log("PeersDB: " + peer));
-    this.peersDb.events.on("replicated", (address) => console.log("Adrress: " + address));
-    this.peersDb.events.on("ready", () => {
-      console.log("ready");
-    });
-    // monitor.on("join", async (peerJoined) => {
-    //   await this.peersDb.add({ peerId: peerJoined });
-    //   const all = this.peersDb
-    //     .iterator({ limit: -1 })
-    //     .collect()
-    //     .map((e) => e.payload.value);
-    //   console.log(all);
+    // this.peersDb.events.on("peer", (peer) => console.log("PeersDB: " + peer));
+    // this.peersDb.events.on("replicated", (address) => console.log("Adrress: " + address));
+    // this.peersDb.events.on("ready", () => {
+    //   console.log("ready");
     // });
+    monitor.on("join", async (peerJoined) => {
+      console.log("Joined Peer: " + peerJoined);
+    });
     console.log(typeof peerInfo.id);
     // this.handlePeerConnected(peerInfo.id);
 
-    // monitor.on("leave", (peer) => console.log("Peer left", peer));
-    // monitor.on("error", (e) => console.error(e));
+    monitor.on("leave", (peer) => console.log("Peer left", peer));
+    monitor.on("error", (e) => console.error(e));
 
     console.log(await this.getIpfsPeers());
 
     const topics = await this.ipfsNode.pubsub.ls();
     console.log("Topics: " + topics);
   }
-  handlePeerConnected(ipfsPeer) {
-    console.log("IPFS Peer: " + ipfsPeer);
-    const ipfsId = ipfsPeer;
-    setTimeout(async () => {
-      await this.sendMessage(ipfsId, { userDb: this.peersDb.id });
-    }, 2000);
-  }
+  // handlePeerConnected(ipfsPeer) {
+  //   console.log("IPFS Peer: " + ipfsPeer);
+  //   const ipfsId = ipfsPeer;
+  //   setTimeout(async () => {
+  //     await this.sendMessage(ipfsId, { userDb: this.peersDb.id });
+  //   }, 2000);
+  // }
 
   async sendMessage(topic, message) {
     console.log("Message:" + message);
@@ -191,10 +190,13 @@ export default class DataStore {
   }
 
   async startIpfsNode(ipfsConf) {
-    this.ipfsNode = await IPFS.create(ipfsConf);
+    this.ipfsNode = await create(ipfsConf);
   }
   async startOrbitDb(orbitDbconf) {
     this.orbitDb = await OrbitDB.createInstance(this.ipfsNode, orbitDbconf);
+  }
+  async startOrbitDbPubsub() {
+    this.orbitDbPubsub = new OrbitDB.Pubsub(this.ipfsNode);
   }
   async getIpfsPeers() {
     const peers = await this.ipfsNode.swarm.peers();
