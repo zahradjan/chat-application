@@ -2,10 +2,11 @@ import OrbitDB from "orbit-db";
 import IPFS from "ipfs";
 import { makeAutoObservable } from "mobx";
 import { multiaddr } from "multiaddr";
-
+import PeerMonitor from "ipfs-pubsub-peer-monitor";
 export default class DataStore {
   ipfsNode;
   orbitDb;
+  pubsubMonitor;
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
@@ -34,9 +35,9 @@ export default class DataStore {
       relay: { enabled: true, hop: { enabled: true, active: true } },
       libp2p: {
         config: {
-          dht: {
-            enabled: true,
-          },
+          // dht: {
+          //   enabled: true,
+          // },
           modules: {
             transport: ["WebRTCStar", "WebSockets"],
           },
@@ -64,7 +65,8 @@ export default class DataStore {
       // Prevents large data transfers
       //TODO: nejak oddelit at to neni random ale treba username nebo neco
       // repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${Math.random() * 1000}}`,
-      repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.rootStore.sessionStore._user}}`,
+      // repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.rootStore.sessionStore._user}-${Math.random() * 1000}}`,
+      repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.rootStore.sessionStore._user}`,
       EXPERIMENTAL: {
         pubsub: true,
       },
@@ -103,69 +105,66 @@ export default class DataStore {
     await this.startIpfsNode(ipfsConf);
     await this.startOrbitDb(orbitDbconf);
     // this.ipfsNode.config.set("Addresses.Swarm", ["/ip4/0.0.0.0/tcp/4002", "/ip4/127.0.0.1/tcp/4003/ws"], console.log);
-
+    //TODO: Peer se connecti na stejnym pubsub topicu a lze volat ten connect, joined apod.
+    //potrebuji je umet propojit tak aby kazdy mel svoji DB a komunikovali nejakym chat roomu == pubsub room a v tom se ukladali ty zpravy
+    // vymodelovat si podrobneji jak tam bude proudit ta informace
     const peerInfo = await this.ipfsNode.id();
     console.log("Peer ID: " + peerInfo.id);
     // this.ipfsNode.libp2p.on("peer:connect", this.handlePeerConnected.bind(this));
-    this.ipfsNode.libp2p.on("peer:connect", (peer) => console.log("Connected peer: " + peer));
+    // this.ipfsNode.libp2p.pubsub.on("peer:connect", (peer) => console.log("Connected peer: " + peer));
     // this.ipfsNode.libp2p.on("peer:discovery", (peer) => console.log("Peer: " + peer));
+    // const defaultOptions = { accessController: { write: [this.orbitDb.identity.id] } };
+    this.peersDb = await this.orbitDb.feed("peers");
+    await this.peersDb.load();
 
-    // this.ipfsNode.libp2p.pubsub.subscribe(peerInfo.id, (msg) => console.log(msg));
-    // this.ipfsNode.libp2p.pubsub.publish(peerInfo.id, "Hello");
+    // const monitor = new PeerMonitor(this.ipfsNode.pubsub, "DecentioPubsubNetwork");
+    // this.ipfsNode.libp2p.pubsub.unsubscribe("DecentioPubsubNetwork");
+    this.ipfsNode.libp2p.pubsub.subscribe("DecentioPubsubNetwork", (msg) => console.log(msg));
+    this.ipfsNode.libp2p.pubsub.publish("DecentioPubsubNetwork", { message: "Hello", name: this.rootStore.sessionStore._user });
 
-    this.ipfsNode.libp2p.pubsub.subscribe("test", (msg) => console.log(msg));
-    this.ipfsNode.libp2p.pubsub.publish("test", "Hello");
+    this.peersDb.events.on("peer", (peer) => console.log("PeersDB: " + peer));
+    this.peersDb.events.on("replicated", (address) => console.log("Adrress: " + address));
+    this.peersDb.events.on("ready", () => {
+      console.log("ready");
+    });
+    // monitor.on("join", async (peerJoined) => {
+    //   await this.peersDb.add({ peerId: peerJoined });
+    //   const all = this.peersDb
+    //     .iterator({ limit: -1 })
+    //     .collect()
+    //     .map((e) => e.payload.value);
+    //   console.log(all);
+    // });
+    console.log(typeof peerInfo.id);
+    // this.handlePeerConnected(peerInfo.id);
 
-    // this.sendMessage("12D3KooWH1XyPHHfv2ipZEEkevBGrqNs7PXUCVALyh2vjLn9BtaJ", "Test");
-    console.log(await this.ipfsNode.bootstrap.list());
-    // if (peerInfo.id !== "12D3KooWH1XyPHHfv2ipZEEkevBGrqNs7PXUCVALyh2vjLn9BtaJ") {
-    //   const addr = "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/12D3KooWH1XyPHHfv2ipZEEkevBGrqNs7PXUCVALyh2vjLn9BtaJ";
-    //   try {
-    //     await this.ipfsNode.swarm.connect(addr);
-    //   } catch (err) {
-    //     console.log(err);
-    //     await this.ipfsNode.swarm.connect(addr);
-    //   }
-    // }
-    // this.handlePeerConnected(peerInfo);
-    console.log("Peer Addresses: " + peerInfo.addresses);
+    // monitor.on("leave", (peer) => console.log("Peer left", peer));
+    // monitor.on("error", (e) => console.error(e));
+
     console.log(await this.getIpfsPeers());
 
     const topics = await this.ipfsNode.pubsub.ls();
-    console.log(topics);
+    console.log("Topics: " + topics);
+  }
+  handlePeerConnected(ipfsPeer) {
+    console.log("IPFS Peer: " + ipfsPeer);
+    const ipfsId = ipfsPeer;
+    setTimeout(async () => {
+      await this.sendMessage(ipfsId, { userDb: this.peersDb.id });
+    }, 2000);
+  }
 
-    const defaultOptions = { accessController: { write: [this.orbitDb.identity.id] } };
-
-    const docStoreOptions = {
-      ...defaultOptions,
-      indexBy: "hash",
-    };
-
-    this.messages = await this.orbitDb.docstore("messages", docStoreOptions);
-    await this.messages.load();
-    console.log(this.messages.db);
-    // console.log(this.messages.db.address);
-    // await this.connectToPeer("12D3KooWMGZjxRq1jb288QMjCXdgDovBd8pianLiR4FUZKK59t7x");
-    // const user = new UserStorage(this.ipfsNode, this.orbitDb);
-    // await user.init();
-    // await user.updateProfileField("messages", messages.id);
-    // await user.load();
-    // await user.set("messages", messages.id);
-
-    // await this.updateProfileField("username", "Paul Atreides", user);
-    // user.set("avatarImage", "./../../images/paul_atreides.jpg");
-    // await this.updateProfileField("username", "Duncan Idaho", user);
-    // const getUserProfileFields = await user.getAllProfileFields();
-    // console.log(getUserProfileFields);
-    // const peers = await this.ipfsNode.pubsub.peers(peerInfo.id);
-
-    // setInterval(this.connectToCompanions.bind(this), 1000);
-    // this.connectToCompanions.bind(this);
-
-    this.peersDb = await this.orbitDb.keyvalue("peers", defaultOptions);
-    await this.peersDb.load();
-
-    // setInterval(this.connectToPeers.bind(this), 3000);
+  async sendMessage(topic, message) {
+    console.log("Message:" + message);
+    try {
+      const msgJsonString = JSON.stringify(message);
+      console.log(msgJsonString);
+      const messageBuffer = Buffer.from(msgJsonString);
+      console.log(typeof messageBuffer);
+      await this.ipfsNode.libp2p.pubsub.publish(topic, messageBuffer);
+    } catch (e) {
+      throw e;
+    }
   }
 
   async handleMessageReceived(msg) {
@@ -175,12 +174,13 @@ export default class DataStore {
     console.log(msgKeys[0]);
     switch (msgKeys[0]) {
       case "userDb":
-        var peerDb = await this.orbitDb.open(parsedMsg.userDb, { create: true, type: "keyvalue" });
+        var peerDb = await this.orbitDb.open(parsedMsg.userDb);
         peerDb.events.on("replicated", async () => {
-          if (peerDb.get("pieces")) {
-            await this.peersDb.set(peerDb.id, peerDb.all);
-            console.log(peerDb.all);
-          }
+          console.log("DB replicated");
+          // if (peerDb.get("pieces")) {
+          await this.peersDb.set(peerDb.id, peerDb.all);
+          console.log(peerDb.all);
+          // }
         });
         break;
       default:
@@ -190,64 +190,6 @@ export default class DataStore {
     // if (this.onmessage) this.onmessage(msg);
   }
 
-  async connectToPeer(multiaddr, protocol = "/p2p-circuit/ipfs/") {
-    try {
-      await this.ipfsNode.swarm.connect(multiaddr);
-    } catch (e) {
-      throw e;
-    }
-  }
-
-  getPeers() {
-    return this.peersDb.all;
-  }
-  async connectToPeers() {
-    const peerIds = Object.values(this.peersDb.all).map((peer) => peer.nodeId);
-    console.log(peerIds);
-    const connectedPeerIds = await this.getIpfsPeers();
-    await Promise.all(
-      peerIds.map(async (peerId) => {
-        if (connectedPeerIds.indexOf(peerId) !== -1) return;
-        try {
-          console.log(peerId);
-          await this.connectToPeer(peerId);
-        } catch (e) {}
-      })
-    );
-  }
-
-  handlePeerConnected(ipfsPeer) {
-    console.log("IPFS Peer: " + ipfsPeer);
-    const ipfsId = ipfsPeer.id.toB58String();
-    setTimeout(async () => {
-      await this.sendMessage(ipfsId, { userDb: "test" });
-    }, 2000);
-  }
-
-  // async queryCatalog(queryFn) {
-  //   const dbAddrs = Object.values(this.companions.all).map((peer) => peer.pieces);
-
-  //   const allPieces = await Promise.all(
-  //     dbAddrs.map(async (addr) => {
-  //       const db = await this.orbitDb.open(addr);
-  //       await db.load();
-
-  //       return db.query(queryFn);
-  //     })
-  //   );
-
-  //   return allPieces.reduce((flatPieces, pieces) => flatPieces.concat(pieces), this.messages.query(queryFn));
-  // }
-
-  async sendMessage(topic, message) {
-    try {
-      const msgString = JSON.stringify(message);
-      const messageBuffer = Buffer.from(msgString);
-      await this.ipfsNode.pubsub.publish(topic, messageBuffer);
-    } catch (e) {
-      throw e;
-    }
-  }
   async startIpfsNode(ipfsConf) {
     this.ipfsNode = await IPFS.create(ipfsConf);
   }

@@ -23,9 +23,11 @@ import {
 import { useStores } from "../../data/store/RootStore.js";
 import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { observer } from "mobx-react";
+import { ChatRoom } from "../chat/ChatRoom.js";
+import { Grid } from "react-loader-spinner";
 
 export const HomePage = observer(() => {
-  const { sessionStore } = useStores();
+  const { sessionStore, channelStore } = useStores();
   const _me = sessionStore._user;
 
   return (
@@ -64,19 +66,20 @@ export const HomePage = observer(() => {
             </Conversation>
           </ConversationList>
         </Sidebar>
-        <ChatContainer style={{ backgroundColor: ContentColorLight }}>
-          <ConversationHeader style={{ backgroundColor: PrimaryColor }}>
-            <ConversationHeader.Back style={{ backgroundColor: PrimaryColor }} />
-            <Avatar src={Chani} name="Zoe" />
-            <ConversationHeader.Content style={{ backgroundColor: PrimaryColor }} userName="Chani" info="Active 10 mins ago" />
-            <ConversationHeader.Actions>
-              <VoiceCallButton />
-              <VideoCallButton />
-              <InfoButton />
-            </ConversationHeader.Actions>
-          </ConversationHeader>
-          <MessageInput placeholder="Type message here" />
-        </ChatContainer>
+        {channelStore.isChatRoomReady() ? (
+          <ChatRoom></ChatRoom>
+        ) : (
+          // <div
+          //   style={{
+          //     position: "absolute",
+          //     top: "50%",
+          //     left: "50%",
+          //     transform: "translate(-50%, -50%)",
+          //   }}
+          // >
+          <Grid ariaLabel="loading-indicator" color={PrimaryColor} />
+          // </div>
+        )}
       </MainContainer>
     </div>
   );

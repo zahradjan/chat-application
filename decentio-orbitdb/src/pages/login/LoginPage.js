@@ -4,7 +4,7 @@ import { useStores } from "../../data/store/RootStore.js";
 import DecentioLogo from "../../icons/decentioLogoLight.png";
 
 export const LoginPage = observer(() => {
-  const { userStore, sessionStore, dataStore } = useStores();
+  const { userStore, sessionStore, dataStore, channelStore } = useStores();
   const userNameRef = useRef(null);
 
   const onSubmit = useCallback(
@@ -16,12 +16,13 @@ export const LoginPage = observer(() => {
         await sessionStore.login(userName);
         await dataStore.init();
         await userStore.init();
+        await channelStore.init();
         await userStore.updateUserField("username", userName);
 
         console.log(userStore.getAllProfileFields());
       }
     },
-    [sessionStore, userStore, dataStore]
+    [sessionStore, userStore, dataStore, channelStore]
   );
   return (
     <div

@@ -6,6 +6,7 @@
     "@chatscope/chat-ui-kit-react": "^1.9.3",
     "@chatscope/use-chat": "^1.4.0",
     "ipfs": "^0.58.1",
+    "ipfs-pubsub-peer-monitor": "^0.0.10",
     "js-cookie": "^3.0.1",
     "mobx": "^6.6.1",
     "mobx-react": "^7.5.2",

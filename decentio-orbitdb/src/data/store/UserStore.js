@@ -23,7 +23,6 @@ export default class UserStore {
       })
     );
     await this.user.load();
-    console.log(this.user.db);
   }
 
   async deleteProfileField(key) {
