@@ -1,7 +1,6 @@
 import OrbitDB from "orbit-db";
 import IPFS from "ipfs";
 import { makeAutoObservable } from "mobx";
-import { multiaddr } from "multiaddr";
 
 export default class DataStore {
   ipfsNode;

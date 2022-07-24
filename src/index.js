@@ -4,6 +4,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import ReactDOM from "react-dom";
 
+window.LOG = "orbit*";
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
