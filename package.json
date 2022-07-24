@@ -4,12 +4,10 @@
   "private": true,
   "dependencies": {
     "@chatscope/chat-ui-kit-react": "^1.9.3",
-    "@chatscope/use-chat": "^1.4.0",
     "ipfs": "^0.58.1",
     "js-cookie": "^3.0.1",
     "mobx": "^6.6.1",
     "mobx-react": "^7.5.2",
-    "multiaddr": "^10.0.1",
     "orbit-db": "^0.28.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

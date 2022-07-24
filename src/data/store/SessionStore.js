@@ -1,4 +1,3 @@
-import { User } from "@chatscope/use-chat";
 import Cookies from "js-cookie";
 import { makeAutoObservable } from "mobx";
 const cookieKey = "orbit-chat-username";

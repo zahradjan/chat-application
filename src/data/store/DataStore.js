@@ -32,38 +32,38 @@ export default class DataStore {
     const ipfsConfig = {
       // preload: { enabled: false },
       relay: { enabled: true, hop: { enabled: true, active: true } },
-      libp2p: {
-        config: {
-          dht: {
-            enabled: true,
-          },
-          modules: {
-            transport: ["WebRTCStar", "WebSockets"],
-          },
-          // transport: {
-          //   WebRTCStar: {
-          //     wrtc,
-          //   },
-          // },
-        },
-      },
-      peerDiscovery: {
-        autoDial: true, // Auto connect to discovered peers (limited by ConnectionManager minPeers)
-        mdns: {
-          // mdns options
-          interval: 1000, // ms
-          enabled: true,
-        },
-        webRTCStar: {
-          // webrtc-star options
-          interval: 1000, // ms
-          enabled: false,
-        },
-        // .. other discovery module options.
-      },
+      // libp2p: {
+      //   config: {
+      //     dht: {
+      //       enabled: true,
+      //     },
+      //     modules: {
+      //       transport: ["WebRTCStar", "WebSockets"],
+      //     },
+      //     // transport: {
+      //     //   WebRTCStar: {
+      //     //     wrtc,
+      //     //   },
+      //     // },
+      //   },
+      // },
+      // peerDiscovery: {
+      //   autoDial: true, // Auto connect to discovered peers (limited by ConnectionManager minPeers)
+      //   mdns: {
+      //     // mdns options
+      //     interval: 1000, // ms
+      //     enabled: true,
+      //   },
+      //   webRTCStar: {
+      //     // webrtc-star options
+      //     interval: 1000, // ms
+      //     enabled: false,
+      //   },
+      //   // .. other discovery module options.
+      // },
       // Prevents large data transfers
       //TODO: nejak oddelit at to neni random ale treba username nebo neco
-      repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${Math.random() * 1000}}`,
+      repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.rootStore.sessionStore._user}}`,
       EXPERIMENTAL: {
         pubsub: true,
       },
@@ -116,7 +116,6 @@ export default class DataStore {
     this.ipfsNode.libp2p.pubsub.publish("test", "Hello");
 
     // this.sendMessage("12D3KooWH1XyPHHfv2ipZEEkevBGrqNs7PXUCVALyh2vjLn9BtaJ", "Test");
-    console.log(await this.ipfsNode.bootstrap.list());
     // if (peerInfo.id !== "12D3KooWH1XyPHHfv2ipZEEkevBGrqNs7PXUCVALyh2vjLn9BtaJ") {
     //   const addr = "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/12D3KooWH1XyPHHfv2ipZEEkevBGrqNs7PXUCVALyh2vjLn9BtaJ";
     //   try {
@@ -143,28 +142,9 @@ export default class DataStore {
     this.messages = await this.orbitDb.docstore("messages", docStoreOptions);
     await this.messages.load();
     console.log(this.messages.db);
-    // console.log(this.messages.db.address);
-    // await this.connectToPeer("12D3KooWMGZjxRq1jb288QMjCXdgDovBd8pianLiR4FUZKK59t7x");
-    // const user = new UserStorage(this.ipfsNode, this.orbitDb);
-    // await user.init();
-    // await user.updateProfileField("messages", messages.id);
-    // await user.load();
-    // await user.set("messages", messages.id);
-
-    // await this.updateProfileField("username", "Paul Atreides", user);
-    // user.set("avatarImage", "./../../images/paul_atreides.jpg");
-    // await this.updateProfileField("username", "Duncan Idaho", user);
-    // const getUserProfileFields = await user.getAllProfileFields();
-    // console.log(getUserProfileFields);
-    // const peers = await this.ipfsNode.pubsub.peers(peerInfo.id);
-
-    // setInterval(this.connectToCompanions.bind(this), 1000);
-    // this.connectToCompanions.bind(this);
 
     this.peersDb = await this.orbitDb.keyvalue("peers", defaultOptions);
     await this.peersDb.load();
-
-    // setInterval(this.connectToPeers.bind(this), 3000);
   }
 
   async handleMessageReceived(msg) {
