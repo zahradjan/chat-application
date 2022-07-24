@@ -1,8 +1,9 @@
 import OrbitDB from "orbit-db";
-import { create } from "ipfs";
 import { makeAutoObservable } from "mobx";
 import { multiaddr } from "multiaddr";
 import PeerMonitor from "ipfs-pubsub-peer-monitor";
+import * as IPFS from "ipfs-core";
+
 export default class DataStore {
   ipfsNode;
   orbitDb;
@@ -166,31 +167,31 @@ export default class DataStore {
     }
   }
 
-  async handleMessageReceived(msg) {
-    const parsedMsg = JSON.parse(msg.data.toString());
-    const msgKeys = Object.keys(parsedMsg);
-    console.log("ParsedDb: " + parsedMsg);
-    console.log(msgKeys[0]);
-    switch (msgKeys[0]) {
-      case "userDb":
-        var peerDb = await this.orbitDb.open(parsedMsg.userDb);
-        peerDb.events.on("replicated", async () => {
-          console.log("DB replicated");
-          // if (peerDb.get("pieces")) {
-          await this.peersDb.set(peerDb.id, peerDb.all);
-          console.log(peerDb.all);
-          // }
-        });
-        break;
-      default:
-        break;
-    }
-    console.log(msg.data.toString());
-    // if (this.onmessage) this.onmessage(msg);
-  }
+  // async handleMessageReceived(msg) {
+  //   const parsedMsg = JSON.parse(msg.data.toString());
+  //   const msgKeys = Object.keys(parsedMsg);
+  //   console.log("ParsedDb: " + parsedMsg);
+  //   console.log(msgKeys[0]);
+  //   switch (msgKeys[0]) {
+  //     case "userDb":
+  //       var peerDb = await this.orbitDb.open(parsedMsg.userDb);
+  //       peerDb.events.on("replicated", async () => {
+  //         console.log("DB replicated");
+  //         // if (peerDb.get("pieces")) {
+  //         await this.peersDb.set(peerDb.id, peerDb.all);
+  //         console.log(peerDb.all);
+  //         // }
+  //       });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   console.log(msg.data.toString());
+  //   // if (this.onmessage) this.onmessage(msg);
+  // }
 
   async startIpfsNode(ipfsConf) {
-    this.ipfsNode = await create(ipfsConf);
+    this.ipfsNode = await IPFS.create(ipfsConf);
   }
   async startOrbitDb(orbitDbconf) {
     this.orbitDb = await OrbitDB.createInstance(this.ipfsNode, orbitDbconf);

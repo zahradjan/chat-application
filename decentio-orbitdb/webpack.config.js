@@ -23,13 +23,13 @@ module.exports = {
     extensions: [".js"],
   },
 
-  //   plugins: [
-  //     // Uncomment for a minified build
-  //     // new webpack.DefinePlugin({
-  //     //   'process.env': {
-  //     //     'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-  //     //   }
-  //     // }),
-  //     // new Uglify(uglifyOptions),
-  //   ],
+  plugins: [
+    // Uncomment for a minified build
+    // new webpack.DefinePlugin({
+    //   'process.env': {
+    //     'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    //   }
+    // }),
+    // new Uglify(uglifyOptions),
+  ],
 };
