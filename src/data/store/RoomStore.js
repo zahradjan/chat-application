@@ -4,10 +4,12 @@ export class RoomStore {
   room;
   chatRoomMessages;
   chatRoomMessagesDb;
+  textDecoder;
   constructor(rootStore) {
     this.rootStore = rootStore;
     this.room = undefined;
     this.chatRoomMessages = [];
+    this.textDecoder = new TextDecoder();
     makeAutoObservable(this);
   }
 
@@ -38,8 +40,9 @@ export class RoomStore {
     console.log(typeof msg.data);
     console.log(msg);
     //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
-    if (typeof msg.data === "object") msg.data = new TextDecoder().decode(msg.data);
-    const message = { data: msg.data, from: msg.from };
+    if (typeof msg.data === "object") msg.data = this.textDecoder.decode(msg.data);
+    const date = new Date(Date.now());
+    const message = { data: msg.data, from: msg.from, sentTime: `${date.getHours()}:${date.getMinutes()}` };
     console.log(message);
     this.chatRoomMessages.push(message);
   }

@@ -62,7 +62,8 @@ export const HomePage = observer(() => {
             </Conversation>
           </ConversationList>
         </Sidebar>
-        {roomStore.isChatRoomReady() && !!dataStore.ipfsNode ? <ChatRoom></ChatRoom> : <Loader></Loader>}
+        <ChatRoom></ChatRoom>
+        {/* {roomStore.isChatRoomReady() && !!dataStore.ipfsNode ? <ChatRoom></ChatRoom> : <Loader></Loader>} */}
       </MainContainer>
     </div>
   );

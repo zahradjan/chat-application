@@ -10,8 +10,6 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
-import { useEffect, useState } from "react";
-import { Grid } from "react-loader-spinner";
 import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { useStores } from "../../data/store/RootStore.js";
 
@@ -19,7 +17,6 @@ export const ChatRoom = observer(() => {
   const { roomStore, dataStore } = useStores();
   const data = toJS(roomStore.chatRoomMessages);
   const nodeId = dataStore.peerId;
-  // console.log(data);
   return (
     <ChatContainer style={{ backgroundColor: ContentColorLight }}>
       <ConversationHeader style={{ backgroundColor: PrimaryColor }}>
@@ -32,15 +29,14 @@ export const ChatRoom = observer(() => {
           <InfoButton />
         </ConversationHeader.Actions>
       </ConversationHeader>
-      <MessageList>
+      <MessageList loading={!(roomStore.isChatRoomReady() && !!dataStore.ipfsNode)}>
         {data.map((msg) => {
           console.log(msg);
           console.log(nodeId);
           return (
-            <Message
-              key={msg}
-              model={{ sentTime: "just now", direction: msg.from === nodeId ? "outgoing" : "incoming", position: "last", message: msg.data }}
-            ></Message>
+            <Message key={msg} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first", message: msg.data }}>
+              <Message.Footer sender={msg.from} sentTime={msg.sentTime}></Message.Footer>
+            </Message>
           );
         })}
       </MessageList>
