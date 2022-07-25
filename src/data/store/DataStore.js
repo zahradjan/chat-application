@@ -4,6 +4,7 @@ import { makeAutoObservable } from "mobx";
 export default class DataStore {
   ipfsNode;
   orbitDb;
+  peerId;
   constructor(rootStore) {
     this.rootStore = rootStore;
     makeAutoObservable(this);
@@ -100,6 +101,7 @@ export default class DataStore {
   async start(ipfsConf, orbitDbconf) {
     await this.startIpfsNode(ipfsConf);
     await this.startOrbitDb(orbitDbconf);
+    this.peerId = await this.getPeerId();
     await this.setPeersDb();
     await this.subscribeToYourPubsub();
     await this.subscribeToDecentioPubsub();
@@ -120,6 +122,11 @@ export default class DataStore {
     const peerInfo = await this.ipfsNode.id();
     console.log("Peer ID: " + peerInfo.id);
     await this.ipfsNode.pubsub.subscribe(peerInfo.id, (msg) => console.log("peersdbsub: " + msg));
+  }
+  async getPeerId() {
+    if (this.ipfsNode === undefined) throw Error("IPFS Node not defined");
+    const peerInfo = await this.ipfsNode.id();
+    return peerInfo.id;
   }
 
   async handleMessageReceived(msg) {

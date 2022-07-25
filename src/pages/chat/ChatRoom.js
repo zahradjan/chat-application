@@ -16,8 +16,9 @@ import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { useStores } from "../../data/store/RootStore.js";
 
 export const ChatRoom = observer(() => {
-  const { roomStore } = useStores();
+  const { roomStore, dataStore } = useStores();
   const data = toJS(roomStore.chatRoomMessages);
+  const nodeId = dataStore.peerId;
   // console.log(data);
   return (
     <ChatContainer style={{ backgroundColor: ContentColorLight }}>
@@ -34,7 +35,13 @@ export const ChatRoom = observer(() => {
       <MessageList>
         {data.map((msg) => {
           console.log(msg);
-          return <Message key={msg} model={{ sentTime: "just now", direction: "incoming", position: "first", message: msg }}></Message>;
+          console.log(nodeId);
+          return (
+            <Message
+              key={msg}
+              model={{ sentTime: "just now", direction: msg.from === nodeId ? "outgoing" : "incoming", position: "last", message: msg.data }}
+            ></Message>
+          );
         })}
       </MessageList>
       <MessageInput

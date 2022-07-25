@@ -23,7 +23,7 @@ import { ChatRoom } from "../chat/ChatRoom.js";
 import { Loader } from "../../components/Loader.js";
 
 export const HomePage = observer(() => {
-  const { sessionStore, roomStore } = useStores();
+  const { sessionStore, roomStore, dataStore } = useStores();
   const _me = sessionStore._user;
 
   return (
@@ -62,7 +62,7 @@ export const HomePage = observer(() => {
             </Conversation>
           </ConversationList>
         </Sidebar>
-        {roomStore.isChatRoomReady() ? <ChatRoom></ChatRoom> : <Loader></Loader>}
+        {roomStore.isChatRoomReady() && !!dataStore.ipfsNode ? <ChatRoom></ChatRoom> : <Loader></Loader>}
       </MainContainer>
     </div>
   );

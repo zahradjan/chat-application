@@ -36,9 +36,12 @@ export class RoomStore {
   }
   async echo(msg) {
     console.log(typeof msg.data);
+    console.log(msg);
     //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
     if (typeof msg.data === "object") msg.data = new TextDecoder().decode(msg.data);
-    this.chatRoomMessages.push(msg.data);
+    const message = { data: msg.data, from: msg.from };
+    console.log(message);
+    this.chatRoomMessages.push(message);
   }
 
   async connectToChatRoom(chatRoomName) {
