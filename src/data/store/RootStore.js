@@ -1,6 +1,7 @@
 import React from "react";
 import { ChannelStore } from "./ChannelStore.js";
 import DataStore from "./DataStore.js";
+import { RoomStore } from "./RoomStore.js";
 import SessionStore from "./SessionStore.js";
 import UserStore from "./UserStore.js";
 
@@ -10,6 +11,7 @@ export default class RootStore {
     this.dataStore = new DataStore(this);
     this.userStore = new UserStore(this);
     this.channelStore = new ChannelStore(this);
+    this.roomStore = new RoomStore(this);
     this.initStores();
   }
   async initStores() {
@@ -18,6 +20,7 @@ export default class RootStore {
       await this.dataStore.init();
       await this.userStore.init();
       await this.channelStore.init("DecentioGlobalNetwork");
+      await this.roomStore.init();
     }
   }
 }

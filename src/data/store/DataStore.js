@@ -103,11 +103,11 @@ export default class DataStore {
     await this.setPeersDb();
     await this.subscribeToYourPubsub();
     await this.subscribeToDecentioPubsub();
-    setInterval(async () => {
-      console.log(await this.getIpfsPeers());
-      const topics = await this.ipfsNode.pubsub.ls();
-      console.log(topics);
-    }, 10000);
+    // setInterval(async () => {
+    //   console.log(await this.getIpfsPeers());
+    //   const topics = await this.ipfsNode.pubsub.ls();
+    //   console.log(topics);
+    // }, 10000);
   }
   async setPeersDb() {
     this.peersDb = await this.orbitDb.feed("peers");

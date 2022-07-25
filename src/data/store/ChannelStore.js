@@ -1,5 +1,5 @@
 import IpfsPubsubPeerMonitor from "ipfs-pubsub-peer-monitor";
-import { makeAutoObservable, runInAction, toJS } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 export class ChannelStore {
   channel;

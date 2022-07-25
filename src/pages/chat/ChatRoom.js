@@ -16,8 +16,8 @@ import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { useStores } from "../../data/store/RootStore.js";
 
 export const ChatRoom = observer(() => {
-  // const { channelStore } = useStores();
-
+  const { roomStore } = useStores();
+  const data = toJS(roomStore.chatRoomMessages);
   // console.log(data);
   return (
     <ChatContainer style={{ backgroundColor: ContentColorLight }}>
@@ -31,17 +31,17 @@ export const ChatRoom = observer(() => {
           <InfoButton />
         </ConversationHeader.Actions>
       </ConversationHeader>
-      {/* <MessageList>
+      <MessageList>
         {data.map((msg) => {
           console.log(msg);
-          return <Message key={msg.message.key} model={{ sentTime: "just now", direction: "incoming", position: "first", message: msg }}></Message>;
+          return <Message key={msg} model={{ sentTime: "just now", direction: "incoming", position: "first", message: msg }}></Message>;
         })}
-      </MessageList> */}
+      </MessageList>
       <MessageInput
         placeholder="Type message here"
-        // onSend={(msg) => {
-        //   channelStore.sendMessageToChatRoom("FirstChatRoom", msg);
-        // }}
+        onSend={(msg) => {
+          roomStore.sendMessageToChatRoom("TestChatRoom", msg);
+        }}
       />
     </ChatContainer>
   );

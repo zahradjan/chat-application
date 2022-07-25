@@ -20,9 +20,10 @@ import { useStores } from "../../data/store/RootStore.js";
 import { PrimaryColor } from "../../constants/constants.js";
 import { observer } from "mobx-react";
 import { ChatRoom } from "../chat/ChatRoom.js";
+import { Loader } from "../../components/Loader.js";
 
 export const HomePage = observer(() => {
-  const { sessionStore } = useStores();
+  const { sessionStore, roomStore } = useStores();
   const _me = sessionStore._user;
 
   return (
@@ -61,23 +62,8 @@ export const HomePage = observer(() => {
             </Conversation>
           </ConversationList>
         </Sidebar>
-        <ChatRoom></ChatRoom>
-        {/* {channelStore.isChatRoomReady() ? (
-          <ChatRoom></ChatRoom>
-        ) : (
-          // <div
-          //   style={{
-          //     position: "absolute",
-          //     top: "50%",
-          //     left: "50%",
-          //     transform: "translate(-50%, -50%)",
-          //   }}
-          // >
-          <Grid ariaLabel="loading-indicator" color={PrimaryColor} />
-          // </div>
-        )} */}
+        {roomStore.isChatRoomReady() ? <ChatRoom></ChatRoom> : <Loader></Loader>}
       </MainContainer>
     </div>
   );
 });
-// export default inject("store")(observer(HomePage));
