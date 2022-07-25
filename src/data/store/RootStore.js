@@ -17,7 +17,7 @@ export default class RootStore {
     if (this.sessionStore.isAuthenticated()) {
       await this.dataStore.init();
       await this.userStore.init();
-      await this.channelStore.init();
+      await this.channelStore.init("DecentioGlobalNetwork");
     }
   }
 }

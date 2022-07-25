@@ -16,7 +16,7 @@ const LoginPage = observer(() => {
         await sessionStore.login(userName);
         await dataStore.init();
         await userStore.init();
-        await channelStore.init();
+        await channelStore.init("DecentioGlobalNetwork");
         await userStore.updateUserField("username", userName);
         console.log(userStore.getAllProfileFields());
       }

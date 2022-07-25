@@ -13,9 +13,11 @@ export class ChannelStore {
   async init(topic) {
     if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
-    runInAction(() => {
+    runInAction(async () => {
       this.channelName = topic;
-      this.channel = new IpfsPubsubPeerMonitor(this.rootStore.ipfsNode.pubsub, topic);
+      this.channel = new IpfsPubsubPeerMonitor(this.rootStore.dataStore.ipfsNode.pubsub, topic);
+      await this.listenForJoinedPeers();
+      await this.listenForLeftPeers();
     });
   }
   async listenForJoinedPeers() {

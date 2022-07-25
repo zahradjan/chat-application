@@ -8,26 +8,21 @@ import PaulAtreides from "../../images/paul_atreides.jpg";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
   Avatar,
-  ChatContainer,
   Conversation,
   ConversationHeader,
   ConversationList,
-  InfoButton,
   MainContainer,
-  MessageInput,
+
   // Search,
   Sidebar,
-  VideoCallButton,
-  VoiceCallButton,
 } from "@chatscope/chat-ui-kit-react";
 import { useStores } from "../../data/store/RootStore.js";
-import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
+import { PrimaryColor } from "../../constants/constants.js";
 import { observer } from "mobx-react";
 import { ChatRoom } from "../chat/ChatRoom.js";
-import { Grid } from "react-loader-spinner";
 
 export const HomePage = observer(() => {
-  const { sessionStore, channelStore } = useStores();
+  const { sessionStore } = useStores();
   const _me = sessionStore._user;
 
   return (
@@ -66,7 +61,8 @@ export const HomePage = observer(() => {
             </Conversation>
           </ConversationList>
         </Sidebar>
-        {channelStore.isChatRoomReady() ? (
+        <ChatRoom></ChatRoom>
+        {/* {channelStore.isChatRoomReady() ? (
           <ChatRoom></ChatRoom>
         ) : (
           // <div
@@ -79,7 +75,7 @@ export const HomePage = observer(() => {
           // >
           <Grid ariaLabel="loading-indicator" color={PrimaryColor} />
           // </div>
-        )}
+        )} */}
       </MainContainer>
     </div>
   );

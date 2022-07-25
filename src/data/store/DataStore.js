@@ -1,7 +1,6 @@
 import OrbitDB from "orbit-db";
 import IPFS from "ipfs";
 import { makeAutoObservable } from "mobx";
-import IpfsPubsubPeerMonitor from "ipfs-pubsub-peer-monitor";
 export default class DataStore {
   ipfsNode;
   orbitDb;
@@ -103,6 +102,7 @@ export default class DataStore {
     await this.startOrbitDb(orbitDbconf);
     await this.setPeersDb();
     await this.subscribeToYourPubsub();
+    await this.subscribeToDecentioPubsub();
     setInterval(async () => {
       console.log(await this.getIpfsPeers());
       const topics = await this.ipfsNode.pubsub.ls();
@@ -142,7 +142,6 @@ export default class DataStore {
         break;
     }
     console.log(msg.data.toString());
-    // if (this.onmessage) this.onmessage(msg);
   }
 
   async connectToPeer(multiaddr, protocol = "/dnsaddr/bootstrap.libp2p.io/p2p/") {
