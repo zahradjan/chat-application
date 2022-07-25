@@ -16,12 +16,11 @@ export class ChannelStore {
     if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
     runInAction(async () => {
-      this.room = await this.rootStore.dataStore.ipfsNode.libp2p.pubsub;
+      this.room = await this.rootStore.dataStore.ipfsNode.pubsub;
       this.chatRoomMessagesDb = await this.rootStore.dataStore.orbitDb.feed("messages");
       await this.chatRoomMessagesDb.load();
       await this.setMessagesFromDb();
-
-      await this.connectToChatRoom("FirstChatRoom");
+      // await this.connectToChatRoom("FirstChatRoom");
     });
   }
   isChatRoomReady() {
@@ -34,7 +33,6 @@ export class ChannelStore {
     runInAction(() => {
       this.chatRoomMessages = entries;
     });
-    // all.map((e) => this.chatRoomMessages.push(e.payload.value));
   }
 
   async connectToChatRoom(chatRoomName) {

@@ -14,9 +14,11 @@ export default class RootStore {
   }
   async initStores() {
     await this.sessionStore.init();
-    await this.dataStore.init();
-    await this.userStore.init();
-    await this.channelStore.init();
+    if (this.sessionStore.isAuthenticated()) {
+      await this.dataStore.init();
+      await this.userStore.init();
+      await this.channelStore.init();
+    }
   }
 }
 export const store = new RootStore();

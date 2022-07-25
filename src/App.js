@@ -7,11 +7,9 @@ import { MainPage } from "./pages/main/MainPage.js";
 
 function AppView() {
   return (
-    <React.Suspense fallback={<p>Loading</p>}>
-      <Routes>
-        <Route path="/" element={<MainPage />}></Route>
-      </Routes>
-    </React.Suspense>
+    <Routes>
+      <Route path="/" element={<MainPage />}></Route>
+    </Routes>
   );
 }
 

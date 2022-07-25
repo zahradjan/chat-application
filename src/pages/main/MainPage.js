@@ -1,29 +1,25 @@
 import { observer } from "mobx-react";
-import { Grid } from "react-loader-spinner";
-import { PrimaryColor } from "../../constants/constants.js";
+import React from "react";
+import { Loader } from "../../components/Loader.js";
 import { useStores } from "../../data/store/RootStore.js";
 import { HomePage } from "../home/HomePage.js";
-import { LoginPage } from "../login/LoginPage.js";
+// import LoginPage from "../login/LoginPage.js";
+// import { LoginPage } from "../login/LoginPage.js";
+
+const LoginPage = React.lazy(() => import("../login/LoginPage.js"));
+
 export const MainPage = observer(() => {
   const { sessionStore, userStore } = useStores();
 
-  // console.log("JSEM TU");
-  return userStore.isUserStoreReady() ? (
-    sessionStore.isAuthenticated() ? (
-      <HomePage />
+  return sessionStore.isAuthenticated() ? (
+    userStore.isUserStoreReady() ? (
+      <HomePage></HomePage>
     ) : (
-      <LoginPage />
+      <Loader></Loader>
     )
   ) : (
-    <div
-      style={{
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-      }}
-    >
-      <Grid ariaLabel="loading-indicator" color={PrimaryColor} />
-    </div>
+    <React.Suspense fallback={<Loader></Loader>}>
+      <LoginPage></LoginPage>
+    </React.Suspense>
   );
 });
