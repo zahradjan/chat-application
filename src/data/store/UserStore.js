@@ -42,11 +42,4 @@ export default class UserStore {
     const cid = await this.user.set(key, value);
     return cid;
   }
-  async loadFixtureData(fixtureData) {
-    const fixtureKeys = Object.keys(fixtureData);
-    for (let i in fixtureKeys) {
-      let key = fixtureKeys[i];
-      if (!this.user.get(key)) await this.user.set(key, fixtureData[key]);
-    }
-  }
 }

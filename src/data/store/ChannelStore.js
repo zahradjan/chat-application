@@ -1,57 +1,33 @@
+import IpfsPubsubPeerMonitor from "ipfs-pubsub-peer-monitor";
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 
 export class ChannelStore {
-  room;
-  chatRoomMessagesDb;
-  chatRoomMessages;
+  channel;
+  channelName;
+
   constructor(rootStore) {
     this.rootStore = rootStore;
-    this.room = undefined;
-    this.chatRoomMessagesDb = undefined;
-    this.chatRoomMessages = [];
+    this.channel = undefined;
     makeAutoObservable(this);
   }
-
-  async init() {
+  async init(topic) {
     if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
-    runInAction(async () => {
-      this.room = await this.rootStore.dataStore.ipfsNode.pubsub;
-      this.chatRoomMessagesDb = await this.rootStore.dataStore.orbitDb.feed("messages");
-      await this.chatRoomMessagesDb.load();
-      await this.setMessagesFromDb();
-      // await this.connectToChatRoom("FirstChatRoom");
-    });
-  }
-  isChatRoomReady() {
-    return !!this.room;
-  }
-  async setMessagesFromDb() {
-    const entries = [];
-    const all = await toJS(this.chatRoomMessagesDb.all);
-    all.map((e) => entries.push(e.payload.value));
     runInAction(() => {
-      this.chatRoomMessages = entries;
+      this.channelName = topic;
+      this.channel = new IpfsPubsubPeerMonitor(this.rootStore.ipfsNode.pubsub, topic);
     });
   }
-
-  async connectToChatRoom(chatRoomName) {
-    runInAction(async () => {
-      await this.room.subscribe(chatRoomName, this.handleReceivingMessages.bind(this));
+  async listenForJoinedPeers() {
+    this.channel.on("join", async (peerJoined) => {
+      console.log("Peer joined: " + peerJoined);
+      console.log(`Peers on Pubsub ${this.channelName}: ` + (await this.channel.getPeers()));
     });
   }
-
-  async handleReceivingMessages(msg) {
-    runInAction(() => {
-      this.chatRoomMessagesDb.add({ message: msg });
-      console.log(this.chatRoomMessagesDb.all);
-      this.chatRoomMessages.push(msg);
-      console.log(msg);
-    });
-  }
-  async sendMessageToChatRoom(chatRoomName, message) {
-    runInAction(async () => {
-      await this.room.publish(chatRoomName, message);
+  async listenForLeftPeers() {
+    this.channel.on("leave", async (peerLeft) => {
+      console.log("Peer left: " + peerLeft);
+      console.log(`Peers on Pubsub ${this.channelName}: ` + (await this.channel.getPeers()));
     });
   }
 }
