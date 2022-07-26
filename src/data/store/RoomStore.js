@@ -1,6 +1,8 @@
 import { makeAutoObservable, runInAction, toJS } from "mobx";
+import { AvatarGenerator } from "random-avatar-generator";
 
 export class RoomStore {
+  avatar;
   room;
   chatRoomMessages;
   chatRoomMessagesDb;
@@ -10,6 +12,7 @@ export class RoomStore {
     this.room = undefined;
     this.chatRoomMessages = [];
     this.textDecoder = new TextDecoder();
+    this.avatar = new AvatarGenerator();
     makeAutoObservable(this);
   }
 
@@ -42,7 +45,12 @@ export class RoomStore {
     //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
     if (typeof msg.data === "object") msg.data = this.textDecoder.decode(msg.data);
     const date = new Date(Date.now());
-    const message = { data: msg.data, from: msg.from, sentTime: `${date.getHours()}:${date.getMinutes()}` };
+    const message = {
+      data: msg.data,
+      from: msg.from,
+      sentTime: `${date.getHours()}:${date.getMinutes()}`,
+      avatar: this.avatar.generateRandomAvatar(),
+    };
     console.log(message);
     this.chatRoomMessages.push(message);
   }
@@ -53,14 +61,6 @@ export class RoomStore {
     });
   }
 
-  // async handleReceivingMessages(msg) {
-  //   runInAction(() => {
-  //     this.chatRoomMessagesDb.add({ message: msg });
-  //     console.log(this.chatRoomMessagesDb.all);
-  //     this.chatRoomMessages.push(msg);
-  //     console.log(msg);
-  //   });
-  // }
   async sendMessageToChatRoom(chatRoomName, message) {
     runInAction(async () => {
       await this.room.publish(chatRoomName, message);

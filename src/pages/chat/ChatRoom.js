@@ -1,4 +1,5 @@
 import {
+  Avatar,
   ChatContainer,
   ConversationHeader,
   InfoButton,
@@ -35,6 +36,7 @@ export const ChatRoom = observer(() => {
           console.log(nodeId);
           return (
             <Message key={msg} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first", message: msg.data }}>
+              <Avatar src={msg.avatar}></Avatar>
               <Message.Footer sender={msg.from} sentTime={msg.sentTime}></Message.Footer>
             </Message>
           );
