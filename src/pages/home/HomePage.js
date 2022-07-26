@@ -21,6 +21,7 @@ import { PrimaryColor } from "../../constants/constants.js";
 import { observer } from "mobx-react";
 import { ChatRoom } from "../chat/ChatRoom.js";
 import { Loader } from "../../components/Loader.js";
+import { ChatConversations } from "../chat/ChatConversations.js";
 
 export const HomePage = observer(() => {
   const { sessionStore, roomStore, dataStore } = useStores();
@@ -36,31 +37,7 @@ export const HomePage = observer(() => {
             <ConversationHeader.Content style={{ backgroundColor: PrimaryColor }} userName={_me}></ConversationHeader.Content>
           </ConversationHeader>
 
-          <ConversationList style={{ backgroundColor: "#bacee0" }}>
-            <Conversation name="Kynes" lastSenderName="Kynes" info="Yes i can do it for you">
-              <Avatar src={Kynes} name="Kynes" status="available" />
-            </Conversation>
-
-            <Conversation name="Baron" lastSenderName="Baron" info="Yes i can do it for you">
-              <Avatar src={Baron} name="Baron" status="dnd" />
-            </Conversation>
-
-            <Conversation name="Chani" lastSenderName="Chani" info="Yes i can do it for you" unreadCnt={3}>
-              <Avatar src={Chani} name="Chani" status="available" />
-            </Conversation>
-
-            <Conversation name="DukeLeto" lastSenderName="DukeLeto" info="Yes i can do it for you">
-              <Avatar src={DukeLeto} name="DukeLeto" status="unavailable" />
-            </Conversation>
-
-            <Conversation name="LadyJessica" lastSenderName="LadyJessica" info="Yes i can do it for you">
-              <Avatar src={LadyJessica} name="LadyJessica" status="eager" />
-            </Conversation>
-
-            <Conversation name="Duncan" lastSenderName="Duncan" info="Yes i can do it for you">
-              <Avatar src={DuncanIdaho} name="Duncan" status="away" />
-            </Conversation>
-          </ConversationList>
+          <ChatConversations></ChatConversations>
         </Sidebar>
         <ChatRoom></ChatRoom>
         {/* {roomStore.isChatRoomReady() && !!dataStore.ipfsNode ? <ChatRoom></ChatRoom> : <Loader></Loader>} */}

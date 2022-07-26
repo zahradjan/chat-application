@@ -1,7 +1,9 @@
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 import { AvatarGenerator } from "random-avatar-generator";
+import { Message } from "../models/Message.js";
 
 export class RoomStore {
+  //TODO: avatar temporary dont forget to refactor this
   avatar;
   room;
   chatRoomMessages;
@@ -45,13 +47,9 @@ export class RoomStore {
     //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
     if (typeof msg.data === "object") msg.data = this.textDecoder.decode(msg.data);
     const date = new Date(Date.now());
-    const message = {
-      data: msg.data,
-      from: msg.from,
-      sentTime: `${date.getHours()}:${date.getMinutes()}`,
-      avatar: this.avatar.generateRandomAvatar(),
-    };
+    const message = new Message(msg.from, msg.data, `${date.getHours()}:${date.getMinutes()}`, this.avatar.generateRandomAvatar(msg.from));
     console.log(message);
+    this.chatRoomMessagesDb.add(message);
     this.chatRoomMessages.push(message);
   }
 
