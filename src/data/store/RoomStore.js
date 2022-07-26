@@ -1,20 +1,14 @@
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 import { AvatarGenerator } from "random-avatar-generator";
 import { Message } from "../models/Message.js";
+import { ChatRoom } from "../models/Room.js";
 
 export class RoomStore {
   //TODO: avatar temporary dont forget to refactor this
-  avatar;
-  room;
-  chatRoomMessages;
-  chatRoomMessagesDb;
-  textDecoder;
+  rooms;
   constructor(rootStore) {
     this.rootStore = rootStore;
-    this.room = undefined;
-    this.chatRoomMessages = [];
-    this.textDecoder = new TextDecoder();
-    this.avatar = new AvatarGenerator();
+    this.rooms = [];
     makeAutoObservable(this);
   }
 
@@ -22,46 +16,30 @@ export class RoomStore {
     if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
 
-    runInAction(async () => {
-      this.room = await this.rootStore.dataStore.ipfsNode.pubsub;
-      this.chatRoomMessagesDb = await this.rootStore.dataStore.orbitDb.feed("messages");
-      await this.chatRoomMessagesDb.load();
-      await this.setMessagesFromDb();
-      await this.connectToChatRoom("TestChatRoom");
-    });
+    // runInAction(async () => {
+    //   this.room = await this.rootStore.dataStore.ipfsNode.pubsub;
+    //   this.chatRoomMessagesDb = await this.rootStore.dataStore.orbitDb.feed("messages");
+    //   await this.chatRoomMessagesDb.load();
+    //   await this.setMessagesFromDb();
+    //   await this.connectToChatRoom("TestChatRoom");
+    // });
   }
-  isChatRoomReady() {
-    return !!this.room;
-  }
-  async setMessagesFromDb() {
-    const entries = [];
-    const all = await toJS(this.chatRoomMessagesDb.all);
-    all.map((e) => entries.push(e.payload.value));
-    runInAction(() => {
-      this.chatRoomMessages = entries;
-    });
-  }
-  async echo(msg) {
-    console.log(typeof msg.data);
-    console.log(msg);
-    //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
-    if (typeof msg.data === "object") msg.data = this.textDecoder.decode(msg.data);
-    const date = new Date(Date.now());
-    const message = new Message(msg.from, msg.data, `${date.getHours()}:${date.getMinutes()}`, this.avatar.generateRandomAvatar(msg.from));
-    console.log(message);
-    this.chatRoomMessagesDb.add(message);
-    this.chatRoomMessages.push(message);
+  createRoom(roomName) {
+    if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
+    if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
+    const chatRoom = new ChatRoom(this.rootStore.dataStore.ipfsNode.pubsub, this.rootStore.dataStore.orbitDb, roomName);
+    this.rooms.push(chatRoom);
+    return chatRoom;
   }
 
-  async connectToChatRoom(chatRoomName) {
-    runInAction(async () => {
-      await this.room.subscribe(chatRoomName, await this.echo.bind(this));
-    });
+  getRoom(roomName) {
+    //TODO: kdyz nenajde apod.
+    return this.rooms.find((room) => (roomName = room.roomName));
   }
 
-  async sendMessageToChatRoom(chatRoomName, message) {
-    runInAction(async () => {
-      await this.room.publish(chatRoomName, message);
-    });
+  isChatRoomReady(roomName) {
+    const room = this.getRoom(roomName);
+    console.log(!!room);
+    return !!room;
   }
 }
