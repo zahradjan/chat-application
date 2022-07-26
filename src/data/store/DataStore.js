@@ -82,7 +82,7 @@ export default class DataStore {
             "/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/",
             "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star",
             "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star",
-            // "/ip4/0.0.0.0/tcp/4002",
+            // // "/ip4/0.0.0.0/tcp/4002",
             // "/ip4/127.0.0.1/tcp/4003/ws",
             // "/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss",
             // "/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star",
@@ -91,7 +91,12 @@ export default class DataStore {
             // "/ip6/::/tcp/4011/ws",
           ],
         },
-        Bootstrap: [],
+        Bootstrap: [
+          // "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
+          // "/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/",
+          // "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star",
+          // "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star",
+        ],
       },
     };
 
@@ -106,10 +111,21 @@ export default class DataStore {
     await this.subscribeToYourPubsub();
     await this.subscribeToDecentioPubsub();
     // setInterval(async () => {
-    //   console.log(await this.getIpfsPeers());
-    //   const topics = await this.ipfsNode.pubsub.ls();
-    //   console.log(topics);
+    //   const peers = await this.getIpfsPeers();
+    //   console.log(peers);
+    //   await peers.map(async (peerId) => {
+    //     try {
+    //       await this.connectToPeer(peerId.peer);
+    //     } catch {}
+    //   });
+    //   // const topics = await this.ipfsNode.pubsub.ls();
+    //   // console.log(topics);
     // }, 10000);
+    // this.ipfsNode.libp2p.on("peer:connect", this.onPeerConnect.bind(this));
+  }
+  async onPeerConnect(peerId) {
+    console.log(peerId);
+    this.ipfsNode.pubsub.publish(peerId, "Hello there");
   }
   async setPeersDb() {
     this.peersDb = await this.orbitDb.feed("peers");
@@ -154,8 +170,9 @@ export default class DataStore {
   async connectToPeer(multiaddr, protocol = "/dnsaddr/bootstrap.libp2p.io/p2p/") {
     try {
       await this.ipfsNode.swarm.connect(protocol + multiaddr);
-    } catch (e) {
-      throw e;
+    } catch (err) {
+      console.log(err);
+      await this.ipfsNode.swarm.connect(protocol + multiaddr);
     }
   }
 

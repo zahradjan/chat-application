@@ -36,7 +36,7 @@ export const ChatRoom = observer(() => {
           console.log(nodeId);
           return (
             <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first", message: msg.data }}>
-              <Avatar src={msg.avatar}></Avatar>
+              <Avatar key={msg._id} src={msg.avatar}></Avatar>
               <Message.Footer sender={msg.from} sentTime={msg.sentTime}></Message.Footer>
             </Message>
           );
