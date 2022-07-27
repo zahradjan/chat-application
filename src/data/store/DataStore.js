@@ -131,13 +131,33 @@ export default class DataStore {
     this.peersDb = await this.orbitDb.feed("peers");
     await this.peersDb.load();
   }
+  async getPeersDbId() {
+    const id = await this.peersDb.id;
+    return id;
+  }
   async subscribeToDecentioPubsub() {
     await this.ipfsNode.pubsub.subscribe("DecentioGlobalNetwork", (msg) => console.log(msg));
   }
   async subscribeToYourPubsub() {
     const peerInfo = await this.ipfsNode.id();
     console.log("Peer ID: " + peerInfo.id);
-    await this.ipfsNode.pubsub.subscribe(peerInfo.id, (msg) => console.log("peersdbsub: " + msg));
+    await this.ipfsNode.pubsub.subscribe(peerInfo.id, async (msg) => {
+      console.log(msg.data);
+      if (typeof msg.data === "object") msg.data = new TextDecoder().decode(msg.data);
+      const parsedMsg = JSON.parse(msg.data);
+      console.log(parsedMsg);
+      await this.replicateDb(parsedMsg);
+    });
+  }
+  async replicateDb(parsedMsg) {
+    var peerDbOuter = await this.orbitDb.open(parsedMsg.peerDb);
+    peerDbOuter.events.on("replicated", async () => {
+      console.log("DB replicated");
+      // if (peerDb.get("pieces")) {
+      // await this.peersDb.set(peerDbOuter.id, peerDbOuter.all);
+      console.log(peerDbOuter.all);
+      // }
+    });
   }
   async getPeerId() {
     if (this.ipfsNode === undefined) throw Error("IPFS Node not defined");
