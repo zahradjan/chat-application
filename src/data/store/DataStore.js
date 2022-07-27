@@ -104,28 +104,33 @@ export default class DataStore {
   }
 
   async start(ipfsConf, orbitDbconf) {
+    console.log(this.ipfsNode);
+    console.log(this.orbitDb);
     await this.startIpfsNode(ipfsConf);
     await this.startOrbitDb(orbitDbconf);
+    console.log(this.ipfsNode);
+    console.log(this.orbitDb);
     this.peerId = await this.getPeerId();
     await this.setPeersDb();
     await this.subscribeToYourPubsub();
     await this.subscribeToDecentioPubsub();
-    setInterval(async () => {
-      const peers = await this.getIpfsPeers();
-      console.log(peers);
-      // await peers.map(async (peerId) => {
-      //   try {
-      //     await this.connectToPeer(peerId.peer);
-      //   } catch {}
-      // });
-      // const topics = await this.ipfsNode.pubsub.ls();
-      // console.log(topics);
-    }, 10000);
-    // this.ipfsNode.libp2p.on("peer:connect", this.onPeerConnect.bind(this));
+    // setInterval(async () => {
+    //   const peers = await this.getIpfsPeers();
+    //   console.log(peers);
+    //   // await peers.map(async (peerId) => {
+    //   //   try {
+    //   //     await this.connectToPeer(peerId.peer);
+    //   //   } catch {}
+    //   // });
+    //   // const topics = await this.ipfsNode.pubsub.ls();
+    //   // console.log(topics);
+    // }, 10000);
+    // this.ipfsNode.libp2p.connectionManager.on("peer:connect", this.onPeerConnect.bind(this));
   }
-  async onPeerConnect(peerId) {
-    console.log(peerId);
-    this.ipfsNode.pubsub.publish(peerId, "Hello there");
+  async onPeerConnect(connection) {
+    console.log("Peer connected:" + connection.remotePeer._idB58String);
+
+    // this.ipfsNode.pubsub.publish(peerId, "Hello there");
   }
   async setPeersDb() {
     this.peersDb = await this.orbitDb.feed("peers");
@@ -142,10 +147,10 @@ export default class DataStore {
     const peerInfo = await this.ipfsNode.id();
     console.log("Peer ID: " + peerInfo.id);
     await this.ipfsNode.pubsub.subscribe(peerInfo.id, async (msg) => {
-      console.log(msg.data);
+      // console.log(msg.data);
       processMessage(msg);
       const parsedMsg = JSON.parse(msg.data);
-      console.log(parsedMsg);
+      // console.log(parsedMsg);
       await this.replicateDb(parsedMsg);
     });
   }
@@ -155,7 +160,7 @@ export default class DataStore {
       console.log("DB replicated");
       // if (peerDb.get("pieces")) {
       // await this.peersDb.set(peerDbOuter.id, peerDbOuter.all);
-      console.log(peerDbOuter.all);
+      // console.log(peerDbOuter.all);
       // }
     });
   }

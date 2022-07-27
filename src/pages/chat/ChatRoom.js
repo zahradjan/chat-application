@@ -42,8 +42,8 @@ export const ChatRoom = observer(() => {
       <MessageList loading={!data}>
         {data
           ? data.map((msg) => {
-              console.log(msg);
-              console.log(nodeId);
+              // console.log(msg);
+              // console.log(nodeId);
               return (
                 <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first", message: msg.data }}>
                   <Avatar key={msg._id} src={msg.avatar}></Avatar>

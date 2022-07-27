@@ -37,6 +37,7 @@ export class ChatRoom {
 
   async connectToChatRoom() {
     runInAction(async () => {
+      await this.pubsub.unsubscribe(this.roomName, (msg) => console.log(msg));
       await this.pubsub.subscribe(this.roomName, await this.echo.bind(this));
     });
   }
@@ -64,7 +65,7 @@ export class ChatRoom {
 
     // const parsedMessage = JSON.parse(msg.data);
     // console.log(parsedMessage);
-    // this.chatMessagesDb.add(parsedMessage);
+    this.chatMessagesDb.add(message);
     this.chatRoomMessages.push(message);
   }
 }
