@@ -11,7 +11,8 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useFilePicker } from "use-file-picker";
 import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { useStores } from "../../data/store/RootStore.js";
 
@@ -24,7 +25,9 @@ export const ChatRoom = observer(() => {
     }
     initRoom();
   }, [room]);
-
+  const [openFileSelector, { filesContent, loading }] = useFilePicker({
+    accept: ".txt",
+  });
   const data = toJS(room.chatRoomMessages);
   const nodeId = dataStore.peerId;
   return (
@@ -58,6 +61,7 @@ export const ChatRoom = observer(() => {
         onSend={(msg) => {
           room.sendMessageToChatRoom(msg);
         }}
+        onAttachClick={() => openFileSelector()}
       />
     </ChatContainer>
   );
