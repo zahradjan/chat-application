@@ -110,17 +110,17 @@ export default class DataStore {
     await this.setPeersDb();
     await this.subscribeToYourPubsub();
     await this.subscribeToDecentioPubsub();
-    // setInterval(async () => {
-    //   const peers = await this.getIpfsPeers();
-    //   console.log(peers);
-    //   await peers.map(async (peerId) => {
-    //     try {
-    //       await this.connectToPeer(peerId.peer);
-    //     } catch {}
-    //   });
-    //   // const topics = await this.ipfsNode.pubsub.ls();
-    //   // console.log(topics);
-    // }, 10000);
+    setInterval(async () => {
+      const peers = await this.getIpfsPeers();
+      console.log(peers);
+      // await peers.map(async (peerId) => {
+      //   try {
+      //     await this.connectToPeer(peerId.peer);
+      //   } catch {}
+      // });
+      // const topics = await this.ipfsNode.pubsub.ls();
+      // console.log(topics);
+    }, 10000);
     // this.ipfsNode.libp2p.on("peer:connect", this.onPeerConnect.bind(this));
   }
   async onPeerConnect(peerId) {
@@ -143,7 +143,7 @@ export default class DataStore {
     console.log("Peer ID: " + peerInfo.id);
     await this.ipfsNode.pubsub.subscribe(peerInfo.id, async (msg) => {
       console.log(msg.data);
-      if (typeof msg.data === "object") msg.data = new TextDecoder().decode(msg.data);
+      processMessage(msg);
       const parsedMsg = JSON.parse(msg.data);
       console.log(parsedMsg);
       await this.replicateDb(parsedMsg);
@@ -220,4 +220,7 @@ export default class DataStore {
     delete this.orbitDb;
     delete this.ipfsNode;
   }
+}
+function processMessage(msg) {
+  if (typeof msg.data === "object") msg.data = new TextDecoder().decode(msg.data);
 }
