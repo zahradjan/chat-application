@@ -3,13 +3,15 @@ import { Message } from "./Message.js";
 import { AvatarGenerator } from "random-avatar-generator";
 export class ChatRoom {
   pubsub;
+  ipfsNode;
   orbitDb;
   roomName;
   textDecoder;
   chatMessagesDb;
   chatRoomMessages;
 
-  constructor(pubsub, orbitDb, roomName) {
+  constructor(ipfsNode, pubsub, orbitDb, roomName) {
+    this.ipfsNode = ipfsNode;
     this.pubsub = pubsub;
     this.orbitDb = orbitDb;
     this.roomName = roomName;
@@ -47,25 +49,101 @@ export class ChatRoom {
     //TODO:messages here
     // const date = new Date(Date.now());
     // const message = new Message(msg.from, msg, `${date.getHours()}:${date.getMinutes()}`, new AvatarGenerator().generateRandomAvatar(msg.from));
-    // const stringifyMessage = JSON.stringify(message);
+    const stringifyMessage = JSON.stringify(msg);
     runInAction(async () => {
-      await this.pubsub.publish(this.roomName, msg);
+      await this.pubsub.publish(this.roomName, stringifyMessage);
     });
+  }
+
+  async uploadFile(filesContent) {
+    //TODO: maybe Multiple files if interested
+    console.log(filesContent[0]);
+    console.log(filesContent[0].name.split(".").pop());
+    const result = await this.ipfsNode.add(filesContent[0]);
+    console.log(result);
+    const fileMessage = { fileName: filesContent[0].name, path: result.path };
+    console.log(fileMessage);
+    this.sendMessageToChatRoom(fileMessage);
+  }
+  getFileExtension(fileName) {
+    return fileName.split(".").pop();
+  }
+
+  async retrieveFileFromIpfs(path, mimeType) {
+    const ipfsFile = await this.ipfsNode.cat(path);
+
+    console.log(ipfsFile);
+
+    let file;
+    // const blobToBase64 = (blob) => {
+    //   const reader = new FileReader();
+    //   reader.readAsDataURL(blob);
+    //   return new Promise((resolve) => {
+    //     reader.onloadend = () => {
+    //       resolve(reader.result);
+    //     };
+    //   });
+    // };
+    // let content = [];
+    // for await (const chunk of ipfsFile) {
+    //   content.push(chunk);
+    // }
+    // var buffer = Buffer.from(content);
+    // console.log(this.textDecoder.decode(content));
+    // file = new Blob(content);
+    console.log(mimeType);
+    const content = [];
+    for await (const chunk of ipfsFile) {
+      // console.log(chunk);
+      content.push(chunk);
+    }
+    console.log(content);
+
+    // const data = this.base64ToArrayBuffer(content);
+    // console.log(data);
+    const blob = new Blob(content, { type: "image/" + mimeType });
+
+    file = blob;
+
+    return file;
+  }
+
+  base64ToArrayBuffer(data) {
+    var binaryString = window.atob(data);
+    var binaryLen = binaryString.length;
+    var bytes = new Uint8Array(binaryLen);
+    for (var i = 0; i < binaryLen; i++) {
+      var ascii = binaryString.charCodeAt(i);
+      bytes[i] = ascii;
+    }
+    return bytes;
   }
 
   async echo(msg) {
     // console.log(typeof msg.data);
-    console.log(msg);
+    console.log(msg.data);
     //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
     if (typeof msg.data === "object") msg.data = this.textDecoder.decode(msg.data);
+    const parsedMsg = JSON.parse(msg.data);
+    console.log(parsedMsg);
+    if (msg.data.includes("path")) {
+      let file = await this.retrieveFileFromIpfs(parsedMsg.path, this.getFileExtension(parsedMsg.fileName));
+      console.log(file);
+      parsedMsg["filePath"] = file;
+    }
+    console.log(parsedMsg);
     const date = new Date(Date.now());
-    const message = new Message(msg.from, msg.data, `${date.getHours()}:${date.getMinutes()}`, new AvatarGenerator().generateRandomAvatar(msg.from));
+    const message = new Message(msg.from, parsedMsg, `${date.getHours()}:${date.getMinutes()}`, new AvatarGenerator().generateRandomAvatar(msg.from));
 
-    console.log(msg.data);
+    console.log(message);
 
     // const parsedMessage = JSON.parse(msg.data);
     // console.log(parsedMessage);
-    this.chatMessagesDb.add(message);
+    await this.saveMessage(message);
+  }
+
+  async saveMessage(message) {
+    // await this.chatMessagesDb.add(message);
     this.chatRoomMessages.push(message);
   }
 }

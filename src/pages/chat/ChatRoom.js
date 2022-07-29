@@ -12,9 +12,12 @@ import {
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { useFilePicker } from "use-file-picker";
 import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { useStores } from "../../data/store/RootStore.js";
+
+import baron from "../../images/baron_harkonnen.jpg";
 
 export const ChatRoom = observer(() => {
   const { roomStore, dataStore } = useStores();
@@ -25,9 +28,19 @@ export const ChatRoom = observer(() => {
     }
     initRoom();
   }, [room]);
-  const [openFileSelector, { filesContent, loading }] = useFilePicker({
-    accept: ".txt",
+  const [openFileSelector, { filesContent }] = useFilePicker({
+    accept: ["*"],
+    readAs: "ArrayBuffer",
+    multiple: false,
   });
+  useEffect(() => {
+    async function loadFile() {
+      console.log(filesContent);
+      if (filesContent.length) await room.uploadFile(filesContent);
+    }
+    loadFile();
+  }, [room, filesContent]);
+
   const data = toJS(room.chatRoomMessages);
   const nodeId = dataStore.peerId;
   return (
@@ -47,8 +60,21 @@ export const ChatRoom = observer(() => {
           ? data.map((msg) => {
               // console.log(msg);
               // console.log(nodeId);
-              return (
+              console.log(msg.data.filePath);
+              return typeof msg.data !== "object" ? (
                 <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first", message: msg.data }}>
+                  <Avatar key={msg._id} src={msg.avatar}></Avatar>
+                  <Message.Footer sender={msg.from} sentTime={msg.sentTime}></Message.Footer>
+                </Message>
+              ) : (
+                <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first" }}>
+                  <Message.CustomContent>
+                    {/* <a href={URL.createObjectURL(msg.data.filePath)} download={msg.data.fileName}>
+                      {msg.data.fileName}
+                    </a> */}
+                    <img src={URL.createObjectURL(msg.data.filePath)} alt={msg.data.fileName} width={400}></img>
+                  </Message.CustomContent>
+                  {/* <Message.ImageContent src={msg.data.filePath} alt={msg.data.fileName} width={200}></Message.ImageContent> */}
                   <Avatar key={msg._id} src={msg.avatar}></Avatar>
                   <Message.Footer sender={msg.from} sentTime={msg.sentTime}></Message.Footer>
                 </Message>
@@ -61,7 +87,7 @@ export const ChatRoom = observer(() => {
         onSend={(msg) => {
           room.sendMessageToChatRoom(msg);
         }}
-        onAttachClick={() => openFileSelector()}
+        onAttachClick={async () => openFileSelector()}
       />
     </ChatContainer>
   );

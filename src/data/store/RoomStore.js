@@ -27,7 +27,12 @@ export class RoomStore {
   createRoom(roomName) {
     if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
-    const chatRoom = new ChatRoom(this.rootStore.dataStore.ipfsNode.pubsub, this.rootStore.dataStore.orbitDb, roomName);
+    const chatRoom = new ChatRoom(
+      this.rootStore.dataStore.ipfsNode,
+      this.rootStore.dataStore.ipfsNode.pubsub,
+      this.rootStore.dataStore.orbitDb,
+      roomName
+    );
     this.rooms.push(chatRoom);
     return chatRoom;
   }
