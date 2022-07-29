@@ -1,6 +1,4 @@
-import { makeAutoObservable, runInAction, toJS } from "mobx";
-import { AvatarGenerator } from "random-avatar-generator";
-import { Message } from "../models/Message.js";
+import { makeAutoObservable } from "mobx";
 import { ChatRoom } from "../models/Room.js";
 
 export class RoomStore {

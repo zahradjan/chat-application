@@ -12,6 +12,7 @@ import {
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import { useEffect, useRef } from "react";
+import { FileIcon } from "react-file-icon";
 import { Link } from "react-router-dom";
 import { useFilePicker } from "use-file-picker";
 import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
@@ -60,7 +61,7 @@ export const ChatRoom = observer(() => {
           ? data.map((msg) => {
               // console.log(msg);
               // console.log(nodeId);
-              console.log(msg.data.filePath);
+              console.log(msg.data.file);
               return typeof msg.data !== "object" ? (
                 <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first", message: msg.data }}>
                   <Avatar key={msg._id} src={msg.avatar}></Avatar>
@@ -69,12 +70,15 @@ export const ChatRoom = observer(() => {
               ) : (
                 <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first" }}>
                   <Message.CustomContent>
-                    {/* <a href={URL.createObjectURL(msg.data.filePath)} download={msg.data.fileName}>
-                      {msg.data.fileName}
-                    </a> */}
-                    <img src={URL.createObjectURL(msg.data.filePath)} alt={msg.data.fileName} width={400}></img>
+                    {room.fileIsImage(msg.data.fileName) ? (
+                      <img src={URL.createObjectURL(msg.data.file)} alt={msg.data.fileName} width={400} height={550}></img>
+                    ) : (
+                      <a href={URL.createObjectURL(msg.data.file)} download={msg.data.fileName}>
+                        {/* <FileIcon extension={room.getFileExtension(msg.data.fileName)} labelTextStyle={{ width: 100, height: 100 }} type="image" /> */}
+                        {msg.data.fileName}
+                      </a>
+                    )}
                   </Message.CustomContent>
-                  {/* <Message.ImageContent src={msg.data.filePath} alt={msg.data.fileName} width={200}></Message.ImageContent> */}
                   <Avatar key={msg._id} src={msg.avatar}></Avatar>
                   <Message.Footer sender={msg.from} sentTime={msg.sentTime}></Message.Footer>
                 </Message>

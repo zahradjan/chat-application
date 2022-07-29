@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction, toJS } from "mobx";
+import { get, makeAutoObservable, runInAction, toJS } from "mobx";
 import { Message } from "./Message.js";
 import { AvatarGenerator } from "random-avatar-generator";
 export class ChatRoom {
@@ -69,54 +69,29 @@ export class ChatRoom {
     return fileName.split(".").pop();
   }
 
-  async retrieveFileFromIpfs(path, mimeType) {
+  fileIsImage(fileName) {
+    const match = fileName.match(/\.(jpg|jpeg|png|gif)$/i);
+    console.log(match);
+    return match !== null;
+  }
+  async retrieveFileFromIpfs(path) {
     const ipfsFile = await this.ipfsNode.cat(path);
 
     console.log(ipfsFile);
 
     let file;
-    // const blobToBase64 = (blob) => {
-    //   const reader = new FileReader();
-    //   reader.readAsDataURL(blob);
-    //   return new Promise((resolve) => {
-    //     reader.onloadend = () => {
-    //       resolve(reader.result);
-    //     };
-    //   });
-    // };
-    // let content = [];
-    // for await (const chunk of ipfsFile) {
-    //   content.push(chunk);
-    // }
-    // var buffer = Buffer.from(content);
-    // console.log(this.textDecoder.decode(content));
-    // file = new Blob(content);
-    console.log(mimeType);
+
     const content = [];
     for await (const chunk of ipfsFile) {
-      // console.log(chunk);
       content.push(chunk);
     }
     console.log(content);
 
-    // const data = this.base64ToArrayBuffer(content);
-    // console.log(data);
-    const blob = new Blob(content, { type: "image/" + mimeType });
+    const blob = new Blob(content);
 
     file = blob;
 
     return file;
-  }
-
-  base64ToArrayBuffer(data) {
-    var binaryString = window.atob(data);
-    var binaryLen = binaryString.length;
-    var bytes = new Uint8Array(binaryLen);
-    for (var i = 0; i < binaryLen; i++) {
-      var ascii = binaryString.charCodeAt(i);
-      bytes[i] = ascii;
-    }
-    return bytes;
   }
 
   async echo(msg) {
@@ -127,9 +102,9 @@ export class ChatRoom {
     const parsedMsg = JSON.parse(msg.data);
     console.log(parsedMsg);
     if (msg.data.includes("path")) {
-      let file = await this.retrieveFileFromIpfs(parsedMsg.path, this.getFileExtension(parsedMsg.fileName));
+      let file = await this.retrieveFileFromIpfs(parsedMsg.path);
       console.log(file);
-      parsedMsg["filePath"] = file;
+      parsedMsg["file"] = file;
     }
     console.log(parsedMsg);
     const date = new Date(Date.now());
