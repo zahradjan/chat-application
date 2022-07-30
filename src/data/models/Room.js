@@ -31,10 +31,13 @@ export class ChatRoom {
   }
 
   async setMessagesFromDb() {
-    const entries = [];
     const all = await toJS(this.chatMessagesDb.all);
-    all.map((e) => entries.push(e.payload.value));
-    this.chatRoomMessages = entries;
+    runInAction(() => {
+      all.map((e) => {
+        console.log(e.payload.value);
+        return this.chatRoomMessages.push(e.payload.value);
+      });
+    });
   }
 
   async connectToChatRoom() {
@@ -88,8 +91,7 @@ export class ChatRoom {
     console.log(content);
 
     const blob = new Blob(content);
-
-    file = blob;
+    file = URL.createObjectURL(blob);
 
     return file;
   }
@@ -112,13 +114,13 @@ export class ChatRoom {
 
     console.log(message);
 
-    // const parsedMessage = JSON.parse(msg.data);
-    // console.log(parsedMessage);
     await this.saveMessage(message);
   }
 
   async saveMessage(message) {
-    // await this.chatMessagesDb.add(message);
-    this.chatRoomMessages.push(message);
+    runInAction(async () => {
+      this.chatRoomMessages.push(message);
+      await this.chatMessagesDb.add(message);
+    });
   }
 }

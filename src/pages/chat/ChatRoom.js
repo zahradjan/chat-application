@@ -18,8 +18,6 @@ import { useFilePicker } from "use-file-picker";
 import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { useStores } from "../../data/store/RootStore.js";
 
-import baron from "../../images/baron_harkonnen.jpg";
-
 export const ChatRoom = observer(() => {
   const { roomStore, dataStore } = useStores();
   const room = roomStore.getRoom("TestRoom");
@@ -40,7 +38,7 @@ export const ChatRoom = observer(() => {
       if (filesContent.length) await room.uploadFile(filesContent);
     }
     loadFile();
-  }, [room, filesContent]);
+  }, [filesContent]);
 
   const data = toJS(room.chatRoomMessages);
   const nodeId = dataStore.peerId;
@@ -59,9 +57,6 @@ export const ChatRoom = observer(() => {
       <MessageList loading={!data}>
         {data
           ? data.map((msg) => {
-              // console.log(msg);
-              // console.log(nodeId);
-              console.log(msg.data.file);
               return typeof msg.data !== "object" ? (
                 <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first", message: msg.data }}>
                   <Avatar key={msg._id} src={msg.avatar}></Avatar>
@@ -71,9 +66,9 @@ export const ChatRoom = observer(() => {
                 <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first" }}>
                   <Message.CustomContent>
                     {room.fileIsImage(msg.data.fileName) ? (
-                      <img src={URL.createObjectURL(msg.data.file)} alt={msg.data.fileName} width={400} height={550}></img>
+                      <img src={msg.data.file} alt={msg.data.fileName} width={400} height={550}></img>
                     ) : (
-                      <a href={URL.createObjectURL(msg.data.file)} download={msg.data.fileName}>
+                      <a href={msg.data.file} download={msg.data.fileName}>
                         {/* <FileIcon extension={room.getFileExtension(msg.data.fileName)} labelTextStyle={{ width: 100, height: 100 }} type="image" /> */}
                         {msg.data.fileName}
                       </a>
