@@ -18,9 +18,8 @@ import { useFilePicker } from "use-file-picker";
 import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { useStores } from "../../data/store/RootStore.js";
 
-export const ChatRoom = observer(() => {
-  const { roomStore, dataStore } = useStores();
-  const room = roomStore.getRoom("TestRoom");
+export const ChatRoom = observer(({ room }) => {
+  const { dataStore } = useStores();
   useEffect(() => {
     async function initRoom() {
       await room.init();

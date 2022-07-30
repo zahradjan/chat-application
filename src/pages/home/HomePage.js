@@ -26,7 +26,7 @@ import { ChatConversations } from "../chat/ChatConversations.js";
 export const HomePage = observer(() => {
   const { sessionStore, roomStore } = useStores();
   const _me = sessionStore._user;
-  roomStore.createRoom("TestRoom");
+  // const room = roomStore.createRoom("TestRoom");
 
   return (
     <div style={{ position: "relative", height: "100vh" }}>
@@ -38,9 +38,12 @@ export const HomePage = observer(() => {
             <ConversationHeader.Content style={{ backgroundColor: PrimaryColor }} userName={_me}></ConversationHeader.Content>
           </ConversationHeader>
 
-          {/* <ChatConversations></ChatConversations> */}
+          <ChatConversations></ChatConversations>
         </Sidebar>
-        <ChatRoom></ChatRoom>
+        {roomStore.rooms.map((chatRoom) => {
+          return <ChatRoom room={chatRoom}></ChatRoom>;
+        })}
+        {/* <ChatRoom room={room}></ChatRoom> */}
         {/* {roomStore.isChatRoomReady() && !!dataStore.ipfsNode ? <ChatRoom></ChatRoom> : <Loader></Loader>} */}
       </MainContainer>
     </div>
