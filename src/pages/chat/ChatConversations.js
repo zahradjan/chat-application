@@ -1,11 +1,21 @@
 import { Avatar, Conversation, ConversationList } from "@chatscope/chat-ui-kit-react";
+import { useStores } from "../../data/store/RootStore.js";
 
 export const ChatConversations = () => {
+  const { dataStore } = useStores();
+
+  const users = dataStore.peersDb.all;
+
   return (
     <ConversationList style={{ backgroundColor: "#bacee0" }}>
-      <Conversation name="Baron" lastSenderName="Baron" info="Yes i can do it for you">
-        <Avatar name="Baron" status="dnd" />
-      </Conversation>
+      {users.map((user) => {
+        console.log(user);
+        return (
+          <Conversation name={user}>
+            <Avatar name={user} status="dnd" />
+          </Conversation>
+        );
+      })}
     </ConversationList>
   );
 };
