@@ -91,6 +91,7 @@ export class ChatRoom {
     console.log(content);
 
     const blob = new Blob(content);
+    //TODO: lepsi ukladat Blob protoze ty URL budou temporary
     file = URL.createObjectURL(blob);
 
     return file;
