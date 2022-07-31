@@ -6,24 +6,21 @@ import { useStores } from "../../data/store/RootStore.js";
 // @ts-ignore
 export const ChatConversations = observer(({ globalMonitor }) => {
   const { roomStore } = useStores();
-  console.log(globalMonitor);
+  // console.log(globalMonitor);
   const users = toJS(globalMonitor.peers);
-  console.log(users);
+  // console.log(users);
 
-  function selectChatConversation(id) {
+  function selectChatRoom(id) {
     console.log("select");
-    if (!roomStore.getRoom(id)) {
-      const room = roomStore.createRoom(id);
-      room.init();
-    }
+    roomStore.setSelectedRoom(id);
   }
 
   return (
     <ConversationList style={{ backgroundColor: "#bacee0" }}>
       {users.map((user) => {
-        console.log(user);
+        // console.log(user);
         return (
-          <Conversation key={user} onClick={() => selectChatConversation(user)}>
+          <Conversation key={user} onClick={() => selectChatRoom(user)}>
             <Avatar name={user} status="dnd" />
           </Conversation>
         );

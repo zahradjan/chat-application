@@ -1,7 +1,9 @@
 import { get, makeAutoObservable, runInAction, toJS } from "mobx";
 import { Message } from "./Message.js";
 import { AvatarGenerator } from "random-avatar-generator";
+import { v4 as uuidv4 } from "uuid";
 export class ChatRoom {
+  roomId;
   pubsub;
   ipfsNode;
   orbitDb;
@@ -11,11 +13,12 @@ export class ChatRoom {
   chatRoomMessages;
 
   constructor(ipfsNode, pubsub, orbitDb, roomName) {
+    this.roomId = uuidv4();
     this.ipfsNode = ipfsNode;
     this.pubsub = pubsub;
     this.orbitDb = orbitDb;
     this.roomName = roomName;
-    this.textDecoder = new TextDecoder();
+
     this.chatRoomMessages = [];
     makeAutoObservable(this);
   }
@@ -31,10 +34,12 @@ export class ChatRoom {
   }
 
   async setMessagesFromDb() {
+    // if (this.chatRoomMessages !== []) return;
     const all = await toJS(this.chatMessagesDb.all);
+    // console.log(toJS(this.chatRoomMessages));
     runInAction(() => {
       all.map((e) => {
-        console.log(e.payload.value);
+        // console.log(e.payload.value);
         return this.chatRoomMessages.push(e.payload.value);
       });
     });
@@ -42,7 +47,7 @@ export class ChatRoom {
 
   async connectToChatRoom() {
     runInAction(async () => {
-      await this.pubsub.unsubscribe(this.roomName, (msg) => console.log(msg));
+      // await this.pubsub.unsubscribe(this.roomName, (msg) => console.log(msg));
       await this.pubsub.subscribe(this.roomName, await this.echo.bind(this));
     });
   }
@@ -101,7 +106,7 @@ export class ChatRoom {
     // console.log(typeof msg.data);
     console.log(msg.data);
     //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
-    if (typeof msg.data === "object") msg.data = this.textDecoder.decode(msg.data);
+    if (typeof msg.data === "object") msg.data = new TextDecoder().decode(msg.data);
     const parsedMsg = JSON.parse(msg.data);
     console.log(parsedMsg);
     if (msg.data.includes("path")) {

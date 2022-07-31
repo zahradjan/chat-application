@@ -151,8 +151,11 @@ export default class DataStore {
       console.log(msg.from);
       //TODO: mechanismu ktery na zaklade from property bude hazet dane zpravy do spravne roomky
       // room.getRoom(msg.from)
-
-      const parsedMsg = JSON.parse(msg.data);
+      const targetRoom = this.rootStore.roomStore.getRoom(msg.from);
+      if (targetRoom) {
+        targetRoom.sendMessageToChatRoom(msg.data);
+      }
+      // const parsedMsg = JSON.parse(msg.data);
       // console.log(parsedMsg);
       // await this.replicateDb(parsedMsg);
     });

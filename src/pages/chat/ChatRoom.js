@@ -19,13 +19,15 @@ import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { useStores } from "../../data/store/RootStore.js";
 
 export const ChatRoom = observer(({ room }) => {
-  const { dataStore } = useStores();
-  useEffect(() => {
-    async function initRoom() {
-      await room.init();
-    }
-    initRoom();
-  }, [room]);
+  const { dataStore, roomStore } = useStores();
+  // const room = toJS(roomStore.selectedRoom);
+  console.log(room);
+  // useEffect(() => {
+  //   async function initRoom() {
+  //     await room.init();
+  //   }
+  //   initRoom();
+  // }, [room]);
   const [openFileSelector, { filesContent }] = useFilePicker({
     accept: ["*"],
     readAs: "ArrayBuffer",

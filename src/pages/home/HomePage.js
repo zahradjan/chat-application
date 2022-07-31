@@ -22,12 +22,23 @@ import { observer } from "mobx-react";
 import { ChatRoom } from "../chat/ChatRoom.js";
 import { Loader } from "../../components/Loader.js";
 import { ChatConversations } from "../chat/ChatConversations.js";
+import { toJS } from "mobx";
+import { useEffect } from "react";
+import { NoRoom } from "../../components/error/NoRoom.js";
 
 export const HomePage = observer(() => {
   const { sessionStore, roomStore, monitorStore } = useStores();
   const _me = sessionStore._user;
   // const room = roomStore.createRoom("TestRoom");
+
   const globalMonitor = monitorStore.getMonitor("DecentioGlobalNetwork");
+  // const data = toJS(globalMonitor.peers)
+
+  // useEffect(()=>{
+
+  // })
+  const room = roomStore.selectedRoom;
+
   return (
     <div style={{ position: "relative", height: "100vh" }}>
       <MainContainer responsive>
@@ -47,11 +58,10 @@ export const HomePage = observer(() => {
             <Loader></Loader>
           )}
         </Sidebar>
-        {roomStore.rooms.map((chatRoom) => {
-          return <ChatRoom room={chatRoom}></ChatRoom>;
-        })}
-        {/* <ChatRoom room={room}></ChatRoom> */}
-        {/* {roomStore.isChatRoomReady() && !!dataStore.ipfsNode ? <ChatRoom></ChatRoom> : <Loader></Loader>} */}
+        {/* {roomStore.rooms.map((chatRoom) => {
+          return <ChatRoom key={chatRoom.roomId} room={chatRoom}></ChatRoom>;
+        })} */}
+        {room ? <ChatRoom room={room}></ChatRoom> : <NoRoom></NoRoom>}
       </MainContainer>
     </div>
   );

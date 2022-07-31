@@ -5,6 +5,7 @@ export class Monitor {
   monitor;
   topicName;
   peers;
+  rooms;
   constructor(rootStore, topicName) {
     this.rootStore = rootStore;
     this.peers = [];
@@ -27,7 +28,7 @@ export class Monitor {
     const all = await toJS(this.rootStore.dataStore.peersDb.all);
     runInAction(() => {
       all.map((e) => {
-        console.log(e.payload.value);
+        // console.log(e.payload.value);
         return this.peers.push(e.payload.value);
       });
     });

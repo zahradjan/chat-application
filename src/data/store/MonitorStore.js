@@ -12,9 +12,12 @@ export class MonitorStore {
   async createMonitor(topicName) {
     if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
-    const monitor = new Monitor(this.rootStore, topicName);
-    await monitor.init();
-    this.monitors.push(monitor);
+    let monitor;
+    runInAction(async () => {
+      monitor = new Monitor(this.rootStore, topicName);
+      this.monitors.push(monitor);
+      await monitor.init();
+    });
     return monitor;
   }
 
