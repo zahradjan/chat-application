@@ -24,10 +24,10 @@ import { Loader } from "../../components/Loader.js";
 import { ChatConversations } from "../chat/ChatConversations.js";
 
 export const HomePage = observer(() => {
-  const { sessionStore, roomStore } = useStores();
+  const { sessionStore, roomStore, monitorStore } = useStores();
   const _me = sessionStore._user;
   // const room = roomStore.createRoom("TestRoom");
-
+  const globalMonitor = monitorStore.getMonitor("DecentioGlobalNetwork");
   return (
     <div style={{ position: "relative", height: "100vh" }}>
       <MainContainer responsive>
@@ -38,7 +38,14 @@ export const HomePage = observer(() => {
             <ConversationHeader.Content style={{ backgroundColor: PrimaryColor }} userName={_me}></ConversationHeader.Content>
           </ConversationHeader>
 
-          <ChatConversations></ChatConversations>
+          {globalMonitor ? (
+            <ChatConversations
+              // @ts-ignore
+              globalMonitor={globalMonitor}
+            ></ChatConversations>
+          ) : (
+            <Loader></Loader>
+          )}
         </Sidebar>
         {roomStore.rooms.map((chatRoom) => {
           return <ChatRoom room={chatRoom}></ChatRoom>;

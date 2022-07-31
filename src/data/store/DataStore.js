@@ -129,8 +129,6 @@ export default class DataStore {
   }
   async onPeerConnect(connection) {
     console.log("Peer connected:" + connection.remotePeer._idB58String);
-
-    // this.ipfsNode.pubsub.publish(peerId, "Hello there");
   }
   async setPeersDb() {
     this.peersDb = await this.orbitDb.feed("peers");
@@ -143,15 +141,20 @@ export default class DataStore {
   async subscribeToDecentioPubsub() {
     await this.ipfsNode.pubsub.subscribe("DecentioGlobalNetwork", (msg) => console.log(msg));
   }
+  //TODO:tohle asi ne tady bylo by to vhodne nekde v channel store
   async subscribeToYourPubsub() {
     const peerInfo = await this.ipfsNode.id();
     console.log("Peer ID: " + peerInfo.id);
     await this.ipfsNode.pubsub.subscribe(peerInfo.id, async (msg) => {
       // console.log(msg.data);
       processMessage(msg);
+      console.log(msg.from);
+      //TODO: mechanismu ktery na zaklade from property bude hazet dane zpravy do spravne roomky
+      // room.getRoom(msg.from)
+
       const parsedMsg = JSON.parse(msg.data);
       // console.log(parsedMsg);
-      await this.replicateDb(parsedMsg);
+      // await this.replicateDb(parsedMsg);
     });
   }
   async replicateDb(parsedMsg) {

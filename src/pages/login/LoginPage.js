@@ -1,10 +1,10 @@
 import { observer } from "mobx-react";
 import React, { useCallback, useRef } from "react";
-import { useStores } from "../../data/store/RootStore.js";
+import { store, useStores } from "../../data/store/RootStore.js";
 import DecentioLogo from "../../icons/decentioLogoLight.png";
 
 const LoginPage = observer(() => {
-  const { userStore, sessionStore, dataStore, channelStore, roomStore } = useStores();
+  const { userStore, sessionStore } = useStores();
   const userNameRef = useRef(null);
 
   const onSubmit = useCallback(
@@ -14,15 +14,12 @@ const LoginPage = observer(() => {
       console.log(userName);
       if (userName !== "") {
         await sessionStore.login(userName);
-        await dataStore.init();
-        await userStore.init();
-        await channelStore.init("DecentioGlobalNetwork");
-        await roomStore.init();
+        await store.initDbStores();
         await userStore.updateUserField("username", userName);
         console.log(userStore.getAllProfileFields());
       }
     },
-    [sessionStore, userStore, dataStore, channelStore, roomStore]
+    [sessionStore, userStore]
   );
   return (
     <div

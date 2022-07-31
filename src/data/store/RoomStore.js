@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { ChatRoom } from "../models/Room.js";
 
 export class RoomStore {
-  //TODO: avatar temporary dont forget to refactor this
+  //TODO:load rooms from db
   rooms;
   constructor(rootStore) {
     this.rootStore = rootStore;
@@ -10,18 +10,6 @@ export class RoomStore {
     makeAutoObservable(this);
   }
 
-  async init() {
-    if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
-    if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
-
-    // runInAction(async () => {
-    //   this.room = await this.rootStore.dataStore.ipfsNode.pubsub;
-    //   this.chatRoomMessagesDb = await this.rootStore.dataStore.orbitDb.feed("messages");
-    //   await this.chatRoomMessagesDb.load();
-    //   await this.setMessagesFromDb();
-    //   await this.connectToChatRoom("TestChatRoom");
-    // });
-  }
   createRoom(roomName) {
     if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
@@ -37,7 +25,7 @@ export class RoomStore {
 
   getRoom(roomName) {
     //TODO: kdyz nenajde apod.
-    return this.rooms.find((room) => (roomName = room.roomName));
+    return this.rooms.find((room) => roomName === room.roomName);
   }
 
   isChatRoomReady(roomName) {

@@ -1,23 +1,22 @@
 import IpfsPubsubPeerMonitor from "ipfs-pubsub-peer-monitor";
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 
-export class ChannelStore {
-  channel;
-  channelName;
+export class Monitor {
+  monitor;
+  topicName;
   peers;
-
-  constructor(rootStore) {
+  constructor(rootStore, topicName) {
     this.rootStore = rootStore;
-    this.channel = undefined;
     this.peers = [];
+    this.topicName = topicName;
     makeAutoObservable(this);
   }
-  async init(topic) {
+
+  async init() {
     if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
     runInAction(async () => {
-      this.channelName = topic;
-      this.channel = new IpfsPubsubPeerMonitor(this.rootStore.dataStore.ipfsNode.pubsub, topic);
+      this.monitor = new IpfsPubsubPeerMonitor(this.rootStore.dataStore.ipfsNode.pubsub, this.topicName);
       await this.setPeersFromDb();
       await this.listenForJoinedPeers();
       await this.listenForLeftPeers();
@@ -35,18 +34,18 @@ export class ChannelStore {
   }
 
   async listenForJoinedPeers() {
-    this.channel.on("join", async (peerJoined) => {
+    this.monitor.on("join", async (peerJoined) => {
       console.log("Peer joined: " + peerJoined);
-      console.log(`Peers on Pubsub ${this.channelName}: ` + (await this.channel.getPeers()));
+      console.log(`Peers on Pubsub ${this.topicName}: ` + (await this.monitor.getPeers()));
       await this.savePeer(peerJoined);
       // this.replicatePeersDB();
     });
   }
 
   async listenForLeftPeers() {
-    this.channel.on("leave", async (peerLeft) => {
+    this.monitor.on("leave", async (peerLeft) => {
       console.log("Peer left: " + peerLeft);
-      console.log(`Peers on Pubsub ${this.channelName}: ` + (await this.channel.getPeers()));
+      console.log(`Peers on Pubsub ${this.topicName}: ` + (await this.monitor.getPeers()));
       // await this.removePeer(peerLeft);
     });
   }
