@@ -1,10 +1,11 @@
 import { makeAutoObservable, runInAction } from "mobx";
+import User from "../models/User.js";
 
 export default class UserStore {
-  user;
+  userDb;
   constructor(rootStore) {
     this.rootStore = rootStore;
-    this.user = undefined;
+    this.userDb = undefined;
     makeAutoObservable(this);
   }
 
@@ -12,34 +13,37 @@ export default class UserStore {
     await this.setUserStore();
   }
   isUserStoreReady() {
-    return !!this.user;
+    return !!this.userDb;
   }
   async setUserStore() {
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
     const defaultOptions = { accessController: { write: [this.rootStore.dataStore.orbitDb.identity.id] } };
-    await this.rootStore.dataStore.orbitDb.kvstore("user", defaultOptions).then((data) =>
-      runInAction(() => {
-        this.user = data;
-      })
-    );
-    await this.user.load();
+    runInAction(async () => {
+      this.userDb = await this.rootStore.dataStore.orbitDb.kvstore("user", defaultOptions);
+      await this.userDb.load();
+    });
+  }
+  async createUser(username) {
+    const peerId = await this.rootStore.dataStore.getPeerId();
+    const user = new User(username, peerId);
+    await this.userDb.set("user", user);
   }
 
   async deleteProfileField(key) {
-    const cid = await this.user.del(key);
+    const cid = await this.userDb.del(key);
     return cid;
   }
 
   getAllProfileFields() {
-    return this.user.all;
+    return this.userDb.all;
   }
 
   getProfileField(key) {
-    return this.user.get(key);
+    return this.userDb.get(key);
   }
 
   async updateUserField(key, value) {
-    const cid = await this.user.set(key, value);
+    const cid = await this.userDb.set(key, value);
     return cid;
   }
 }

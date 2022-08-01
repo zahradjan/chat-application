@@ -15,7 +15,7 @@ const LoginPage = observer(() => {
       if (userName !== "") {
         await sessionStore.login(userName);
         await store.initDbStores();
-        await userStore.updateUserField("username", userName);
+        await userStore.createUser(userName);
         console.log(userStore.getAllProfileFields());
       }
     },

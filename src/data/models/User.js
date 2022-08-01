@@ -1,6 +1,9 @@
 export default class User {
   _username;
-  constructor(username) {
+  avatar;
+  peerId;
+  constructor(username, peerId) {
     this._username = username;
+    this.peerId = peerId;
   }
 }
