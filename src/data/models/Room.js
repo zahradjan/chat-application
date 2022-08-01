@@ -19,7 +19,7 @@ export class ChatRoom {
     this.pubsub = rootStore.dataStore.ipfsNode.pubsub;
     this.orbitDb = rootStore.dataStore.orbitDb;
     this.roomName = roomName;
-
+    this.textDecoder = new TextDecoder();
     this.chatRoomMessages = [];
     makeAutoObservable(this);
   }
@@ -49,7 +49,7 @@ export class ChatRoom {
   async connectToChatRoom() {
     runInAction(async () => {
       // await this.pubsub.unsubscribe(this.roomName, (msg) => console.log(msg));
-      await this.pubsub.subscribe(this.roomName, await this.getMessage.bind(this));
+      await this.pubsub.subscribe(this.roomName, await this.setMessage.bind(this));
     });
   }
 
@@ -67,11 +67,11 @@ export class ChatRoom {
     });
   }
 
-  async getMessage(msg) {
+  async setMessage(msg) {
     // console.log(typeof msg.data);
     console.log(msg.data);
     //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
-    if (typeof msg.data === "object") msg.data = new TextDecoder().decode(msg.data);
+    if (typeof msg.data === "object") msg.data = this.textDecoder.decode(msg.data);
     const parsedMsg = JSON.parse(msg.data);
     const userName = parsedMsg.sender;
     console.log(parsedMsg);

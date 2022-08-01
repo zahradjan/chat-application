@@ -38,8 +38,8 @@ export class Monitor {
     this.monitor.on("join", async (peerJoined) => {
       console.log("Peer joined: " + peerJoined);
       console.log(`Peers on Pubsub ${this.topicName}: ` + (await this.monitor.getPeers()));
-      await this.savePeer(peerJoined);
-      // this.replicatePeersDB();
+      // await this.savePeer(peerJoined);
+      this.replicateUserDb(peerJoined);
     });
   }
 
@@ -75,6 +75,14 @@ export class Monitor {
     if (entry) {
       await this.rootStore.dataStore.peersDb.remove(entry[0].hash);
     }
+  }
+  async replicateUserDb(peer) {
+    const nodeId = await this.rootStore.dataStore.getPeerId();
+    if (peer === nodeId) return;
+    const userDbId = await this.rootStore.userStore.getUserDbId();
+
+    const stringifyPayload = JSON.stringify({ userDb: userDbId });
+    this.rootStore.dataStore.ipfsNode.pubsub.publish(peer, stringifyPayload);
   }
 
   replicatePeersDB() {

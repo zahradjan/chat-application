@@ -5,8 +5,11 @@ export default class DataStore {
   ipfsNode;
   orbitDb;
   peerId;
+  peers;
   constructor(rootStore) {
     this.rootStore = rootStore;
+    this.peers = [];
+    // this.peersDb = undefined;
     makeAutoObservable(this);
   }
 
@@ -148,54 +151,40 @@ export default class DataStore {
     await this.ipfsNode.pubsub.subscribe(peerInfo.id, async (msg) => {
       // console.log(msg.data);
       processMessage(msg);
+      const parsedMsg = JSON.parse(msg.data);
       console.log(msg.from);
       //TODO: mechanismu ktery na zaklade from property bude hazet dane zpravy do spravne roomky
       // room.getRoom(msg.from)
-      const targetRoom = this.rootStore.roomStore.getRoom(msg.from);
-      if (targetRoom) {
-        targetRoom.getMessage(msg);
+      if (parsedMsg.userDb) {
+        this.replicateDb(parsedMsg);
+      } else {
+        const targetRoom = this.rootStore.roomStore.getRoom(msg.from);
+        if (targetRoom) {
+          targetRoom.setMessage(msg);
+        }
       }
+      console.log(parsedMsg);
+      // if(msg.data)
+
       // const parsedMsg = JSON.parse(msg.data);
       // console.log(parsedMsg);
       // await this.replicateDb(parsedMsg);
     });
   }
   async replicateDb(parsedMsg) {
-    var peerDbOuter = await this.orbitDb.open(parsedMsg.peerDb);
+    var peerDbOuter = await this.orbitDb.open(parsedMsg.userDb);
     peerDbOuter.events.on("replicated", async () => {
       console.log("DB replicated");
-      // if (peerDb.get("pieces")) {
-      // await this.peersDb.set(peerDbOuter.id, peerDbOuter.all);
-      // console.log(peerDbOuter.all);
-      // }
+      await this.peersDb.add(peerDbOuter.all);
+      console.log(peerDbOuter.all);
+      this.peers.push(peerDbOuter.all);
+      console.log(this.peersDb.all);
     });
   }
   async getPeerId() {
     if (this.ipfsNode === undefined) throw Error("IPFS Node not defined");
     const peerInfo = await this.ipfsNode.id();
     return peerInfo.id;
-  }
-
-  async handleMessageReceived(msg) {
-    const parsedMsg = JSON.parse(msg.data.toString());
-    const msgKeys = Object.keys(parsedMsg);
-    console.log("ParsedDb: " + parsedMsg);
-    console.log(msgKeys[0]);
-    switch (msgKeys[0]) {
-      case "userDb":
-        var peerDb = await this.orbitDb.open(parsedMsg.userDb);
-        peerDb.events.on("replicated", async () => {
-          console.log("DB replicated");
-          // if (peerDb.get("pieces")) {
-          await this.peersDb.set(peerDb.id, peerDb.all);
-          console.log(peerDb.all);
-          // }
-        });
-        break;
-      default:
-        break;
-    }
-    console.log(msg.data.toString());
   }
 
   async connectToPeer(multiaddr, protocol = "/dnsaddr/bootstrap.libp2p.io/p2p/") {
@@ -217,12 +206,6 @@ export default class DataStore {
     const peers = await this.ipfsNode.swarm.peers();
     // console.log(peers);
     return peers;
-  }
-
-  async createDBStore(address) {
-    const store = await this.orbitDb.docstore(address);
-    await store.load();
-    return store;
   }
 
   async handleStop() {

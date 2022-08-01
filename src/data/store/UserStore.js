@@ -18,14 +18,14 @@ export default class UserStore {
   async setUserStore() {
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
     const defaultOptions = { accessController: { write: [this.rootStore.dataStore.orbitDb.identity.id] } };
-    runInAction(async () => {
-      this.userDb = await this.rootStore.dataStore.orbitDb.kvstore("user", defaultOptions);
-      await this.userDb.load();
-    });
+
+    this.userDb = await this.rootStore.dataStore.orbitDb.kvstore("user", defaultOptions);
+    await this.userDb.load();
   }
   async createUser(username) {
     const peerId = await this.rootStore.dataStore.getPeerId();
     const user = new User(username, peerId);
+
     await this.userDb.set("user", user);
   }
 
@@ -45,5 +45,10 @@ export default class UserStore {
   async updateUserField(key, value) {
     const cid = await this.userDb.set(key, value);
     return cid;
+  }
+
+  async getUserDbId() {
+    const id = await this.userDb.id;
+    return id;
   }
 }

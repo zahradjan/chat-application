@@ -5,9 +5,9 @@ import { useStores } from "../../data/store/RootStore.js";
 
 // @ts-ignore
 export const ChatConversations = observer(({ globalMonitor }) => {
-  const { roomStore } = useStores();
+  const { roomStore, dataStore } = useStores();
   // console.log(globalMonitor);
-  const users = toJS(globalMonitor.peers);
+  const users = toJS(dataStore.peers);
   // console.log(users);
 
   function selectChatRoom(id) {
@@ -17,11 +17,12 @@ export const ChatConversations = observer(({ globalMonitor }) => {
 
   return (
     <ConversationList style={{ backgroundColor: "#bacee0" }}>
-      {users.map((user) => {
-        // console.log(user);
+      {users.map((item) => {
+        const user = item.user;
+        // console.log(user.user);
         return (
-          <Conversation key={user} onClick={() => selectChatRoom(user)}>
-            <Avatar name={user} status="dnd" />
+          <Conversation key={user.peerId} name={user._username} onClick={() => selectChatRoom(user.peerId)}>
+            <Avatar status="dnd" />
           </Conversation>
         );
       })}
