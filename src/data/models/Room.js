@@ -12,11 +12,12 @@ export class ChatRoom {
   chatMessagesDb;
   chatRoomMessages;
 
-  constructor(ipfsNode, pubsub, orbitDb, roomName) {
+  constructor(rootStore, roomName) {
     this.roomId = uuidv4();
-    this.ipfsNode = ipfsNode;
-    this.pubsub = pubsub;
-    this.orbitDb = orbitDb;
+    this.rootStore = rootStore;
+    this.ipfsNode = rootStore.dataStore.ipfsNode;
+    this.pubsub = rootStore.dataStore.ipfsNode.pubsub;
+    this.orbitDb = rootStore.dataStore.orbitDb;
     this.roomName = roomName;
 
     this.chatRoomMessages = [];
@@ -57,9 +58,50 @@ export class ChatRoom {
     //TODO:messages here
     // const date = new Date(Date.now());
     // const message = new Message(msg.from, msg, `${date.getHours()}:${date.getMinutes()}`, new AvatarGenerator().generateRandomAvatar(msg.from));
-    const stringifyMessage = JSON.stringify(msg);
+    const sender = this.rootStore.sessionStore._user;
+
+    const message = { sender: sender, msg: msg };
+    const stringifyMessage = JSON.stringify(message);
     runInAction(async () => {
       await this.pubsub.publish(this.roomName, stringifyMessage);
+    });
+  }
+
+  async getMessage(msg) {
+    // console.log(typeof msg.data);
+    console.log(msg.data);
+    //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
+    if (typeof msg.data === "object") msg.data = new TextDecoder().decode(msg.data);
+    const parsedMsg = JSON.parse(msg.data);
+    const userName = parsedMsg.sender;
+    console.log(parsedMsg);
+    let type = "message";
+    if (msg.data.includes("path")) {
+      let file = await this.retrieveFileFromIpfs(parsedMsg.msg.path);
+      console.log(file);
+      parsedMsg["file"] = file;
+      type = "file";
+    }
+    // parsedMsg["sender"] = user;
+    console.log(parsedMsg);
+    const date = new Date(Date.now());
+    const message = new Message(
+      msg.from,
+      userName,
+      parsedMsg,
+      `${date.getHours()}:${date.getMinutes()}`,
+      new AvatarGenerator().generateRandomAvatar(msg.from),
+      type
+    );
+    console.log(message);
+
+    await this.saveMessage(message);
+  }
+
+  async saveMessage(message) {
+    runInAction(async () => {
+      this.chatRoomMessages.push(message);
+      await this.chatMessagesDb.add(message);
     });
   }
 
@@ -100,33 +142,5 @@ export class ChatRoom {
     file = URL.createObjectURL(blob);
 
     return file;
-  }
-
-  async getMessage(msg) {
-    // console.log(typeof msg.data);
-    console.log(msg.data);
-    //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
-    if (typeof msg.data === "object") msg.data = new TextDecoder().decode(msg.data);
-    const parsedMsg = JSON.parse(msg.data);
-    console.log(parsedMsg);
-    if (msg.data.includes("path")) {
-      let file = await this.retrieveFileFromIpfs(parsedMsg.path);
-      console.log(file);
-      parsedMsg["file"] = file;
-    }
-    console.log(parsedMsg);
-    const date = new Date(Date.now());
-    const message = new Message(msg.from, parsedMsg, `${date.getHours()}:${date.getMinutes()}`, new AvatarGenerator().generateRandomAvatar(msg.from));
-
-    console.log(message);
-
-    await this.saveMessage(message);
-  }
-
-  async saveMessage(message) {
-    runInAction(async () => {
-      this.chatRoomMessages.push(message);
-      await this.chatMessagesDb.add(message);
-    });
   }
 }

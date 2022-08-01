@@ -25,12 +25,7 @@ export class RoomStore {
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
     console.log(roomName);
 
-    const chatRoom = new ChatRoom(
-      this.rootStore.dataStore.ipfsNode,
-      this.rootStore.dataStore.ipfsNode.pubsub,
-      this.rootStore.dataStore.orbitDb,
-      roomName
-    );
+    const chatRoom = new ChatRoom(this.rootStore, roomName);
 
     this.rooms.push(chatRoom);
     console.log(chatRoom);

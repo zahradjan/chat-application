@@ -58,25 +58,26 @@ export const ChatRoom = observer(({ room }) => {
       <MessageList loading={!data}>
         {data
           ? data.map((msg) => {
-              return typeof msg.data !== "object" ? (
-                <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first", message: msg.data }}>
+              console.log(msg.data);
+              return msg.type === "message" ? (
+                <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first", message: msg.data.msg }}>
                   <Avatar key={msg._id} src={msg.avatar}></Avatar>
-                  <Message.Footer sender={msg.from} sentTime={msg.sentTime}></Message.Footer>
+                  <Message.Footer sender={msg.data.sender} sentTime={msg.sentTime}></Message.Footer>
                 </Message>
               ) : (
                 <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first" }}>
                   <Message.CustomContent>
-                    {room.fileIsImage(msg.data.fileName) ? (
-                      <img src={msg.data.file} alt={msg.data.fileName} width={400} height={550}></img>
+                    {room.fileIsImage(msg.data.msg.fileName) ? (
+                      <img src={msg.data.file} alt={msg.data.msg.fileName} width={400} height={550}></img>
                     ) : (
-                      <a href={msg.data.file} download={msg.data.fileName}>
+                      <a href={msg.data.file} download={msg.data.msg.fileName}>
                         {/* <FileIcon extension={room.getFileExtension(msg.data.fileName)} labelTextStyle={{ width: 100, height: 100 }} type="image" /> */}
-                        {msg.data.fileName}
+                        {msg.data.msg.fileName}
                       </a>
                     )}
                   </Message.CustomContent>
                   <Avatar key={msg._id} src={msg.avatar}></Avatar>
-                  <Message.Footer sender={msg.from} sentTime={msg.sentTime}></Message.Footer>
+                  <Message.Footer sender={msg.data.sender} sentTime={msg.sentTime}></Message.Footer>
                 </Message>
               );
             })
