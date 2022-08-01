@@ -60,7 +60,7 @@ export const ChatRoom = observer(({ room }) => {
       <MessageList loading={!data}>
         {data
           ? data.map((msg) => {
-              console.log(msg.data);
+              if (msg.type === "file") console.log(msg.data.file);
               return msg.type === "message" ? (
                 <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first", message: msg.data.msg }}>
                   <Avatar key={msg._id} src={msg.avatar}></Avatar>
@@ -70,9 +70,9 @@ export const ChatRoom = observer(({ room }) => {
                 <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first" }}>
                   <Message.CustomContent>
                     {room.fileIsImage(msg.data.msg.fileName) ? (
-                      <img src={URL.createObjectURL(msg.data.file)} alt={msg.data.msg.fileName} width={400} height={550}></img>
+                      <img src={URL.createObjectURL(new Blob(msg.data.file))} alt={msg.data.msg.fileName} width={400} height={550}></img>
                     ) : (
-                      <a href={URL.createObjectURL(msg.data.file)} download={msg.data.msg.fileName}>
+                      <a href={URL.createObjectURL(new Blob(msg.data.file))} download={msg.data.msg.fileName}>
                         {/* <FileIcon extension={room.getFileExtension(msg.data.fileName)} labelTextStyle={{ width: 100, height: 100 }} type="image" /> */}
                         {msg.data.msg.fileName}
                       </a>

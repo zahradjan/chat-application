@@ -139,7 +139,7 @@ export class ChatRoom {
 
     const blob = new Blob(content);
     //TODO: lepsi ukladat Blob protoze ty URL budou temporary
-    file = blob;
+    file = content;
 
     return file;
   }
