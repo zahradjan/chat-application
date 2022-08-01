@@ -153,7 +153,7 @@ export default class DataStore {
       // room.getRoom(msg.from)
       const targetRoom = this.rootStore.roomStore.getRoom(msg.from);
       if (targetRoom) {
-        targetRoom.sendMessageToChatRoom(msg.data);
+        targetRoom.getMessage(msg);
       }
       // const parsedMsg = JSON.parse(msg.data);
       // console.log(parsedMsg);

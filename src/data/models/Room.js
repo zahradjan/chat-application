@@ -48,7 +48,7 @@ export class ChatRoom {
   async connectToChatRoom() {
     runInAction(async () => {
       // await this.pubsub.unsubscribe(this.roomName, (msg) => console.log(msg));
-      await this.pubsub.subscribe(this.roomName, await this.echo.bind(this));
+      await this.pubsub.subscribe(this.roomName, await this.getMessage.bind(this));
     });
   }
 
@@ -102,7 +102,7 @@ export class ChatRoom {
     return file;
   }
 
-  async echo(msg) {
+  async getMessage(msg) {
     // console.log(typeof msg.data);
     console.log(msg.data);
     //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
