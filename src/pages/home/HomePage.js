@@ -29,14 +29,7 @@ import { NoRoom } from "../../components/error/NoRoom.js";
 export const HomePage = observer(() => {
   const { sessionStore, roomStore, monitorStore } = useStores();
   const _me = sessionStore._user;
-  // const room = roomStore.createRoom("TestRoom");
 
-  const globalMonitor = monitorStore.getMonitor("DecentioGlobalNetwork");
-  // const data = toJS(globalMonitor.peers)
-
-  // useEffect(()=>{
-
-  // })
   const room = roomStore.selectedRoom;
 
   return (
@@ -49,18 +42,8 @@ export const HomePage = observer(() => {
             <ConversationHeader.Content style={{ backgroundColor: PrimaryColor }} userName={_me}></ConversationHeader.Content>
           </ConversationHeader>
 
-          {globalMonitor ? (
-            <ChatConversations
-              // @ts-ignore
-              globalMonitor={globalMonitor}
-            ></ChatConversations>
-          ) : (
-            <Loader></Loader>
-          )}
+          {monitorStore.isMonitorReady() ? <ChatConversations></ChatConversations> : <Loader></Loader>}
         </Sidebar>
-        {/* {roomStore.rooms.map((chatRoom) => {
-          return <ChatRoom key={chatRoom.roomId} room={chatRoom}></ChatRoom>;
-        })} */}
         {room ? <ChatRoom room={room}></ChatRoom> : <NoRoom></NoRoom>}
       </MainContainer>
     </div>

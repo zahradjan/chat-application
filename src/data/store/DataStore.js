@@ -5,11 +5,9 @@ export default class DataStore {
   ipfsNode;
   orbitDb;
   peerId;
-  peers;
   constructor(rootStore) {
     this.rootStore = rootStore;
     this.peers = [];
-    // this.peersDb = undefined;
     makeAutoObservable(this);
   }
 
@@ -114,9 +112,6 @@ export default class DataStore {
     console.log(this.ipfsNode);
     console.log(this.orbitDb);
     this.peerId = await this.getPeerId();
-    await this.setPeersDb();
-    await this.subscribeToYourPubsub();
-    await this.subscribeToDecentioPubsub();
     // setInterval(async () => {
     //   const peers = await this.getIpfsPeers();
     //   console.log(peers);
@@ -133,54 +128,7 @@ export default class DataStore {
   async onPeerConnect(connection) {
     console.log("Peer connected:" + connection.remotePeer._idB58String);
   }
-  async setPeersDb() {
-    this.peersDb = await this.orbitDb.feed("peers");
-    await this.peersDb.load();
-  }
-  async getPeersDbId() {
-    const id = await this.peersDb.id;
-    return id;
-  }
-  async subscribeToDecentioPubsub() {
-    await this.ipfsNode.pubsub.subscribe("DecentioGlobalNetwork", (msg) => console.log(msg));
-  }
-  //TODO:tohle asi ne tady bylo by to vhodne nekde v channel store
-  async subscribeToYourPubsub() {
-    const peerInfo = await this.ipfsNode.id();
-    console.log("Peer ID: " + peerInfo.id);
-    await this.ipfsNode.pubsub.subscribe(peerInfo.id, async (msg) => {
-      // console.log(msg.data);
-      processMessage(msg);
-      const parsedMsg = JSON.parse(msg.data);
-      console.log(msg.from);
-      //TODO: mechanismu ktery na zaklade from property bude hazet dane zpravy do spravne roomky
-      // room.getRoom(msg.from)
-      if (parsedMsg.userDb) {
-        this.replicateDb(parsedMsg);
-      } else {
-        const targetRoom = this.rootStore.roomStore.getRoom(msg.from);
-        if (targetRoom) {
-          targetRoom.setMessage(msg);
-        }
-      }
-      console.log(parsedMsg);
-      // if(msg.data)
 
-      // const parsedMsg = JSON.parse(msg.data);
-      // console.log(parsedMsg);
-      // await this.replicateDb(parsedMsg);
-    });
-  }
-  async replicateDb(parsedMsg) {
-    var peerDbOuter = await this.orbitDb.open(parsedMsg.userDb);
-    peerDbOuter.events.on("replicated", async () => {
-      console.log("DB replicated");
-      await this.peersDb.add(peerDbOuter.all);
-      console.log(peerDbOuter.all);
-      this.peers.push(peerDbOuter.all);
-      console.log(this.peersDb.all);
-    });
-  }
   async getPeerId() {
     if (this.ipfsNode === undefined) throw Error("IPFS Node not defined");
     const peerInfo = await this.ipfsNode.id();
@@ -214,7 +162,4 @@ export default class DataStore {
     delete this.orbitDb;
     delete this.ipfsNode;
   }
-}
-function processMessage(msg) {
-  if (typeof msg.data === "object") msg.data = new TextDecoder().decode(msg.data);
 }

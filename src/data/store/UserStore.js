@@ -23,7 +23,7 @@ export default class UserStore {
     await this.userDb.load();
   }
   async createUser(username) {
-    const peerId = await this.rootStore.dataStore.getPeerId();
+    const peerId = this.rootStore.dataStore.peerId;
     const user = new User(username, peerId);
 
     await this.userDb.set("user", user);

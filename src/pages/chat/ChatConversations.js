@@ -5,9 +5,8 @@ import { useStores } from "../../data/store/RootStore.js";
 
 // @ts-ignore
 export const ChatConversations = observer(({ globalMonitor }) => {
-  const { roomStore, dataStore } = useStores();
-  // console.log(globalMonitor);
-  const users = toJS(dataStore.peers);
+  const { roomStore, monitorStore } = useStores();
+  const users = toJS(monitorStore.peers);
   // console.log(users);
 
   function selectChatRoom(id) {
