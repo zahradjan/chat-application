@@ -9,9 +9,9 @@ export const ChatConversations = observer(({ globalMonitor }) => {
   const users = toJS(monitorStore.peers);
   // console.log(users);
 
-  function selectChatRoom(id) {
+  function selectChatRoom(user) {
     console.log("select");
-    roomStore.setSelectedRoom(id);
+    roomStore.setSelectedRoom(user);
   }
 
   return (
@@ -20,7 +20,7 @@ export const ChatConversations = observer(({ globalMonitor }) => {
         const user = item.user;
         // console.log(user.user);
         return (
-          <Conversation key={user.peerId} name={user._username} onClick={() => selectChatRoom(user.peerId)}>
+          <Conversation key={user.peerId} name={user._username} onClick={() => selectChatRoom(user)}>
             <Avatar status="dnd" />
           </Conversation>
         );

@@ -6,10 +6,12 @@ export class RoomStore {
   //TODO:load rooms from db
   rooms;
   selectedRoom;
+  selectedReceiver;
   constructor(rootStore) {
     this.rootStore = rootStore;
     this.rooms = [];
     this.selectedRoom = undefined;
+    this.selectedReceiver = undefined;
     makeAutoObservable(this);
   }
 
@@ -54,16 +56,19 @@ export class RoomStore {
   //     });
   //   });
   // }
-  setSelectedRoom(roomName) {
+  setSelectedRoom(user) {
     let room;
     runInAction(async () => {
-      room = this.getRoom(roomName);
+      room = this.getRoom(user.peerId);
       if (!room) {
-        room = await this.createRoom(roomName);
+        room = await this.createRoom(user.peerId);
         await room.init();
       }
       console.log(room);
+      console.log(user);
+      this.selectedReceiver = user._username;
       this.selectedRoom = room;
+      console.log(this.selectedReceiver);
     });
   }
 

@@ -22,6 +22,8 @@ export const ChatRoom = observer(({ room }) => {
   const { dataStore, roomStore } = useStores();
   // const room = toJS(roomStore.selectedRoom);
   console.log(room);
+  console.log(roomStore.selectedReceiver);
+
   // useEffect(() => {
   //   async function initRoom() {
   //     await room.init();
@@ -48,7 +50,7 @@ export const ChatRoom = observer(({ room }) => {
       <ConversationHeader style={{ backgroundColor: PrimaryColor }}>
         <ConversationHeader.Back style={{ backgroundColor: PrimaryColor }} />
         {/* <Avatar src={Chani} name="Zoe" /> */}
-        <ConversationHeader.Content style={{ backgroundColor: PrimaryColor }} userName="Chani" info="Active 10 mins ago" />
+        <ConversationHeader.Content style={{ backgroundColor: PrimaryColor }} userName={roomStore.selectedReceiver} />
         <ConversationHeader.Actions>
           <VoiceCallButton />
           <VideoCallButton />
@@ -68,9 +70,9 @@ export const ChatRoom = observer(({ room }) => {
                 <Message key={msg._id} model={{ direction: msg.from === nodeId ? "outgoing" : "incoming", position: "first" }}>
                   <Message.CustomContent>
                     {room.fileIsImage(msg.data.msg.fileName) ? (
-                      <img src={msg.data.file} alt={msg.data.msg.fileName} width={400} height={550}></img>
+                      <img src={URL.createObjectURL(msg.data.file)} alt={msg.data.msg.fileName} width={400} height={550}></img>
                     ) : (
-                      <a href={msg.data.file} download={msg.data.msg.fileName}>
+                      <a href={URL.createObjectURL(msg.data.file)} download={msg.data.msg.fileName}>
                         {/* <FileIcon extension={room.getFileExtension(msg.data.fileName)} labelTextStyle={{ width: 100, height: 100 }} type="image" /> */}
                         {msg.data.msg.fileName}
                       </a>
