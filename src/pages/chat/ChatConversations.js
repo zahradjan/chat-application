@@ -3,8 +3,7 @@ import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import { useStores } from "../../data/store/RootStore.js";
 
-// @ts-ignore
-export const ChatConversations = observer(({ globalMonitor }) => {
+export const ChatConversations = observer(() => {
   const { roomStore, monitorStore } = useStores();
   const users = toJS(monitorStore.peers);
   // console.log(users);

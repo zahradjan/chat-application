@@ -55,9 +55,6 @@ export class ChatRoom {
 
   async sendMessageToChatRoom(msg) {
     console.log("Msg in sending: " + msg);
-    //TODO:messages here
-    // const date = new Date(Date.now());
-    // const message = new Message(msg.from, msg, `${date.getHours()}:${date.getMinutes()}`, new AvatarGenerator().generateRandomAvatar(msg.from));
     const sender = this.rootStore.sessionStore._user;
 
     const message = { sender: sender, msg: msg };
@@ -68,7 +65,6 @@ export class ChatRoom {
   }
 
   async setMessage(msg) {
-    // console.log(typeof msg.data);
     console.log(msg.data);
     //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
     if (typeof msg.data === "object") msg.data = this.textDecoder.decode(msg.data);
@@ -82,7 +78,6 @@ export class ChatRoom {
       parsedMsg["file"] = file;
       type = "file";
     }
-    // parsedMsg["sender"] = user;
     console.log(parsedMsg);
     const date = new Date(Date.now());
     const message = new Message(
@@ -137,8 +132,6 @@ export class ChatRoom {
     }
     console.log(content);
 
-    const blob = new Blob(content);
-    //TODO: lepsi ukladat Blob protoze ty URL budou temporary
     file = content;
 
     return file;

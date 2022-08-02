@@ -104,8 +104,7 @@ export class MonitorStore {
       const parsedMsg = JSON.parse(msg.data);
       console.log(parsedMsg);
       console.log(msg.from);
-      //TODO: mechanismu ktery na zaklade from property bude hazet dane zpravy do spravne roomky
-      // room.getRoom(msg.from)
+
       if (parsedMsg.userDb) {
         this.replicateUserDb(parsedMsg);
       } else {
