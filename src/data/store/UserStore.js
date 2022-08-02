@@ -13,7 +13,7 @@ export default class UserStore {
     await this.setUserStore();
   }
   isUserStoreReady() {
-    return !!this.userDb;
+    return this.userDb;
   }
   async setUserStore() {
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");

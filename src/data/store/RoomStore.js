@@ -15,12 +15,12 @@ export class RoomStore {
     makeAutoObservable(this);
   }
 
-  // async init() {
-  //   if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
-  //   if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
-  //   await this.loadRoomsDb();
-  //   await this.setRoomsFromDb();
-  // }
+  async init() {
+    if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
+    if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
+    await this.loadRoomsDb();
+    await this.setRoomsFromDb();
+  }
 
   async createRoom(roomName) {
     if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
@@ -30,32 +30,34 @@ export class RoomStore {
     const chatRoom = new ChatRoom(this.rootStore, roomName);
 
     this.rooms.push(chatRoom);
+    await this.roomsDb.add(roomName);
+
     console.log(chatRoom);
     console.log(toJS(this.rooms));
     // const roomJSON = util.inspect(chatRoom);
     // console.log(roomJSON);
-    // await this.roomsDb.add(roomName);
     return chatRoom;
   }
-  //TODO: hodit peer == user jako propertu roomky aby byli spojeny a zaroven myslet na vice useru v jedne roomce
   getRoom(roomName) {
-    //TODO: kdyz nenajde apod.
     return this.rooms.find((room) => roomName === room.roomName);
   }
 
-  // async loadRoomsDb() {
-  //   this.roomsDb = await this.rootStore.dataStore.orbitDb.feed("rooms");
-  //   await this.roomsDb.load();
-  // }
-  // async setRoomsFromDb() {
-  //   const all = await toJS(this.roomsDb.all);
-  //   runInAction(() => {
-  //     all.map((e) => {
-  //       console.log(e.payload.value);
-  //       return this.rooms.push(e.payload.value);
-  //     });
-  //   });
-  // }
+  async loadRoomsDb() {
+    this.roomsDb = await this.rootStore.dataStore.orbitDb.feed("rooms");
+    await this.roomsDb.load();
+  }
+  async setRoomsFromDb() {
+    const all = await toJS(this.roomsDb.all);
+    runInAction(() => {
+      all.map((item) => {
+        const roomName = item.payload.value;
+        console.log(item.payload.value);
+        const room = new ChatRoom(this.rootStore, roomName);
+        room.init();
+        return this.rooms.push(room);
+      });
+    });
+  }
   setSelectedRoom(user) {
     let room;
     runInAction(async () => {
@@ -64,17 +66,14 @@ export class RoomStore {
         room = await this.createRoom(user.peerId);
         await room.init();
       }
-      console.log(room);
-      console.log(user);
       this.selectedReceiver = user._username;
       this.selectedRoom = room;
-      console.log(this.selectedReceiver);
     });
   }
 
   isChatRoomReady(roomName) {
     const room = this.getRoom(roomName);
     console.log(!!room);
-    return !!room;
+    return room !== undefined;
   }
 }

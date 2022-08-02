@@ -24,6 +24,7 @@ export default class RootStore {
       await this.dataStore.init();
       await this.userStore.init();
       await this.monitorStore.init();
+      await this.roomStore.init();
     }
   }
 }

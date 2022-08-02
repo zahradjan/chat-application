@@ -29,7 +29,7 @@ export class MonitorStore {
     });
   }
   async isMonitorReady() {
-    return !!this.monitor;
+    return this.monitor;
   }
 
   async setPeersFromDb() {
@@ -46,8 +46,8 @@ export class MonitorStore {
     this.monitor.on("join", async (peerJoined) => {
       console.log("Peer joined: " + peerJoined);
       console.log(`Peers on Pubsub ${this.topicName}: ` + (await this.monitor.getPeers()));
+      await this.sendUserDbId(peerJoined);
       // await this.savePeer(peerJoined);
-      this.sendUserDbId(peerJoined);
     });
   }
 
@@ -59,16 +59,14 @@ export class MonitorStore {
     });
   }
 
-  async peerIsInDb(peer) {
-    return this.peersDb
-      .iterator()
-      .collect()
-      .find((item) => item.payload.value === peer);
+  peerIsInDb(peer) {
+    return this.peers.find((item) => item === peer);
   }
 
   async savePeer(peer) {
     runInAction(async () => {
-      if (!(await this.peerIsInDb(peer))) {
+      console.log(!this.peerIsInDb(peer));
+      if (!this.peerIsInDb(peer)) {
         this.peers.push(peer);
         await this.peersDb.add(peer);
       }

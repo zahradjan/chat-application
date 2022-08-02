@@ -5,7 +5,7 @@ import { useStores } from "../../data/store/RootStore.js";
 
 export const ChatConversations = observer(() => {
   const { roomStore, monitorStore } = useStores();
-  const users = toJS(monitorStore.peers);
+  const users = monitorStore.peers;
   // console.log(users);
 
   function selectChatRoom(user) {
@@ -16,8 +16,9 @@ export const ChatConversations = observer(() => {
   return (
     <ConversationList style={{ backgroundColor: "#bacee0" }}>
       {users.map((item) => {
+        console.log(item);
         const user = item.user;
-        // console.log(user.user);
+        console.log(user);
         return (
           <Conversation key={user.peerId} name={user._username} onClick={() => selectChatRoom(user)}>
             <Avatar status="dnd" />

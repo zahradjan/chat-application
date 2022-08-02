@@ -11,6 +11,7 @@ export class ChatRoom {
   textDecoder;
   chatMessagesDb;
   chatRoomMessages;
+  lastMessage;
 
   constructor(rootStore, roomName) {
     this.roomId = uuidv4();
@@ -21,6 +22,7 @@ export class ChatRoom {
     this.roomName = roomName;
     this.textDecoder = new TextDecoder();
     this.chatRoomMessages = [];
+    this.lastMessage = "";
     makeAutoObservable(this);
   }
   async init() {
@@ -96,6 +98,7 @@ export class ChatRoom {
   async saveMessage(message) {
     runInAction(async () => {
       this.chatRoomMessages.push(message);
+      this.lastMessage = message;
       await this.chatMessagesDb.add(message);
     });
   }
