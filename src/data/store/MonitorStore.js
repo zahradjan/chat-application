@@ -6,12 +6,14 @@ export class MonitorStore {
   topicName;
   peers;
   peersDb;
+  texDecoder;
   constructor(rootStore) {
     this.rootStore = rootStore;
     this.monitor = undefined;
     this.peersDb = undefined;
     this.peers = [];
     this.topicName = "DecentioGlobalNetwork";
+    this.texDecoder = new TextDecoder();
     makeAutoObservable(this);
   }
 
@@ -19,10 +21,10 @@ export class MonitorStore {
     if (this.rootStore.dataStore.ipfsNode === undefined) throw Error("IPFS Node not defined!");
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
     runInAction(async () => {
-      await this.loadPeersDb();
-      await this.setPeersFromDb();
       await this.subscribeToOwnPubsub();
       await this.subscribeToDecentioPubsub();
+      await this.loadPeersDb();
+      await this.setPeersFromDb();
       this.monitor = new IpfsPubsubPeerMonitor(this.rootStore.dataStore.ipfsNode.pubsub, this.topicName);
       await this.listenForJoinedPeers();
       await this.listenForLeftPeers();
@@ -46,8 +48,19 @@ export class MonitorStore {
     this.monitor.on("join", async (peerJoined) => {
       console.log("Peer joined: " + peerJoined);
       console.log(`Peers on Pubsub ${this.topicName}: ` + (await this.monitor.getPeers()));
-      await this.sendUserDbId(peerJoined);
-      // await this.savePeer(peerJoined);
+      setTimeout(async () => {
+        let peerInDb = this.peerIsInDb(peerJoined);
+
+        if (peerInDb) {
+          // const room = await this.rootStore.roomStore.getRoom(peerJoined);
+          // //mozna lepsi ten init
+          // await room.connectToChatRoom();
+        } else {
+          await this.sendUserDbId(peerJoined);
+          // const room = await this.rootStore.roomStore.createRoom(peerJoined);
+          // await room.init();
+        }
+      }, 2000);
     });
   }
 
@@ -60,7 +73,10 @@ export class MonitorStore {
   }
 
   peerIsInDb(peer) {
-    return this.peers.find((item) => item === peer);
+    console.log(peer);
+    const peers = toJS(this.peers);
+    console.log(toJS(this.peers));
+    return peers.find((item) => item.user.peerId === peer);
   }
 
   async savePeer(peer) {
@@ -83,30 +99,35 @@ export class MonitorStore {
     }
   }
   async sendUserDbId(peer) {
-    const nodeId = await this.rootStore.dataStore.peerId;
-    console.log(nodeId);
-    console.log(peer === nodeId);
-    if (peer === nodeId) return;
+    console.log(this.peerIsInDb(peer));
+
     const userDbId = await this.rootStore.userStore.getUserDbId();
 
     const stringifyPayload = JSON.stringify({ userDb: userDbId });
-    this.rootStore.dataStore.ipfsNode.pubsub.publish(peer, stringifyPayload);
+    console.log(stringifyPayload);
+    await this.rootStore.dataStore.ipfsNode.pubsub.publish(peer, stringifyPayload);
   }
 
   async subscribeToOwnPubsub() {
     const peerInfoId = this.rootStore.dataStore.peerId;
     console.log("Peer ID: " + peerInfoId);
     await this.rootStore.dataStore.ipfsNode.pubsub.subscribe(peerInfoId, async (msg) => {
-      // console.log(msg.data);
-      this.processMessage(msg);
+      console.log(msg.data);
+
+      // this.processMessage(msg);
+      if (typeof msg.data === "object") msg.data = this.texDecoder.decode(msg.data);
       const parsedMsg = JSON.parse(msg.data);
       console.log(parsedMsg);
-      console.log(msg.from);
+      console.log(parsedMsg.userDb);
+      //TODO: tahle podminka vubec nefunguje
 
       if (parsedMsg.userDb) {
-        this.replicateUserDb(parsedMsg);
+        await this.replicateUserDb(parsedMsg);
+        const room = await this.rootStore.roomStore.createRoom(msg.from);
+        await room.init();
       } else {
         const targetRoom = this.rootStore.roomStore.getRoom(msg.from);
+        console.log(targetRoom);
         if (targetRoom) {
           targetRoom.setMessage(msg);
         }
@@ -126,6 +147,7 @@ export class MonitorStore {
       console.log(peerDbOuter.all);
       this.peers.push(peerDbOuter.all);
       console.log(this.peersDb.all);
+      console.log(this.peers);
     });
   }
 
@@ -152,7 +174,7 @@ export class MonitorStore {
     }, 2000);
   }
   processMessage(msg) {
-    if (typeof msg.data === "object") msg.data = new TextDecoder().decode(msg.data);
+    if (typeof msg.data === "object") msg.data = this.texDecoder.decode(msg.data);
   }
   async getPeersDbId() {
     const id = await this.peersDb.id;

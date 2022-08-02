@@ -1,6 +1,7 @@
 import { Avatar, Conversation, ConversationList } from "@chatscope/chat-ui-kit-react";
 import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
+import { AvatarGenerator } from "random-avatar-generator";
 import { useStores } from "../../data/store/RootStore.js";
 
 export const ChatConversations = observer(() => {
@@ -21,7 +22,7 @@ export const ChatConversations = observer(() => {
         console.log(user);
         return (
           <Conversation key={user.peerId} name={user._username} onClick={() => selectChatRoom(user)}>
-            <Avatar status="dnd" />
+            <Avatar src={new AvatarGenerator().generateRandomAvatar(user.peerId)} status="available" />
           </Conversation>
         );
       })}

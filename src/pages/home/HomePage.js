@@ -25,9 +25,10 @@ import { ChatConversations } from "../chat/ChatConversations.js";
 import { toJS } from "mobx";
 import { useEffect } from "react";
 import { NoRoom } from "../../components/error/NoRoom.js";
+import { AvatarGenerator } from "random-avatar-generator";
 
 export const HomePage = observer(() => {
-  const { sessionStore, roomStore, monitorStore } = useStores();
+  const { sessionStore, roomStore, monitorStore, dataStore } = useStores();
   const _me = sessionStore._user;
 
   const room = roomStore.selectedRoom;
@@ -38,7 +39,7 @@ export const HomePage = observer(() => {
         <Sidebar position="left" scrollable={false} style={{ display: "flex", flexDirection: "column" }}>
           {/* <Search placeholder="Search..." /> */}
           <ConversationHeader style={{ backgroundColor: PrimaryColor }}>
-            <Avatar src={PaulAtreides} name={_me} status="available" size="fluid" />
+            <Avatar src={new AvatarGenerator().generateRandomAvatar(dataStore.peerId)} name={_me} status="available" size="fluid" />
             <ConversationHeader.Content style={{ backgroundColor: PrimaryColor }} userName={_me}></ConversationHeader.Content>
           </ConversationHeader>
 

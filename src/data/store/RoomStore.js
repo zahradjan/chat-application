@@ -73,7 +73,6 @@ export class RoomStore {
 
   isChatRoomReady(roomName) {
     const room = this.getRoom(roomName);
-    console.log(!!room);
-    return room !== undefined;
+    return room;
   }
 }
