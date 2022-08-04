@@ -1,11 +1,3 @@
-import Kynes from "../../images/kynes.jpg";
-import Baron from "../../images/baron_harkonnen.jpg";
-import Chani from "../../images/chani.jpg";
-import DukeLeto from "../../images/leto_atreides.jpg";
-import LadyJessica from "../../images/lady_jessica.jpg";
-import DuncanIdaho from "../../images/duncan_idaho.jpg";
-import PaulAtreides from "../../images/paul_atreides.jpg";
-import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
   Avatar,
   Conversation,
@@ -38,9 +30,9 @@ export const HomePage = observer(() => {
       <MainContainer responsive>
         <Sidebar position="left" scrollable={false} style={{ display: "flex", flexDirection: "column" }}>
           {/* <Search placeholder="Search..." /> */}
-          <ConversationHeader style={{ backgroundColor: PrimaryColor }}>
+          <ConversationHeader>
             <Avatar src={new AvatarGenerator().generateRandomAvatar(dataStore.peerId)} name={_me} status="available" size="fluid" />
-            <ConversationHeader.Content style={{ backgroundColor: PrimaryColor }} userName={_me}></ConversationHeader.Content>
+            <ConversationHeader.Content userName={_me}></ConversationHeader.Content>
           </ConversationHeader>
 
           {monitorStore.isMonitorReady() ? <ChatConversations></ChatConversations> : <Loader></Loader>}
