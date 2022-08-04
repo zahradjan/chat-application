@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React, { useCallback, useRef } from "react";
 import { store, useStores } from "../../data/store/RootStore.js";
 import DecentioLogo from "../../icons/decentioLogoLight.png";
-
+import "./LoginPageStyle.css";
 const LoginPage = observer(() => {
   const { userStore, sessionStore } = useStores();
   const userNameRef = useRef(null);
@@ -32,11 +32,13 @@ const LoginPage = observer(() => {
     >
       <div>
         <img alt="logo" width={550} height={450} src={DecentioLogo}></img>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} className="loginForm">
           <div>
-            <input ref={userNameRef} name="Username"></input>
+            <input ref={userNameRef} className="loginFormInput" name="Username"></input>
           </div>
-          <button type="submit">Sign in</button>
+          <button className="submitButton" type="submit">
+            Sign in
+          </button>
         </form>
       </div>
     </div>
