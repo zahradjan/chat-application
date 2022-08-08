@@ -33,37 +33,6 @@ export default class DataStore {
     const ipfsConfig = {
       // preload: { enabled: false },
       relay: { enabled: true, hop: { enabled: true, active: true } },
-      // libp2p: {
-      //   config: {
-      //     dht: {
-      //       enabled: true,
-      //     },
-      //     modules: {
-      //       transport: ["WebRTCStar", "WebSockets"],
-      //     },
-      //     // transport: {
-      //     //   WebRTCStar: {
-      //     //     wrtc,
-      //     //   },
-      //     // },
-      //   },
-      // },
-      // peerDiscovery: {
-      //   autoDial: true, // Auto connect to discovered peers (limited by ConnectionManager minPeers)
-      //   mdns: {
-      //     // mdns options
-      //     interval: 1000, // ms
-      //     enabled: true,
-      //   },
-      //   webRTCStar: {
-      //     // webrtc-star options
-      //     interval: 1000, // ms
-      //     enabled: false,
-      //   },
-      //   // .. other discovery module options.
-      // },
-      // Prevents large data transfers
-      //TODO: nejak oddelit at to neni random ale treba username nebo neco
       repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.rootStore.sessionStore._user}}`,
       EXPERIMENTAL: {
         pubsub: true,
@@ -72,32 +41,13 @@ export default class DataStore {
       config: {
         Addresses: {
           Swarm: [
-            //       // Use IPFS dev signal server
-            //       // Websocket:
-            // "/dns4/ws-star-signal-1.servep2p.com/tcp/443/wss/p2p-websocket-star",
-            // "/dns4/ws-star-signal-2.servep2p.com/tcp/443/wss/p2p-websocket-star",
-            // "/dns4/ws-star.discovery.libp2p.io/tcp/443/wss/p2p-websocket-star",
-            // WebRTC:
-            // "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
             "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
             "/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/",
             "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star",
             "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star",
-            // // "/ip4/0.0.0.0/tcp/4002",
-            // "/ip4/127.0.0.1/tcp/4003/ws",
-            // "/libp2p-webrtc-star/dns4/star-signal.cloud.ipfs.team/wss",
-            // "/dns4/star-signal.cloud.ipfs.team/wss/p2p-webrtc-star",
-            //       // Use local signal server
-            // "/ip4/0.0.0.0/tcp/4011/ws",
-            // "/ip6/::/tcp/4011/ws",
           ],
         },
-        Bootstrap: [
-          // "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/",
-          // "/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/",
-          // "/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star",
-          // "/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star",
-        ],
+        Bootstrap: [],
       },
     };
 

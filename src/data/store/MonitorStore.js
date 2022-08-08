@@ -51,14 +51,8 @@ export class MonitorStore {
       setTimeout(async () => {
         let peerInDb = this.peerIsInDb(peerJoined);
 
-        if (peerInDb) {
-          // const room = await this.rootStore.roomStore.getRoom(peerJoined);
-          // //mozna lepsi ten init
-          // await room.connectToChatRoom();
-        } else {
+        if (!peerInDb) {
           await this.sendUserDbId(peerJoined);
-          // const room = await this.rootStore.roomStore.createRoom(peerJoined);
-          // await room.init();
         }
       }, 2000);
     });
@@ -68,7 +62,6 @@ export class MonitorStore {
     this.monitor.on("leave", async (peerLeft) => {
       console.log("Peer left: " + peerLeft);
       console.log(`Peers on Pubsub ${this.topicName}: ` + (await this.monitor.getPeers()));
-      // await this.removePeer(peerLeft);
     });
   }
 
@@ -99,8 +92,6 @@ export class MonitorStore {
     }
   }
   async sendUserDbId(peer) {
-    console.log(this.peerIsInDb(peer));
-
     const userDbId = await this.rootStore.userStore.getUserDbId();
 
     const stringifyPayload = JSON.stringify({ userDb: userDbId });
@@ -112,25 +103,19 @@ export class MonitorStore {
     const peerInfoId = this.rootStore.dataStore.peerId;
     console.log("Peer ID: " + peerInfoId);
     await this.rootStore.dataStore.ipfsNode.pubsub.subscribe(peerInfoId, async (msg) => {
-      console.log(msg.data);
-
-      // this.processMessage(msg);
       if (typeof msg.data === "object") msg.data = this.texDecoder.decode(msg.data);
       const parsedMsg = JSON.parse(msg.data);
-      console.log(parsedMsg);
-      console.log(parsedMsg.userDb);
-      //TODO: tahle podminka vubec nefunguje
-
+      let targetRoom;
       if (parsedMsg.userDb) {
         await this.replicateUserDb(parsedMsg);
-        const room = await this.rootStore.roomStore.createRoom(msg.from);
-        await room.init();
+        targetRoom = await this.rootStore.roomStore.createRoom(msg.from);
+        await targetRoom.init();
       } else {
-        const targetRoom = this.rootStore.roomStore.getRoom(msg.from);
+        targetRoom = this.rootStore.roomStore.getRoom(msg.from);
         console.log(targetRoom);
-        if (targetRoom) {
-          targetRoom.setMessage(msg);
-        }
+      }
+      if (targetRoom) {
+        targetRoom.setMessage(msg);
       }
     });
   }
@@ -144,10 +129,7 @@ export class MonitorStore {
     peerDbOuter.events.on("replicated", async () => {
       console.log("DB replicated");
       await this.peersDb.add(peerDbOuter.all);
-      console.log(peerDbOuter.all);
       this.peers.push(peerDbOuter.all);
-      console.log(this.peersDb.all);
-      console.log(this.peers);
     });
   }
 
