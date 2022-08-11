@@ -7,23 +7,30 @@ import "./LoginPageStyle.css";
 const LoginPage = observer(() => {
   const { userStore, sessionStore, monitorStore } = useStores();
   const userNameRef = useRef(null);
+  const passwordRef = useRef(null);
 
   const onSubmit = useCallback(
     async (e) => {
       e.preventDefault();
       const userName = userNameRef.current.value;
+      const password = passwordRef.current.value;
       console.log(userName);
-      if (userName !== "") {
-        if (!monitorStore.userAlreadyExist(userName)) {
+      if (userName === "") return;
+      if (password === "") return;
+      const registeredUser = monitorStore.userAlreadyExist(userName);
+      if (registeredUser) {
+        if (password !== registeredUser.user.password) {
+          monitorStore.setErrorMessage("Password incorrect!");
+        } else {
           await sessionStore.login(userName);
           // await store.initDbStores();
-          await userStore.createUser(userName);
-        } else {
-          monitorStore.userNameExist();
+          await userStore.createUser(userName, password);
         }
-
-        console.log(userStore.getAllProfileFields());
+      } else {
+        monitorStore.setErrorMessage("User not found!");
       }
+
+      console.log(userStore.getAllProfileFields());
     },
     [sessionStore, userStore, monitorStore]
   );
@@ -41,6 +48,9 @@ const LoginPage = observer(() => {
         <form onSubmit={onSubmit} className="loginForm">
           <div>
             <input ref={userNameRef} placeholder="Enter your name" className="loginFormInput" name="Username"></input>
+          </div>
+          <div>
+            <input ref={passwordRef} placeholder="Enter your password" className="loginFormInput" name="Password" type={"password"}></input>
           </div>
           <button className="submitButton" type="submit">
             Sign in

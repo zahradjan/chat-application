@@ -66,8 +66,8 @@ export class MonitorStore {
       console.log(`Peers on Pubsub ${this.topicName}: ` + (await this.monitor.getPeers()));
     });
   }
-  userNameExist() {
-    this.errorMessage = "Username already taken!";
+  setErrorMessage(errorMessage) {
+    this.errorMessage = errorMessage;
   }
 
   peerIsInDb(peer) {
@@ -83,6 +83,13 @@ export class MonitorStore {
     console.log(toJS(this.peers));
     return peers.find((item) => item.user._username === user);
   }
+
+  // passwordCorrect(user) {
+  //   console.log(user);
+  //   const peers = toJS(this.peers);
+  //   console.log(toJS(this.peers));
+  //   return peers.find((item) => item.user._username === user);
+  // }
 
   async savePeer(peer) {
     runInAction(async () => {

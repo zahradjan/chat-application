@@ -22,9 +22,9 @@ export default class UserStore {
     this.userDb = await this.rootStore.dataStore.orbitDb.kvstore("user", defaultOptions);
     await this.userDb.load();
   }
-  async createUser(username) {
+  async createUser(username, password) {
     const peerId = this.rootStore.dataStore.peerId;
-    const user = new User(username, peerId);
+    const user = new User(username, peerId, password);
 
     await this.userDb.set("user", user);
   }
