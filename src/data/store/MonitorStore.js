@@ -8,12 +8,14 @@ export class MonitorStore {
   peersDb;
   texDecoder;
   errorMessage;
+  login;
   constructor(rootStore) {
     this.rootStore = rootStore;
     this.monitor = undefined;
     this.peersDb = undefined;
     this.peers = [];
     this.errorMessage = "";
+    this.login = "Login";
     this.topicName = "DecentioGlobalNetwork";
     this.texDecoder = new TextDecoder();
     makeAutoObservable(this);
@@ -75,6 +77,17 @@ export class MonitorStore {
     const peers = toJS(this.peers);
     console.log(toJS(this.peers));
     return peers.find((item) => item.user.peerId === peer);
+  }
+
+  setLoginForm() {
+    this.login = "Login";
+  }
+  setSignUpForm() {
+    this.login = "SignUp";
+  }
+
+  isLoginForm() {
+    return this.login === "Login";
   }
 
   userAlreadyExist(user) {
