@@ -27,6 +27,9 @@ export class ChatRoom {
   }
   async init() {
     await this.connectToChatRoom();
+    await this.initDB();
+  }
+  async initDB() {
     await this.loadMsgDb();
     await this.setMessagesFromDb();
   }
@@ -67,8 +70,8 @@ export class ChatRoom {
   }
 
   async setMessage(msg) {
+    console.log(msg);
     console.log(msg.data);
-    //TODO: nevim proc ale kdyz je to zprava odeslana ze stejneho peeru tak je to string a jinak je to object
     if (typeof msg.data === "object") msg.data = this.textDecoder.decode(msg.data);
     const parsedMsg = JSON.parse(msg.data);
     const userName = parsedMsg.sender;

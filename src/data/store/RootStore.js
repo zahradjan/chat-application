@@ -20,12 +20,12 @@ export default class RootStore {
   }
 
   async initDbStores() {
-    if (this.sessionStore.isAuthenticated()) {
-      await this.dataStore.init();
-      await this.userStore.init();
-      await this.monitorStore.init();
-      await this.roomStore.init();
-    }
+    // if (this.sessionStore.isAuthenticated()) {
+    await this.dataStore.init();
+    await this.userStore.init();
+    await this.monitorStore.init();
+    await this.roomStore.init();
+    // }
   }
 }
 export const store = new RootStore();

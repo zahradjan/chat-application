@@ -4,7 +4,7 @@ import React from "react";
 import { store, StoresContext } from "./data/store/RootStore.js";
 import "./themes/default/main.scss";
 import { MainPage } from "./pages/main/MainPage.js";
-
+// window.LOG = "orbit*";
 function AppView() {
   return (
     <Routes>

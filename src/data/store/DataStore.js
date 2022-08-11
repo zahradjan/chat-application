@@ -12,7 +12,7 @@ export default class DataStore {
   }
 
   async init() {
-    if (!this.rootStore.sessionStore.isAuthenticated()) throw Error("User is not defined");
+    // if (!this.rootStore.sessionStore.isAuthenticated()) throw Error("User is not defined");
     if (this.ipfsNode !== undefined) return;
     if (this.orbitDb !== undefined) return;
 
@@ -31,9 +31,9 @@ export default class DataStore {
       },
     };
     const ipfsConfig = {
-      // preload: { enabled: false },
-      relay: { enabled: true, hop: { enabled: true, active: true } },
-      repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.rootStore.sessionStore._user}}`,
+      preload: { enabled: false },
+      // relay: { enabled: true, hop: { enabled: true, active: true } },
+      // repo: `/orbitdb/decentio-orbitdb-chat-ipfs-${this.rootStore.sessionStore._user}`,
       EXPERIMENTAL: {
         pubsub: true,
       },
@@ -62,17 +62,20 @@ export default class DataStore {
     console.log(this.ipfsNode);
     console.log(this.orbitDb);
     this.peerId = await this.getPeerId();
+    console.log(this.orbitDb.identity.id);
     // setInterval(async () => {
     //   const peers = await this.getIpfsPeers();
     //   console.log(peers);
-    //   // await peers.map(async (peerId) => {
-    //   //   try {
-    //   //     await this.connectToPeer(peerId.peer);
-    //   //   } catch {}
-    //   // });
+    //   await peers.map(async (peerId) => {
+    //     try {
+    //       // await this.connectToPeer(peerId.peer);
+    //     } catch {}
+    //   });
     //   // const topics = await this.ipfsNode.pubsub.ls();
     //   // console.log(topics);
     // }, 10000);
+    const multiaddr = await this.ipfsNode.swarm.localAddrs();
+    console.log(multiaddr);
     // this.ipfsNode.libp2p.connectionManager.on("peer:connect", this.onPeerConnect.bind(this));
   }
   async onPeerConnect(connection) {
@@ -85,12 +88,12 @@ export default class DataStore {
     return peerInfo.id;
   }
 
-  async connectToPeer(multiaddr, protocol = "/dnsaddr/bootstrap.libp2p.io/p2p/") {
+  async connectToPeer(multiaddr, protocol = "/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/") {
     try {
-      await this.ipfsNode.swarm.connect(protocol + multiaddr);
+      await this.ipfsNode.swarm.connect(multiaddr);
     } catch (err) {
       console.log(err);
-      await this.ipfsNode.swarm.connect(protocol + multiaddr);
+      await this.ipfsNode.swarm.connect(multiaddr);
     }
   }
 

@@ -9,17 +9,17 @@ import { HomePage } from "../home/HomePage.js";
 const LoginPage = React.lazy(() => import("../login/LoginPage.js"));
 
 export const MainPage = observer(() => {
-  const { sessionStore, userStore } = useStores();
+  const { sessionStore, userStore, monitorStore } = useStores();
 
-  return sessionStore.isAuthenticated() ? (
-    userStore.isUserStoreReady() ? (
+  return monitorStore.isMonitorReady() ? (
+    sessionStore.isAuthenticated() ? (
       <HomePage></HomePage>
     ) : (
-      <Loader></Loader>
+      <React.Suspense fallback={<Loader></Loader>}>
+        <LoginPage></LoginPage>
+      </React.Suspense>
     )
   ) : (
-    <React.Suspense fallback={<Loader></Loader>}>
-      <LoginPage></LoginPage>
-    </React.Suspense>
+    <Loader></Loader>
   );
 });

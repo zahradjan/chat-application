@@ -64,7 +64,7 @@ export class RoomStore {
       room = this.getRoom(user.peerId);
       if (!room) {
         room = await this.createRoom(user.peerId);
-        await room.init();
+        await room.initDB();
       }
       this.selectedReceiver = user._username;
       this.selectedRoom = room;

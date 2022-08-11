@@ -7,11 +7,13 @@ export class MonitorStore {
   peers;
   peersDb;
   texDecoder;
+  errorMessage;
   constructor(rootStore) {
     this.rootStore = rootStore;
     this.monitor = undefined;
     this.peersDb = undefined;
     this.peers = [];
+    this.errorMessage = "";
     this.topicName = "DecentioGlobalNetwork";
     this.texDecoder = new TextDecoder();
     makeAutoObservable(this);
@@ -31,7 +33,7 @@ export class MonitorStore {
     });
   }
   async isMonitorReady() {
-    return this.monitor;
+    return !!this.monitor;
   }
 
   async setPeersFromDb() {
@@ -64,12 +66,22 @@ export class MonitorStore {
       console.log(`Peers on Pubsub ${this.topicName}: ` + (await this.monitor.getPeers()));
     });
   }
+  userNameExist() {
+    this.errorMessage = "Username already taken!";
+  }
 
   peerIsInDb(peer) {
     console.log(peer);
     const peers = toJS(this.peers);
     console.log(toJS(this.peers));
     return peers.find((item) => item.user.peerId === peer);
+  }
+
+  userAlreadyExist(user) {
+    console.log(user);
+    const peers = toJS(this.peers);
+    console.log(toJS(this.peers));
+    return peers.find((item) => item.user._username === user);
   }
 
   async savePeer(peer) {
@@ -126,9 +138,11 @@ export class MonitorStore {
 
   async replicateUserDb(parsedMsg) {
     var peerDbOuter = await this.rootStore.dataStore.orbitDb.open(parsedMsg.userDb);
+    await peerDbOuter.load();
     peerDbOuter.events.on("replicated", async () => {
       console.log("DB replicated");
       await this.peersDb.add(peerDbOuter.all);
+      console.log(this.peersDb.all);
       this.peers.push(peerDbOuter.all);
     });
   }
@@ -155,6 +169,22 @@ export class MonitorStore {
       });
     }, 2000);
   }
+
+  async queryCatalog(queryFn) {
+    //  const dbAddrs = Object.values(this.peersDb.all).map(peer => peer.pieces)
+
+    const allPieces = await Promise.all(
+      this.peersDb.all.map(async (addr) => {
+        const db = await this.rootStore.dataStore.orbitDb.open(addr);
+        await db.load();
+
+        return db.query(queryFn);
+      })
+    );
+
+    // return allPieces.reduce((flatPieces, pieces) => flatPieces.concat(pieces), this.pieces.query(queryFn))
+  }
+
   processMessage(msg) {
     if (typeof msg.data === "object") msg.data = this.texDecoder.decode(msg.data);
   }
