@@ -18,6 +18,7 @@ import { toJS } from "mobx";
 import { useEffect } from "react";
 import { NoRoom } from "../../components/error/NoRoom.js";
 import { AvatarGenerator } from "random-avatar-generator";
+import { UsersOnline } from "../chat/UsersOnline.js";
 
 export const HomePage = observer(() => {
   const { sessionStore, roomStore, monitorStore, dataStore } = useStores();
@@ -35,7 +36,8 @@ export const HomePage = observer(() => {
             <ConversationHeader.Content userName={_me}></ConversationHeader.Content>
           </ConversationHeader>
 
-          {monitorStore.isMonitorReady() ? <ChatConversations></ChatConversations> : <Loader></Loader>}
+          {monitorStore.isMonitorReady() ? <UsersOnline></UsersOnline> : <Loader></Loader>}
+          {!!roomStore.rooms ? <ChatConversations></ChatConversations> : <Loader></Loader>}
         </Sidebar>
         {room ? <ChatRoom room={room}></ChatRoom> : <NoRoom></NoRoom>}
       </MainContainer>

@@ -67,7 +67,7 @@ export class RoomStore {
       room = this.getRoomByUser(user.peerId[0]);
 
       if (!room) {
-        const roomName = "testRoomName " + Math.random() * 1000;
+        const roomName = user._username;
         room = await this.createRoom(roomName);
         //connect to chat room
         room.setRoomUser(user.peerId);
@@ -79,9 +79,16 @@ export class RoomStore {
         console.log(stringifyMessage);
         this.rootStore.dataStore.ipfsNode.pubsub.publish(user.peerId[0], stringifyMessage);
       }
-      this.selectedReceiver = user._username;
-      this.selectedRoom = room;
+      // this.selectedReceiver = user._username;
+      // this.selectedRoom = room;
     });
+  }
+
+  selectRoom(roomName) {
+    let room = this.getRoom(roomName);
+
+    this.selectedRoom = room;
+    this.selectedReceiver = roomName;
   }
 
   isChatRoomReady(roomName) {

@@ -5,25 +5,23 @@ import { AvatarGenerator } from "random-avatar-generator";
 import { useStores } from "../../data/store/RootStore.js";
 
 export const ChatConversations = observer(() => {
-  const { roomStore, monitorStore } = useStores();
-  const users = toJS(monitorStore.peers);
+  const { roomStore } = useStores();
+  const rooms = toJS(roomStore.rooms);
   // console.log(users);
 
-  function selectChatRoom(user) {
+  function selectChatRoom(roomName) {
     console.log("select");
-    roomStore.setSelectedRoom(user);
+    roomStore.selectRoom(roomName);
   }
 
   return (
     <ConversationList style={{ backgroundColor: "#bacee0" }}>
-      {users.map((item) => {
+      {rooms.map((item) => {
         console.log(item);
-        const user = item.data.user;
-        console.log(user.peerId);
-        console.log(user._username);
+
         return (
-          <Conversation key={user.peerId} name={user._username} onClick={() => selectChatRoom(user)}>
-            <Avatar src={new AvatarGenerator().generateRandomAvatar(user.peerId)} status="available" />
+          <Conversation key={item.roomId} name={item.roomName} onClick={() => selectChatRoom(item.roomName)}>
+            <Avatar src={new AvatarGenerator().generateRandomAvatar()} status="available" />
           </Conversation>
         );
       })}
