@@ -67,7 +67,10 @@ export class MonitorStore {
     this.monitor.on("leave", async (peerLeft) => {
       console.log("Peer left: " + peerLeft);
       console.log(`Peers on Pubsub ${this.topicName}: ` + (await this.monitor.getPeers()));
-      // this.peers.filter((item)=> )
+      const peers = toJS(this.peers);
+      const peersFiltered = peers.filter((item) => item.data.user.peerId[0] !== peerLeft);
+      console.log(peersFiltered);
+      this.peers = peersFiltered;
     });
   }
   setErrorMessage(errorMessage) {

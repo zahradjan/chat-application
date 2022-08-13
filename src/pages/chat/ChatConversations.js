@@ -21,7 +21,7 @@ export const ChatConversations = observer(() => {
 
         return (
           <Conversation key={item.roomId} name={item.roomName} onClick={() => selectChatRoom(item.roomName)}>
-            <Avatar src={new AvatarGenerator().generateRandomAvatar()} status="available" />
+            <Avatar src={new AvatarGenerator().generateRandomAvatar(item.roomName)} status="available" />
           </Conversation>
         );
       })}

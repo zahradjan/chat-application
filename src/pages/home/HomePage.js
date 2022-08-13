@@ -35,11 +35,25 @@ export const HomePage = observer(() => {
             <Avatar src={new AvatarGenerator().generateRandomAvatar(dataStore.peerId)} name={_me} status="available" size="fluid" />
             <ConversationHeader.Content userName={_me}></ConversationHeader.Content>
           </ConversationHeader>
+          <ConversationHeader>
+            <ConversationHeader.Content userName={"Chats"}></ConversationHeader.Content>
+          </ConversationHeader>
 
-          {monitorStore.isMonitorReady() ? <UsersOnline></UsersOnline> : <Loader></Loader>}
           {!!roomStore.rooms ? <ChatConversations></ChatConversations> : <Loader></Loader>}
         </Sidebar>
         {room ? <ChatRoom room={room}></ChatRoom> : <NoRoom></NoRoom>}
+        <Sidebar position="right" scrollable={false} style={{ display: "flex", flexDirection: "column" }}>
+          {/* <Search placeholder="Search..." /> */}
+          <ConversationHeader>
+            <Avatar src={new AvatarGenerator().generateRandomAvatar(dataStore.peerId)} name={_me} status="available" size="fluid" />
+            <ConversationHeader.Content userName={_me}></ConversationHeader.Content>
+          </ConversationHeader>
+          <ConversationHeader>
+            <ConversationHeader.Content userName={"Connected Users"}></ConversationHeader.Content>
+          </ConversationHeader>
+
+          {monitorStore.isMonitorReady() ? <UsersOnline></UsersOnline> : <Loader></Loader>}
+        </Sidebar>
       </MainContainer>
     </div>
   );
