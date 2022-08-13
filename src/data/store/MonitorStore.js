@@ -57,6 +57,7 @@ export class MonitorStore {
 
         if (!peerInDb) {
           await this.sendUserDbId(peerJoined);
+          // await this.sendPeersDbId(peerJoined);
         }
       }, 2000);
     });
@@ -66,17 +67,18 @@ export class MonitorStore {
     this.monitor.on("leave", async (peerLeft) => {
       console.log("Peer left: " + peerLeft);
       console.log(`Peers on Pubsub ${this.topicName}: ` + (await this.monitor.getPeers()));
+      // this.peers.filter((item)=> )
     });
   }
   setErrorMessage(errorMessage) {
     this.errorMessage = errorMessage;
   }
 
-  peerIsInDb(peer) {
-    console.log(peer);
+  peerIsInDb(dbIdentity) {
+    console.log(dbIdentity);
     const peers = toJS(this.peers);
     console.log(toJS(this.peers));
-    return peers.find((item) => item.user.peerId === peer);
+    return peers.find((item) => item.identity === dbIdentity);
   }
 
   setLoginForm() {
@@ -94,7 +96,13 @@ export class MonitorStore {
     console.log(user);
     const peers = toJS(this.peers);
     console.log(toJS(this.peers));
-    return peers.find((item) => item.user._username === user);
+
+    const existingUser = this.peersDb
+      .iterator({ limit: -1 })
+      .collect()
+      .find((item) => item.payload.value.data.user._username === user);
+    return existingUser;
+    // return peers.find((item) => item.data.user._username === user);
   }
 
   // passwordCorrect(user) {
@@ -130,6 +138,13 @@ export class MonitorStore {
     console.log(stringifyPayload);
     await this.rootStore.dataStore.ipfsNode.pubsub.publish(peer, stringifyPayload);
   }
+  async sendPeersDbId(peer) {
+    const peerDbId = await this.peersDb.id;
+
+    const stringifyPayload = JSON.stringify({ peersDb: peerDbId });
+    console.log(stringifyPayload);
+    await this.rootStore.dataStore.ipfsNode.pubsub.publish(peer, stringifyPayload);
+  }
 
   async subscribeToOwnPubsub() {
     const peerInfoId = this.rootStore.dataStore.peerId;
@@ -137,18 +152,36 @@ export class MonitorStore {
     await this.rootStore.dataStore.ipfsNode.pubsub.subscribe(peerInfoId, async (msg) => {
       if (typeof msg.data === "object") msg.data = this.texDecoder.decode(msg.data);
       const parsedMsg = JSON.parse(msg.data);
-      let targetRoom;
       if (parsedMsg.userDb) {
         await this.replicateUserDb(parsedMsg);
-        targetRoom = await this.rootStore.roomStore.createRoom(msg.from);
-        await targetRoom.init();
-      } else {
-        targetRoom = this.rootStore.roomStore.getRoom(msg.from);
-        console.log(targetRoom);
       }
-      if (targetRoom) {
-        targetRoom.setMessage(msg);
+      if (parsedMsg.peersDb) {
+        await this.replicatePeersDb(parsedMsg);
       }
+      if (parsedMsg.roomName) {
+        console.log(parsedMsg.roomName);
+        let room = this.rootStore.roomStore.getRoom(parsedMsg.roomName);
+
+        if (!room) {
+          room = await this.rootStore.roomStore.createRoom(parsedMsg.roomName);
+          room.setRoomUser(msg.from);
+
+          room.init();
+        }
+      }
+
+      // let targetRoom;
+      // if (parsedMsg.userDb) {
+      //   await this.replicateUserDb(parsedMsg);
+      //   targetRoom = await this.rootStore.roomStore.createRoom(msg.from);
+      //   await targetRoom.init();
+      // } else {
+      //   targetRoom = this.rootStore.roomStore.getRoom(msg.from);
+      //   console.log(targetRoom);
+      // }
+      // if (targetRoom) {
+      //   targetRoom.setMessage(msg);
+      // }
     });
   }
 
@@ -157,13 +190,34 @@ export class MonitorStore {
   }
 
   async replicateUserDb(parsedMsg) {
+    console.log(parsedMsg.userDb);
     var peerDbOuter = await this.rootStore.dataStore.orbitDb.open(parsedMsg.userDb);
+    console.log(peerDbOuter);
     await peerDbOuter.load();
     peerDbOuter.events.on("replicated", async () => {
       console.log("DB replicated");
-      await this.peersDb.add(peerDbOuter.all);
+      const db = { identity: parsedMsg.userDb, data: peerDbOuter.all };
+      console.log(db);
+
+      await this.peersDb.add(db);
       console.log(this.peersDb.all);
-      this.peers.push(peerDbOuter.all);
+      this.peers.push(db);
+    });
+  }
+
+  async replicatePeersDb(parsedMsg) {
+    console.log(parsedMsg.peersDb);
+    var peerDbOuter = await this.rootStore.dataStore.orbitDb.open(parsedMsg.peersDb);
+    console.log(peerDbOuter);
+    await peerDbOuter.load();
+    peerDbOuter.events.on("replicated", async () => {
+      console.log("DB replicated");
+      const db = { identity: parsedMsg.peersDb, data: peerDbOuter.all };
+      if (this.peerIsInDb(parsedMsg.peersDb)) return;
+      console.log(db);
+      await this.peersDb.add(db);
+      console.log(this.peersDb.all);
+      this.peers.push(db);
     });
   }
 
@@ -172,22 +226,30 @@ export class MonitorStore {
     await this.peersDb.load();
   }
 
-  replicatePeersDB() {
-    setTimeout(async () => {
-      const nodeId = await this.rootStore.dataStore.getPeerId();
-      const peersDbId = await this.peersDb.id;
-      console.log(nodeId);
-      await this.peersDb.all.map((peer) => {
-        const peerId = peer.payload.value;
-        if (peerId !== nodeId) {
-          console.log("jsem tu ");
-          console.log(peerId);
-          console.log(peersDbId);
-          const stringifyPayload = JSON.stringify({ peerDb: peersDbId });
-          this.rootStore.dataStore.ipfsNode.pubsub.publish(peerId, stringifyPayload);
-        }
-      });
-    }, 2000);
+  // async replicatePeersDB() {
+  //   const nodeId = await this.rootStore.dataStore.getPeerId();
+  //   const peersDbId = await this.peersDb.id;
+  //   console.log(nodeId);
+  //   await this.peersDb.all.map((peer) => {
+  //     const peerId = peer.payload.value;
+  //     console.log(peerId);
+  //     console.log(peersDbId);
+  //     const stringifyPayload = JSON.stringify({ peerDb: peersDbId });
+  //     this.rootStore.dataStore.ipfsNode.pubsub.publish(peerId, stringifyPayload);
+  //   });
+  // }
+
+  async removeDuplicateUser(duplicateUser) {
+    console.log(duplicateUser);
+    this.peers = this.peers.filter((item) => item.data.user._username != duplicateUser.payload.value.data.user._username);
+    await this.peersDb.remove(duplicateUser.hash);
+
+    // console.log(index);
+    // if (index > -1) {
+    //   // only splice array when item is found
+    //   this.peers.splice(index, 1);
+    //   // 2nd parameter means remove one item only
+    // }
   }
 
   async queryCatalog(queryFn) {
@@ -211,5 +273,12 @@ export class MonitorStore {
   async getPeersDbId() {
     const id = await this.peersDb.id;
     return id;
+  }
+
+  filterDuplicates(array) {
+    let uniqueChars = array.filter((element, index) => {
+      return array.indexOf(element) === index;
+    });
+    return uniqueChars;
   }
 }

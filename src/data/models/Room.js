@@ -12,6 +12,7 @@ export class ChatRoom {
   chatMessagesDb;
   chatRoomMessages;
   lastMessage;
+  chatRoomUsers;
 
   constructor(rootStore, roomName) {
     this.roomId = uuidv4();
@@ -23,6 +24,7 @@ export class ChatRoom {
     this.textDecoder = new TextDecoder();
     this.chatRoomMessages = [];
     this.lastMessage = "";
+    this.chatRoomUsers = [];
     makeAutoObservable(this);
   }
   async init() {
@@ -37,6 +39,14 @@ export class ChatRoom {
   async loadMsgDb() {
     this.chatMessagesDb = await this.orbitDb.feed(`${this.roomName}-messages`);
     await this.chatMessagesDb.load();
+  }
+  getRoomUsers() {
+    return this.chatRoomUsers;
+  }
+  setRoomUser(user) {
+    if (!this.chatRoomUsers.find((item) => item === user)) {
+      this.chatRoomUsers.push(user);
+    }
   }
 
   async setMessagesFromDb() {

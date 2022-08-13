@@ -17,17 +17,35 @@ export default class UserStore {
   }
   async setUserStore() {
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
-    const defaultOptions = { accessController: { write: [this.rootStore.dataStore.orbitDb.identity.id] } };
+    const defaultOptions = { accessController: { write: "*" } };
 
-    this.userDb = await this.rootStore.dataStore.orbitDb.kvstore("user", defaultOptions);
+    this.userDb = await this.rootStore.dataStore.orbitDb.kvstore("user");
     await this.userDb.load();
   }
   async createUser(username, password) {
+    const peersId = [];
     const peerId = this.rootStore.dataStore.peerId;
-    const user = new User(username, peerId, password);
+    peersId.push(peerId);
+
+    const user = new User(username, peersId, password);
 
     await this.userDb.set("user", user);
   }
+  async setUser(user) {
+    console.log(user.identity);
+    console.log(user);
+    this.userDb = await this.rootStore.dataStore.orbitDb.open(user.identity);
+    // const peerId = this.rootStore.dataStore.peerId;
+    // // // console.log(user);
+    // user.data.user.peerId.push(peerId);
+    // // // console.log(user);
+    // await this.userDb.set("user", user);
+    // console.log(user);
+  }
+  // async updatePeerId() {
+  //   const peerId = this.rootStore.dataStore.peerId;
+  //   this.updateUserField("peerId", [...peerId]);
+  // }
 
   async deleteProfileField(key) {
     const cid = await this.userDb.del(key);

@@ -31,7 +31,6 @@ export class RoomStore {
 
     this.rooms.push(chatRoom);
     await this.roomsDb.add(roomName);
-
     console.log(chatRoom);
     console.log(toJS(this.rooms));
     // const roomJSON = util.inspect(chatRoom);
@@ -40,6 +39,9 @@ export class RoomStore {
   }
   getRoom(roomName) {
     return this.rooms.find((room) => roomName === room.roomName);
+  }
+  getRoomByUser(chatUser) {
+    return this.rooms.find((room) => room.chatRoomUsers.includes(chatUser));
   }
 
   async loadRoomsDb() {
@@ -61,10 +63,21 @@ export class RoomStore {
   setSelectedRoom(user) {
     let room;
     runInAction(async () => {
-      room = this.getRoom(user.peerId);
+      //generate room name
+      room = this.getRoomByUser(user.peerId[0]);
+
       if (!room) {
-        room = await this.createRoom(user.peerId);
-        await room.initDB();
+        const roomName = "testRoomName " + Math.random() * 1000;
+        room = await this.createRoom(roomName);
+        //connect to chat room
+        room.setRoomUser(user.peerId);
+        await room.init();
+        const message = { roomName: roomName };
+        const stringifyMessage = JSON.stringify(message);
+        // publish to users involved
+        console.log(user.peerId[0]);
+        console.log(stringifyMessage);
+        this.rootStore.dataStore.ipfsNode.pubsub.publish(user.peerId[0], stringifyMessage);
       }
       this.selectedReceiver = user._username;
       this.selectedRoom = room;

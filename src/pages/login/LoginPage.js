@@ -19,15 +19,39 @@ const LoginPage = observer(() => {
       if (password === "") return;
       const registeredUser = monitorStore.userAlreadyExist(userName);
       if (registeredUser) {
-        if (password !== registeredUser.user.password) {
+        if (password !== registeredUser.payload.value.data.user.password) {
           monitorStore.setErrorMessage("Password incorrect!");
         } else {
           await sessionStore.login(userName);
+          //TODO: registeredUser save in userstore as this user
+          await userStore.setUser(registeredUser.payload.value);
+          await monitorStore.removeDuplicateUser(registeredUser);
           // await store.initDbStores();
-          await userStore.createUser(userName, password);
         }
       } else {
         monitorStore.setErrorMessage("User not found!");
+      }
+
+      console.log(userStore.getAllProfileFields());
+    },
+    [sessionStore, userStore, monitorStore]
+  );
+
+  const onSingUpSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const userName = userNameRef.current.value;
+      const password = passwordRef.current.value;
+      console.log(userName);
+      if (userName === "") return;
+      if (password === "") return;
+      const registeredUser = monitorStore.userAlreadyExist(userName);
+      if (registeredUser) {
+        monitorStore.setErrorMessage("User already exist!");
+      } else {
+        await sessionStore.login(userName);
+        // await store.initDbStores();
+        await userStore.createUser(userName, password);
       }
 
       console.log(userStore.getAllProfileFields());
@@ -59,13 +83,13 @@ const LoginPage = observer(() => {
             <p>
               New to Decentio?
               <button style={{ background: "none", border: "none" }} onClick={() => monitorStore.setSignUpForm()}>
-                Sing up!
+                Sign up!
               </button>
             </p>
             {monitorStore.errorMessage ? <p style={{ color: ErrorColor }}>{monitorStore.errorMessage}</p> : null}
           </form>
         ) : (
-          <form onSubmit={onLoginSubmit} className="loginForm">
+          <form onSubmit={onSingUpSubmit} className="loginForm">
             <div>
               <input ref={userNameRef} placeholder="Enter your name" className="loginFormInput" name="Username"></input>
             </div>
@@ -78,7 +102,7 @@ const LoginPage = observer(() => {
             <p>
               Already registered?
               <button style={{ background: "none", border: "none" }} onClick={() => monitorStore.setLoginForm()}>
-                Sing in!
+                Sign in!
               </button>
             </p>
             {monitorStore.errorMessage ? <p style={{ color: ErrorColor }}>{monitorStore.errorMessage}</p> : null}

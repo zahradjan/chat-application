@@ -6,7 +6,7 @@ import { useStores } from "../../data/store/RootStore.js";
 
 export const ChatConversations = observer(() => {
   const { roomStore, monitorStore } = useStores();
-  const users = monitorStore.peers;
+  const users = toJS(monitorStore.peers);
   // console.log(users);
 
   function selectChatRoom(user) {
@@ -18,8 +18,9 @@ export const ChatConversations = observer(() => {
     <ConversationList style={{ backgroundColor: "#bacee0" }}>
       {users.map((item) => {
         console.log(item);
-        const user = item.user;
-        console.log(user);
+        const user = item.data.user;
+        console.log(user.peerId);
+        console.log(user._username);
         return (
           <Conversation key={user.peerId} name={user._username} onClick={() => selectChatRoom(user)}>
             <Avatar src={new AvatarGenerator().generateRandomAvatar(user.peerId)} status="available" />
