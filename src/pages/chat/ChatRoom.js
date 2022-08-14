@@ -49,11 +49,6 @@ export const ChatRoom = observer(({ room }) => {
         <ConversationHeader.Back style={{ backgroundColor: PrimaryColor }} />
         {/* <Avatar src={Chani} name="Zoe" /> */}
         <ConversationHeader.Content style={{ backgroundColor: PrimaryColor }} userName={roomStore.selectedReceiver} />
-        <ConversationHeader.Actions>
-          <VoiceCallButton />
-          <VideoCallButton />
-          <InfoButton />
-        </ConversationHeader.Actions>
       </ConversationHeader>
       <MessageList loading={!data}>
         {data

@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import React, { useCallback, useRef } from "react";
 import { ErrorColor } from "../../constants/constants.js";
 import { useStores } from "../../data/store/RootStore.js";
-import DecentioLogo from "../../icons/decentioLogoLight.png";
+import DecentioLogo from "../../assets/icons/decentioLogoLight.png";
 import "./LoginPageStyle.css";
 const LoginPage = observer(() => {
   const { userStore, sessionStore, monitorStore } = useStores();

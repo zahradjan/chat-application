@@ -22,7 +22,7 @@ import { UsersOnline } from "../chat/UsersOnline.js";
 import ReactModal from "react-modal";
 import { useModal } from "react-modal-hook";
 import "../login/LoginPageStyle.css";
-import DecentioLogo from "../../icons/decentioLogoLight.png";
+import DecentioLogo from "../../assets/icons/decentioLogoLight.png";
 
 export const HomePage = observer(() => {
   const { sessionStore, roomStore, monitorStore, dataStore } = useStores();
@@ -111,25 +111,21 @@ export const HomePage = observer(() => {
           <ConversationHeader>
             <ConversationHeader.Content userName={"Chats"}></ConversationHeader.Content>
             <ConversationHeader.Actions>
-              <Button onClick={showModal} />
+              <Button onClick={showModal} style={{ color: "white" }}>
+                Create chat room
+              </Button>
             </ConversationHeader.Actions>
           </ConversationHeader>
 
           {!!roomStore.rooms ? <ChatConversations></ChatConversations> : <Loader></Loader>}
-        </Sidebar>
-        {room ? <ChatRoom room={room}></ChatRoom> : <NoRoom></NoRoom>}
-        <Sidebar position="right" scrollable={false} style={{ display: "flex", flexDirection: "column" }}>
-          {/* <Search placeholder="Search..." /> */}
-          <ConversationHeader>
-            <Avatar src={new AvatarGenerator().generateRandomAvatar(dataStore.peerId)} name={_me} status="available" size="fluid" />
-            <ConversationHeader.Content userName={_me}></ConversationHeader.Content>
-          </ConversationHeader>
+
           <ConversationHeader>
             <ConversationHeader.Content userName={"Connected Users"}></ConversationHeader.Content>
           </ConversationHeader>
 
           {monitorStore.isMonitorReady() ? <UsersOnline></UsersOnline> : <Loader></Loader>}
         </Sidebar>
+        {room ? <ChatRoom room={room}></ChatRoom> : <NoRoom></NoRoom>}
       </MainContainer>
     </div>
   );

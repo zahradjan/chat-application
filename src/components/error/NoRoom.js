@@ -1,5 +1,5 @@
 import { ContentColorLight } from "../../constants/constants.js";
-import DecentioLogo from "../../icons/decentioLogoLight.png";
+import DecentioLogo from "../../assets/icons/decentioLogoLight.png";
 
 export const NoRoom = () => {
   return (
