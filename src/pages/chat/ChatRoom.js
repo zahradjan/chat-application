@@ -11,9 +11,7 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
-import { useEffect, useRef } from "react";
-import { FileIcon } from "react-file-icon";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { useFilePicker } from "use-file-picker";
 import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
 import { useStores } from "../../data/store/RootStore.js";
@@ -41,7 +39,7 @@ export const ChatRoom = observer(({ room }) => {
       if (filesContent.length) await room.uploadFile(filesContent);
     }
     loadFile();
-  }, [filesContent]);
+  }, [filesContent, room]);
 
   const data = toJS(room.chatRoomMessages);
   const nodeId = dataStore.peerId;

@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable } from "mobx";
 import User from "../models/User.js";
 
 export default class UserStore {
@@ -17,7 +17,7 @@ export default class UserStore {
   }
   async setUserStore() {
     if (this.rootStore.dataStore.orbitDb === undefined) throw Error("OrbitDb not defined!");
-    const defaultOptions = { accessController: { write: "*" } };
+    // const defaultOptions = { accessController: { write: "*" } };
 
     this.userDb = await this.rootStore.dataStore.orbitDb.kvstore("user");
     await this.userDb.load();

@@ -4,7 +4,6 @@ import React from "react";
 import { store, StoresContext } from "./data/store/RootStore.js";
 import "./themes/default/main.scss";
 import { MainPage } from "./pages/main/MainPage.js";
-import { ModalProvider } from "react-modal-hook";
 // window.LOG = "orbit*";
 function AppView() {
   return (

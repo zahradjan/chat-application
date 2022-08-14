@@ -1,4 +1,4 @@
-import { get, makeAutoObservable, runInAction, toJS } from "mobx";
+import { makeAutoObservable, runInAction, toJS } from "mobx";
 import { Message } from "./Message.js";
 import { AvatarGenerator } from "random-avatar-generator";
 import { v4 as uuidv4 } from "uuid";
@@ -117,7 +117,6 @@ export class ChatRoom {
   }
 
   async uploadFile(filesContent) {
-    //TODO: maybe Multiple files if interested
     console.log(filesContent[0]);
     console.log(filesContent[0].name.split(".").pop());
     const result = await this.ipfsNode.add(filesContent[0]);

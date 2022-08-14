@@ -4,20 +4,18 @@ import {
   Conversation,
   ConversationHeader,
   ConversationList,
-  EllipsisButton,
   MainContainer,
 
   // Search,
   Sidebar,
 } from "@chatscope/chat-ui-kit-react";
 import { useStores } from "../../data/store/RootStore.js";
-import { ContentColorLight, PrimaryColor } from "../../constants/constants.js";
+import { ContentColorLight } from "../../constants/constants.js";
 import { observer } from "mobx-react";
 import { ChatRoom } from "../chat/ChatRoom.js";
 import { Loader } from "../../components/Loader.js";
 import { ChatConversations } from "../chat/ChatConversations.js";
-import { toJS } from "mobx";
-import { useCallback, useEffect, useRef } from "react";
+import { useRef } from "react";
 import { NoRoom } from "../../components/error/NoRoom.js";
 import { AvatarGenerator } from "random-avatar-generator";
 import { UsersOnline } from "../chat/UsersOnline.js";
@@ -92,16 +90,15 @@ export const HomePage = observer(() => {
     []
   );
   const room = roomStore.selectedRoom;
-  const createChatRoom = useCallback((e) => {
+  function createChatRoom(e) {
     e.preventDefault();
     const roomName = roomNameRef.current.value;
     console.log(selectedUsers);
     if (roomName) {
       roomStore.createChatRoom(roomName, selectedUsers);
-      selectedUsers = [];
     }
     hideModal();
-  }, []);
+  }
   return (
     <div style={{ position: "relative", height: "100vh" }}>
       <MainContainer responsive>

@@ -1,9 +1,7 @@
 import { makeAutoObservable, runInAction, toJS } from "mobx";
 import { ChatRoom } from "../models/Room.js";
-// var util = require("util");
 
 export class RoomStore {
-  //TODO:load rooms from db
   rooms;
   selectedRoom;
   selectedReceiver;
@@ -33,8 +31,7 @@ export class RoomStore {
     await this.roomsDb.add(roomName);
     console.log(chatRoom);
     console.log(toJS(this.rooms));
-    // const roomJSON = util.inspect(chatRoom);
-    // console.log(roomJSON);
+
     return chatRoom;
   }
   getRoom(roomName) {
@@ -62,7 +59,7 @@ export class RoomStore {
   }
 
   createChatRoom(roomName, selectedUsers) {
-    let room = this.createRoom(roomName);
+    this.createRoom(roomName);
 
     const message = { roomName: roomName };
     const stringifyMessage = JSON.stringify(message);

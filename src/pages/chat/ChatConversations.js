@@ -1,7 +1,6 @@
-import { Avatar, Conversation, ConversationList } from "@chatscope/chat-ui-kit-react";
+import { Conversation, ConversationList } from "@chatscope/chat-ui-kit-react";
 import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
-import { AvatarGenerator } from "random-avatar-generator";
 import { useStores } from "../../data/store/RootStore.js";
 
 export const ChatConversations = observer(() => {
