@@ -28,7 +28,7 @@ export class RoomStore {
     console.log(roomName);
 
     const chatRoom = new ChatRoom(this.rootStore, roomName);
-
+    chatRoom.init();
     this.rooms.push(chatRoom);
     await this.roomsDb.add(roomName);
     console.log(chatRoom);
@@ -60,27 +60,17 @@ export class RoomStore {
       });
     });
   }
-  setSelectedRoom(user) {
-    let room;
-    runInAction(async () => {
-      //generate room name
-      room = this.getRoomByUser(user.peerId[0]);
 
-      if (!room) {
-        const roomName = user._username;
-        room = await this.createRoom(roomName);
-        //connect to chat room
-        room.setRoomUser(user.peerId);
-        await room.init();
-        const message = { roomName: roomName };
-        const stringifyMessage = JSON.stringify(message);
-        // publish to users involved
-        console.log(user.peerId[0]);
-        console.log(stringifyMessage);
-        this.rootStore.dataStore.ipfsNode.pubsub.publish(user.peerId[0], stringifyMessage);
-      }
-      // this.selectedReceiver = user._username;
-      // this.selectedRoom = room;
+  createChatRoom(roomName, selectedUsers) {
+    let room = this.createRoom(roomName);
+
+    const message = { roomName: roomName };
+    const stringifyMessage = JSON.stringify(message);
+    console.log(roomName);
+    console.log(selectedUsers);
+    selectedUsers.forEach((user) => {
+      console.log(user);
+      this.rootStore.dataStore.ipfsNode.pubsub.publish(user.peerId[0], stringifyMessage);
     });
   }
 
@@ -89,6 +79,14 @@ export class RoomStore {
 
     this.selectedRoom = room;
     this.selectedReceiver = roomName;
+  }
+
+  selectUser(user, selectedUsers) {
+    const isAlreadyAdded = selectedUsers.find((selectedUser) => selectedUser._username === user._username);
+    console.log(isAlreadyAdded);
+    if (isAlreadyAdded) return;
+    selectedUsers.push(user);
+    console.log(selectedUsers);
   }
 
   isChatRoomReady(roomName) {

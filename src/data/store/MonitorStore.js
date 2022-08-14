@@ -168,8 +168,6 @@ export class MonitorStore {
         if (!room) {
           room = await this.rootStore.roomStore.createRoom(parsedMsg.roomName);
           room.setRoomUser(msg.from);
-
-          room.init();
         }
       }
 

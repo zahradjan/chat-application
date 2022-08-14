@@ -17,11 +17,9 @@ export const ChatConversations = observer(() => {
   return (
     <ConversationList style={{ backgroundColor: "#bacee0" }}>
       {rooms.map((item) => {
-        console.log(item);
-
         return (
           <Conversation key={item.roomId} name={item.roomName} onClick={() => selectChatRoom(item.roomName)}>
-            <Avatar src={new AvatarGenerator().generateRandomAvatar(item.roomName)} status="available" />
+            {/* <Avatar src={new AvatarGenerator().generateRandomAvatar(item.roomName)} status="available" /> */}
           </Conversation>
         );
       })}
