@@ -4,8 +4,6 @@ import { ModalProvider } from "react-modal-hook";
 import { Loader } from "../../components/Loader.js";
 import { useStores } from "../../data/store/RootStore.js";
 import { HomePage } from "../home/HomePage.js";
-// import LoginPage from "../login/LoginPage.js";
-// import { LoginPage } from "../login/LoginPage.js";
 
 const LoginPage = React.lazy(() => import("../login/LoginPage.js"));
 
