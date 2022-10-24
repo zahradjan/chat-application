@@ -8,23 +8,23 @@
 <p align="center">
 <img height="300px" src="./src/assets/icons/decentioLogoLight.png"></>
 </p>
-<p>Decentio je chatovací aplikace navržena pomocí decentralizované architektury založená na IPFS technologii. Jedná se o testovací aplikaci na které má být otestována decentralizovaná  architektura technologie IPFS. Aplikace je součástí diplomové práce.</p>
+<p>Decentio is chat app made with help of decentralized architecture based on IPFS technology. Application is demonstration of chat app based on a different approach using decentralized architecture. Application was part of diploma theses.</p>
 
-<p>Součástí testovací aplikace Decentio je řešení uživatelových potřeb na chatovací aplikace s použitím technologie IPFS. Potřeby jsou řešeny podle závěru analýzi potřeb uživatele na moderní chatovací aplikaci.</p>
+<p> Decentio contains solution of user basic requirements on chat app with help of IPFS. Requirements are solved according to conclusions from analysis from part of diploma theses.</p>
 
 <p align="center">
 <img src="./src/assets/img/DecentioHomePage.png"></>
 </p>
 
-## Návod na spuštění
+## Startup guide
 
-1. Vyklonovat repozitář
-2. Po vyklonování v terminalu zadat příkaz npm install pro instalaci použitých modulů
-3. Pro start aplikace zadat příkaz npm start
-4. Aplikace běží lokálně na adrese localhost:3000
-5. Data se ukládají lokálně do uložiště prohlížeče
-6. Testovat aplikaci lze např. při použití více prohlížeču nebo oken v anonymním režimu.
+1. Clone repo
+2. npm install in terminal of cloned repo
+3. npm start in terminal of cloned repo
+4. App runs on localhost:3000 by default
+5. Data are being stored in your browser
+6. You can test app using different browsers or anonymous mode
 
-### Autoři
+### Authors
 
-- **Jan Zahradník** - _Celý projekt_ - [Jan Zahradník](https://github.com/zahradjan)
+- **Jan Zahradník** - _Whole project_ - [Jan Zahradník](https://github.com/zahradjan)
